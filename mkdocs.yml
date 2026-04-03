@@ -1,0 +1,10 @@
+site_name: Compiladores 1 Grupo 09
+site_description: Documentação do projeto
+
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Guia:
+      - Nome: arquivo.md
