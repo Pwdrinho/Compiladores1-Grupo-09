@@ -1,0 +1,10 @@
+site_name: Documentação do Projeto
+
+theme:
+  name: material
+  language: pt-BR
+
+features:
+  - navigation.tabs
+  - navigation.sections
+  - content.code.copy
