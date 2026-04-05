@@ -1,17 +1,4 @@
-# Welcome to MkDocs
+# Compiladores 1 Grupo 09
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+Documentação do projeto que implementa um **compilador de C para GO** do grupo 09 da disciplina de Compiladores 1 ministrada pelo professor **Dr. Sérgio Antônio** no semestre de **2026.1** da **Faculdade de Ciências e Tecnologia em Engenharia** (**FCTE/UnB**).
 
-## Commands
-
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.

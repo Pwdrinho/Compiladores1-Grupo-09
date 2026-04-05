@@ -6,5 +6,7 @@ theme:
 
 nav:
   - Home: index.md
-  - Guia:
-      - Nome: arquivo.md
+
+  - Analisador Léxico:
+      - Introdução: analisador_léxico/introdução.md
+      - Fundamentação: analisador_léxico/fundamentação.md
