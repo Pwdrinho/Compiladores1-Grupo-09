@@ -1,0 +1,12 @@
+site_name: Compiladores 1 Grupo 09
+site_description: Documentação do projeto
+
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+
+  - Analisador Léxico:
+      - Introdução: analisador_léxico/introdução.md
+      - Fundamentação: analisador_léxico/fundamentação.md
