@@ -10,3 +10,5 @@ nav:
   - Analisador Léxico:
       - Introdução: analisador_léxico/introdução.md
       - Fundamentação: analisador_léxico/fundamentação.md
+  - Manuais:
+      - Flex e Bison: manuais/flex_bison.md
