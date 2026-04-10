@@ -11,21 +11,25 @@
       
       
       
+        <link rel="prev" href="../instrucao_build_flex_bison/">
+      
+      
+        <link rel="next" href="../padrao_commit/">
       
       
         
       
       
-      <link rel="icon" href="/assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Compiladores 1 Grupo 09</title>
+        <title>Makefile - Compiladores 1 Grupo 09</title>
       
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
       
 
@@ -44,7 +48,7 @@
       
     
     
-    <script>__md_scope=new URL("/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -61,6 +65,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#manual-basico-de-makefile-para-projetos-com-flex-e-bison" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -73,7 +82,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/." title="Compiladores 1 Grupo 09" class="md-header__button md-logo" aria-label="Compiladores 1 Grupo 09" data-md-component="logo">
+    <a href="../.." title="Compiladores 1 Grupo 09" class="md-header__button md-logo" aria-label="Compiladores 1 Grupo 09" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -93,7 +102,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Makefile
             
           </span>
         </div>
@@ -171,7 +180,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/." title="Compiladores 1 Grupo 09" class="md-nav__button md-logo" aria-label="Compiladores 1 Grupo 09" data-md-component="logo">
+    <a href="../.." title="Compiladores 1 Grupo 09" class="md-nav__button md-logo" aria-label="Compiladores 1 Grupo 09" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -189,7 +198,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -263,7 +272,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/analisador_l%C3%A9xico/introdu%C3%A7%C3%A3o/" class="md-nav__link">
+      <a href="../../analisador_l%C3%A9xico/introdu%C3%A7%C3%A3o/" class="md-nav__link">
         
   
   
@@ -291,7 +300,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/analisador_l%C3%A9xico/fundamenta%C3%A7%C3%A3o/" class="md-nav__link">
+      <a href="../../analisador_l%C3%A9xico/fundamenta%C3%A7%C3%A3o/" class="md-nav__link">
         
   
   
@@ -323,18 +332,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -355,7 +366,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -373,7 +384,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/manuais/instalacao_flex_bison/" class="md-nav__link">
+      <a href="../instalacao_flex_bison/" class="md-nav__link">
         
   
   
@@ -401,7 +412,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/manuais/instrucao_build_flex_bison/" class="md-nav__link">
+      <a href="../instrucao_build_flex_bison/" class="md-nav__link">
         
   
   
@@ -426,10 +437,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/manuais/makefile/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Makefile
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -445,6 +483,48 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introdução
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-vantagens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Vantagens
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -457,7 +537,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/manuais/padrao_commit/" class="md-nav__link">
+      <a href="../padrao_commit/" class="md-nav__link">
         
   
   
@@ -485,7 +565,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/manuais/padrao_branch/" class="md-nav__link">
+      <a href="../padrao_branch/" class="md-nav__link">
         
   
   
@@ -530,6 +610,38 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introdução
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-vantagens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Vantagens
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -542,8 +654,147 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+
+<h1 id="manual-basico-de-makefile-para-projetos-com-flex-e-bison">Manual Básico de Makefile (para projetos com Flex e Bison)</h1>
+<h2 id="1-introducao">1. Introdução</h2>
+<p>O <strong>Makefile</strong> é um arquivo utilizado para <strong>automatizar o processo de compilação</strong> de programas.
+Em vez de executar manualmente vários comandos no terminal (como <code>flex</code>, <code>bison</code> e <code>gcc</code>), o Makefile permite executar tudo com apenas um comando:</p>
+<pre><code>make
+</code></pre>
+<p>O programa responsável por interpretar esse arquivo é o <strong>GNU Make</strong>.</p>
+<p>Em ambientes de desenvolvimento para compiladores (como aqueles que utilizam <strong>Flex</strong> e <strong>Bison</strong>), o <code>make</code> normalmente <strong>já vem instalado</strong> ou é instalado junto com pacotes de desenvolvimento como:</p>
+<ul>
+<li><code>flex</code></li>
+<li><code>bison</code></li>
+<li><code>build-essential</code> (Linux/WSL)</li>
+</ul>
+<p>Por isso, na maioria dos casos <strong>não é necessário instalar nada adicional</strong>.</p>
+<p>Para verificar se o <code>make</code> está disponível:</p>
+<pre><code>make --version
+</code></pre>
+<h2 id="11-vantagens">1.1 Vantagens</h2>
+<p>O uso do Makefile traz várias vantagens:</p>
+<ul>
+<li>Automatiza a compilação;</li>
+<li>Evita digitar comandos repetitivos;</li>
+<li>Recompila apenas arquivos modificados;</li>
+<li>Organiza projetos maiores;</li>
+<li>Limpa arquivos intermediários gerados pelo flex e bison.</li>
+</ul>
+<h1 id="2-o-que-e-um-makefile">2. O que é um Makefile</h1>
+<p>O <strong>Makefile</strong> é simplesmente um arquivo de texto chamado:</p>
+<pre><code>Makefile
+</code></pre>
+<p>Ele contém <strong>regras</strong> que dizem ao <code>make</code>:</p>
+<ul>
+<li>o que deve ser construído</li>
+<li>quais arquivos são dependências</li>
+<li>quais comandos devem ser executados</li>
+</ul>
+<h1 id="3-estrutura-de-uma-regra">3. Estrutura de uma Regra</h1>
+<p>A estrutura básica de uma regra no Makefile é:</p>
+<pre><code>alvo: dependencias
+[TAB] comando
+</code></pre>
+<p>Onde:</p>
+<ul>
+<li><strong>alvo (target)</strong> → arquivo que será gerado</li>
+<li><strong>dependências</strong> → arquivos necessários para gerar o alvo</li>
+<li><strong>comando</strong> → instrução executada no terminal</li>
+</ul>
+<p><strong><em>Importante</em></strong>:
+O comando deve começar com <strong>TAB</strong>, não espaços.</p>
+<h1 id="4-exemplo-simples">4. Exemplo Simples</h1>
+<p>Exemplo de um Makefile para compilar um programa em C:</p>
+<pre><code>programa: main.c
+    gcc main.c -o programa
+</code></pre>
+<p>Execução:</p>
+<pre><code>make
+</code></pre>
+<p>Resultado:</p>
+<pre><code>gcc main.c -o programa
+</code></pre>
+<h1 id="5-makefile-para-flex-e-bison">5. Makefile para Flex e Bison</h1>
+<p>Em projetos que utilizam <strong>Flex e Bison</strong>, normalmente temos arquivos como:</p>
+<pre><code>lexer.l
+parser.y
+teste.c
+</code></pre>
+<p>Durante a compilação são gerados:</p>
+<pre><code>lex.yy.c
+parser.tab.c
+parser.tab.h
+</code></pre>
+<p>Um exemplo de Makefile para esse caso é:</p>
+<pre><code>all: analisador
+
+analisador: lex.yy.c parser.tab.c
+    gcc lex.yy.c parser.tab.c -o analisador -lfl
+
+parser.tab.c parser.tab.h: parser.y
+    bison -d parser.y
+
+lex.yy.c: lexer.l parser.tab.h
+    flex lexer.l
+</code></pre>
+<p>Esse Makefile realiza:</p>
+<ol>
+<li>Geração do parser com <strong>Bison</strong></li>
+<li>Geração do analisador léxico com <strong>Flex</strong></li>
+<li>Compilação com <strong>gcc</strong></li>
+</ol>
+<h1 id="6-regra-de-limpeza">6. Regra de Limpeza</h1>
+<p>É comum adicionar uma regra chamada <strong>clean</strong>, usada para remover arquivos gerados automaticamente.</p>
+<p>Exemplo:</p>
+<pre><code>clean:
+    rm -f lex.yy.c parser.tab.c parser.tab.h analisador
+</code></pre>
+<p>Execução:</p>
+<pre><code>make clean
+</code></pre>
+<p>Isso remove todos os arquivos gerados durante a compilação.</p>
+<h1 id="7-executando-o-programa">7. Executando o Programa</h1>
+<p>Após compilar com:</p>
+<pre><code>make
+</code></pre>
+<p>o executável pode ser utilizado normalmente.</p>
+<p>Exemplo com um arquivo de teste:</p>
+<pre><code>./analisador &lt; teste.c
+</code></pre>
+<h1 id="8-fluxo-de-uso">8. Fluxo de Uso</h1>
+<p>Fluxo típico de uso em um projeto com Flex/Bison:</p>
+<h2 id="81-compilar-o-projeto">8.1 Compilar o projeto</h2>
+<pre><code>make
+</code></pre>
+<h2 id="82-executar-o-analisador">8.2 Executar o analisador</h2>
+<pre><code>./analisador &lt; teste.c
+</code></pre>
+<h2 id="83-limpar-arquivos-gerados">8.3 Limpar arquivos gerados</h2>
+<pre><code>make clean
+</code></pre>
+<h1 id="9-conclusao">9. Conclusão</h1>
+<p>O <strong>Makefile</strong> é uma ferramenta essencial para automatizar o processo de compilação.
+Em projetos que utilizam <strong>Flex e Bison</strong>, ele facilita a geração dos arquivos intermediários e a compilação final do analisador.</p>
+<p>Com um Makefile bem configurado, todo o processo de construção do projeto pode ser realizado com apenas um comando:</p>
+<pre><code>make
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -580,10 +831,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/", "features": [], "search": "/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="/assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>

@@ -11,21 +11,23 @@
       
       
       
+        <link rel="prev" href="../padrao_commit/">
+      
       
       
         
       
       
-      <link rel="icon" href="/assets/images/favicon.png">
+      <link rel="icon" href="../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
     
     
       
-        <title>Compiladores 1 Grupo 09</title>
+        <title>Padrões de Branch - Compiladores 1 Grupo 09</title>
       
     
     
-      <link rel="stylesheet" href="/assets/stylesheets/main.484c7ddc.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
       
 
@@ -44,7 +46,7 @@
       
     
     
-    <script>__md_scope=new URL("/",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
@@ -61,6 +63,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#padroes-de-branch" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -73,7 +80,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="/." title="Compiladores 1 Grupo 09" class="md-header__button md-logo" aria-label="Compiladores 1 Grupo 09" data-md-component="logo">
+    <a href="../.." title="Compiladores 1 Grupo 09" class="md-header__button md-logo" aria-label="Compiladores 1 Grupo 09" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -93,7 +100,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              
+              Padrões de Branch
             
           </span>
         </div>
@@ -171,7 +178,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="/." title="Compiladores 1 Grupo 09" class="md-nav__button md-logo" aria-label="Compiladores 1 Grupo 09" data-md-component="logo">
+    <a href="../.." title="Compiladores 1 Grupo 09" class="md-nav__button md-logo" aria-label="Compiladores 1 Grupo 09" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
@@ -189,7 +196,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -263,7 +270,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/analisador_l%C3%A9xico/introdu%C3%A7%C3%A3o/" class="md-nav__link">
+      <a href="../../analisador_l%C3%A9xico/introdu%C3%A7%C3%A3o/" class="md-nav__link">
         
   
   
@@ -291,7 +298,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/analisador_l%C3%A9xico/fundamenta%C3%A7%C3%A3o/" class="md-nav__link">
+      <a href="../../analisador_l%C3%A9xico/fundamenta%C3%A7%C3%A3o/" class="md-nav__link">
         
   
   
@@ -323,18 +330,20 @@
       
   
   
+    
   
   
+  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
           <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
@@ -355,7 +364,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3">
             <span class="md-nav__icon md-icon"></span>
             
@@ -373,7 +382,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/manuais/instalacao_flex_bison/" class="md-nav__link">
+      <a href="../instalacao_flex_bison/" class="md-nav__link">
         
   
   
@@ -401,7 +410,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/manuais/instrucao_build_flex_bison/" class="md-nav__link">
+      <a href="../instrucao_build_flex_bison/" class="md-nav__link">
         
   
   
@@ -429,7 +438,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/manuais/makefile/" class="md-nav__link">
+      <a href="../makefile/" class="md-nav__link">
         
   
   
@@ -457,7 +466,7 @@
   
   
     <li class="md-nav__item">
-      <a href="/manuais/padrao_commit/" class="md-nav__link">
+      <a href="../padrao_commit/" class="md-nav__link">
         
   
   
@@ -482,10 +491,37 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="/manuais/padrao_branch/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Padrões de Branch
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -501,6 +537,37 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introdução
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -530,6 +597,27 @@
   
   
   
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-introducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Introdução
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
   
 </nav>
                   </div>
@@ -542,8 +630,95 @@
               
               <article class="md-content__inner md-typeset">
                 
-  <h1>404 - Not found</h1>
+                  
 
+
+
+<h1 id="padroes-de-branch">Padrões de Branch</h1>
+<h2 id="1-introducao">1. Introdução</h2>
+<p>Os <strong>padrões de branch</strong> são convenções usadas para <strong>nomear e organizar as ramificações de um repositório Git</strong>.
+Eles ajudam a manter o desenvolvimento organizado e facilitam a identificação do objetivo de cada branch.</p>
+<hr />
+<h1 id="2-estrutura-de-uma-branch">2. Estrutura de uma Branch</h1>
+<p>A estrutura básica de nomeação é:</p>
+<pre><code>tipo/nome-da-branch
+</code></pre>
+<p>Exemplo:</p>
+<pre><code>feat/analisador-lexico
+</code></pre>
+<p>O nome da branch deve descrever de forma simples <strong>o que está sendo desenvolvido ou corrigido</strong>.</p>
+<hr />
+<h1 id="3-tipos-de-branch">3. Tipos de Branch</h1>
+<ul>
+<li>
+<p><strong>feat</strong></p>
+<p>Usado para desenvolvimento de <strong>novas funcionalidades</strong>.</p>
+<p><code>feat/parser-expressoes</code></p>
+</li>
+</ul>
+<hr />
+<ul>
+<li>
+<p><strong>fix</strong></p>
+<p>Usado para <strong>correção de erros</strong> no código.</p>
+<p><code>fix/erro-analise-numeros</code></p>
+</li>
+</ul>
+<hr />
+<ul>
+<li>
+<p><strong>docs</strong></p>
+<p>Usado para alterações na <strong>documentação do projeto</strong>.</p>
+<p><code>docs/manual-makefile</code></p>
+</li>
+</ul>
+<hr />
+<ul>
+<li>
+<p><strong>refactor</strong></p>
+<p>Usado quando o código é <strong>reestruturado</strong>, sem alterar o comportamento do sistema.</p>
+<p><code>refactor/reorganiza-parser</code></p>
+</li>
+</ul>
+<hr />
+<ul>
+<li>
+<p><strong>test</strong></p>
+<p>Usado para desenvolvimento ou atualização de <strong>testes</strong>.</p>
+<p><code>test/novos-arquivos-teste</code></p>
+</li>
+</ul>
+<hr />
+<ul>
+<li>
+<p><strong>chore</strong></p>
+<p>Usado para <strong>tarefas de manutenção ou configuração do projeto</strong>.</p>
+<p><code>chore/configuracao-makefile</code></p>
+</li>
+</ul>
+<h1 id="4-boas-praticas">4. Boas Práticas</h1>
+<ul>
+<li>Utilizar <strong>letras minúsculas</strong></li>
+<li>Separar palavras com <strong>hífen (-)</strong></li>
+<li>Usar nomes <strong>curtos e descritivos</strong></li>
+<li>Seguir sempre o padrão <code>tipo/nome-da-branch</code></li>
+</ul>
+<p>Exemplo recomendado:</p>
+<pre><code>feat/suporte-operadores-relacionais
+</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+                
               </article>
             </div>
           
@@ -580,10 +755,10 @@
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "/", "features": [], "search": "/assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="/assets/javascripts/bundle.79ae519e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
