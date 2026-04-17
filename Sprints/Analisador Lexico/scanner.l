@@ -1,11 +1,28 @@
 %{
 #include <stdio.h>
+
+enum tokens {
+    KW_AUTO = 258, KW_BREAK, KW_CASE, KW_CHAR, KW_CONST, KW_CONTINUE, KW_DEFAULT,
+    KW_DO, KW_DOUBLE, KW_ELSE, KW_ENUM, KW_EXTERN, KW_FLOAT, KW_FOR, KW_GOTO,
+    KW_IF, KW_INT, KW_LONG, KW_REGISTER, KW_RETURN, KW_SHORT, KW_SIGNED,
+    KW_SIZEOF, KW_STATIC, KW_STRUCT, KW_SWITCH, KW_TYPEDEF, KW_UNION,
+    KW_UNSIGNED, KW_VOID, KW_VOLATILE, KW_WHILE,
+    TK_OP_IGUAL_COMPARACAO, TK_OP_DIFERENTE, TK_OP_MENOR_IGUAL, TK_OP_MAIOR_IGUAL,
+    TK_OP_AND, TK_OP_OR, TK_OP_INCREMENTO, TK_OP_DECREMENTO, TK_OP_MAIS_IGUAL,
+    TK_OP_MENOS_IGUAL, TK_OP_MULTIPLICACAO_IGUAL, TK_OP_DIVISAO_IGUAL,
+    TK_OP_MODULO_IGUAL, TK_OP_DESLOCAMENTO_ESQUERDA, TK_OP_DESLOCAMENTO_DIREITA,
+    TK_OP_PONTEIRO_ACESSO, TK_OP_SOMA, TK_OP_SUBTRACAO, TK_OP_MULTIPLICACAO,
+    TK_OP_DIVISAO, TK_OP_MODULO, TK_OP_IGUAL, TK_OP_MENOR, TK_OP_MAIOR,
+    TK_OP_NÃO, TK_OP_E_BIT, TK_OP_OU_BIT, TK_OP_XOR_BIT, TK_OP_NOT_BIT,
+    TK_OP_TERNARIO, TK_OP_DOIS_PONTOS, TK_OP_PONTO, TK_OP_VIRGULA
+};
+
 %}
 
 /* Definições de padrões de token e ações */
 %%
 
-auto	        { printf("KW_AUTO\n"); return KW_AUTO; }
+auto	        { printf("KW_AUTO\n"); return KW_A/.UTO; }
 break	        { printf("KW_BREAK\n"); return KW_BREAK; }
 case	        { printf("KW_CASE\n"); return KW_CASE; }
 char	        { printf("KW_CHAR\n"); return KW_CHAR; }
@@ -46,7 +63,7 @@ while	        { printf("KW_WHILE\n"); return KW_WHILE; }
 
 [0-9]+(\.[0-9]+)?  { printf("NUMBER(%s)\n", yytext); }
 
-/* --- 2. Operadores de 2 Caracteres (Compostos) --- */
+    /* --- Operadores de 2 Caracteres --- */
 "=="            {printf("TK_OP_IGUAL_COMPARACAO\n"); return TK_OP_IGUAL_COMPARACAO; }
 "!="            {printf("TK_OP_DIFERENTE\n"); return TK_OP_DIFERENTE; }
 "<="            {printf("TK_OP_MENOR_IGUAL\n"); return TK_OP_MENOR_IGUAL; }
@@ -64,7 +81,7 @@ while	        { printf("KW_WHILE\n"); return KW_WHILE; }
 ">>"            {printf("TK_OP_DESLOCAMENTO_DIREITA\n"); return TK_OP_DESLOCAMENTO_DIREITA; }
 "->"            {printf("TK_OP_PONTEIRO_ACESSO\n"); return TK_OP_PONTEIRO_ACESSO; }
 
-/* --- 3. Operadores de 1 Caractere (Simples) --- */
+    /* --- Operadores de 1 Caractere --- */
 "+"             {printf("TK_OP_SOMA\n"); return  TK_OP_SOMA; }
 "-"             {printf("TK_OP_SUBTRACAO\n"); return  TK_OP_SUBTRACAO; }
 "*"             {printf("TK_OP_MULTIPLICACAO\n"); return  TK_OP_MULTIPLICACAO; }
@@ -75,16 +92,16 @@ while	        { printf("KW_WHILE\n"); return KW_WHILE; }
 ">"             {printf("TK_OP_MAIOR\n"); return  TK_OP_MAIOR; }
 "!"             {printf("TK_OP_NÃO\n"); return  TK_OP_NÃO; }
 "&"             {printf("TK_OP_E_BIT\n"); return  TK_OP_E_BIT; }
-"|"             {printf("TK_OP_OU_BIT\n"); return  TK_OP_OU_BIT }
-"^"             {printf("TK_OP_XOR_BIT\n"); return  TK_OP_XOR_BIT }
-"~"             {printf("TK_OP_NOT_BIT\n"); return  TK_OP_NOT_BIT }
+"|"             {printf("TK_OP_OU_BIT\n"); return  TK_OP_OU_BIT; }
+"^"             {printf("TK_OP_XOR_BIT\n"); return  TK_OP_XOR_BIT; }
+"~"             {printf("TK_OP_NOT_BIT\n"); return  TK_OP_NOT_BIT; }
 "?"             {printf("TK_OP_TERNARIO\n"); return  TK_OP_TERNARIO; }
-":"             {printf("TK_OP_DOIS_PONTOS\n"); return  TK_OP_DOIS_PONTOS }
-"."             {printf("TK_OP_PONTO\n"); return  TK_OP_PONTO }
-","             {printf("TK_OP_VIRGULA\n"); return  TK_OP_VIRGULA }
+":"             {printf("TK_OP_DOIS_PONTOS\n"); return  TK_OP_DOIS_PONTOS; }
+"."             {printf("TK_OP_PONTO\n"); return  TK_OP_PONTO; }
+","             {printf("TK_OP_VIRGULA\n"); return  TK_OP_VIRGULA; }
 
-/* (type) definir regra depois*/
-/* colocar todos os tipos*/
+    /* (type) definir regra depois*/
+    /* colocar todos os tipos*/
 
 [ \t\n]+  { /* Não faz nada */ }
 
