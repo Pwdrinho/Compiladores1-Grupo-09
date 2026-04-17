@@ -45,5 +45,5 @@ Após a compilação final é gerado um executável que pode ser executado dessa
 ### 5. Executar com arquivo de teste
 No mesmo esquema da execução, para executar junto com um arquivo teste faça assim:
 ```bash
-./analisador < teste.c
+./meu_analisador < teste.c
 ```

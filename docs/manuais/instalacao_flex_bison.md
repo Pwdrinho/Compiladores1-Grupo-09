@@ -51,7 +51,7 @@ No Windows, recomenda-se utilizar o **WSL (Windows Subsystem for Linux)**, pois 
 
 ### 3.1 Instalar o WSL
 
-Abra o **PowerShell como administrador** e execute para a instalação do *WSl*:
+Abra o **PowerShell como administrador** e execute para a instalação do *WSL*:
 
 ``` powershell
 wsl --install
