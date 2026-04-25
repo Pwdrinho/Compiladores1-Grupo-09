@@ -13,7 +13,7 @@ enum tokens {
     TK_OP_MODULO_IGUAL, TK_OP_DESLOCAMENTO_ESQUERDA, TK_OP_DESLOCAMENTO_DIREITA,
     TK_OP_PONTEIRO_ACESSO, TK_OP_SOMA, TK_OP_SUBTRACAO, TK_OP_MULTIPLICACAO,
     TK_OP_DIVISAO, TK_OP_MODULO, TK_OP_IGUAL, TK_OP_MENOR, TK_OP_MAIOR,
-    TK_OP_NÃO, TK_OP_E_BIT, TK_OP_OU_BIT, TK_OP_XOR_BIT, TK_OP_NOT_BIT,
+    TK_OP_NAO, TK_OP_E_BIT, TK_OP_OU_BIT, TK_OP_XOR_BIT, TK_OP_NOT_BIT,
     TK_OP_TERNARIO, TK_OP_DOIS_PONTOS, TK_OP_PONTO, TK_OP_VIRGULA
 };
 
@@ -90,7 +90,7 @@ while	        { printf("KW_WHILE\n"); }
 "="             {printf("TK_OP_IGUAL\n"); }
 "<"             {printf("TK_OP_MENOR\n"); }
 ">"             {printf("TK_OP_MAIOR\n"); }
-"!"             {printf("TK_OP_NÃO\n"); }
+"!"             {printf("TK_OP_NAO\n"); }
 "&"             {printf("TK_OP_E_BIT\n"); }
 "|"             {printf("TK_OP_OU_BIT\n"); }
 "^"             {printf("TK_OP_XOR_BIT\n"); }
