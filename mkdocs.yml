@@ -10,6 +10,7 @@ nav:
   - Analisador Léxico:
       - Introdução: analisador_léxico/introdução.md
       - Fundamentação: analisador_léxico/fundamentação.md
+      - Palavras Reservadas: analisador_léxico/palavrasreservadas.md
   - Manuais:
       - Instalação Flex e Bison: manuais/instalacao_flex_bison.md
       - Instrução Build Flex/Bison: manuais/instrucao_build_flex_bison.md
