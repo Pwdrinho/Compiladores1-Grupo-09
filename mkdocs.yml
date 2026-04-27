@@ -11,3 +11,9 @@ nav:
       - Introdução: analisador_léxico/introdução.md
       - Fundamentação: analisador_léxico/fundamentação.md
       - Palavras Reservadas: analisador_léxico/palavrasreservadas.md
+  - Manuais:
+      - Instalação Flex e Bison: manuais/instalacao_flex_bison.md
+      - Instrução Build Flex/Bison: manuais/instrucao_build_flex_bison.md
+      - Makefile: manuais/makefile.md
+      - Padrões de Commit: manuais/padrao_commit.md
+      - Padrões de Branch: manuais/padrao_branch.md
