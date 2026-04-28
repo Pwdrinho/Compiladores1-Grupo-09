@@ -123,7 +123,7 @@ while       { printf("KW_WHILE\n"); return KW_WHILE; }
 "["         { printf("TK_ABRE_COLCHETE\n"); return TK_ABRE_COLCHETE; }
 "]"         { printf("TK_FECHA_COLCHETE\n"); return TK_FECHA_COLCHETE; }
 
-[ \t\n]+    { /* ignora espaços e quebras de linha */ }
+[ \t\n\r]+ { /* ignora espaços, quebras de linha e CRLF */ }
 
 .           { printf("UNKNOWN(%s)\n", yytext); }
 
