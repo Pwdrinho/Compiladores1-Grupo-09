@@ -1,4 +1,4 @@
-# 3. Integração Léxico-Sintático
+# 1. Integração Léxico-Sintático
 
 O **documento de integração** descreve como os *tokens* produzidos pelo analisador
 léxico serão consumidos pelo analisador sintático (*parser*). Essa integração é o
@@ -12,13 +12,13 @@ arquivo de cabeçalho gerado pelo Bison (`parser.tab.h`).
 
 ---
 
-## 3.1 Tabela Completa de Tokens
+## 1.1 Tabela Completa de Tokens
 
 A tabela a seguir lista todos os tokens reconhecidos pelo analisador léxico
 (`scanner.l`), seus códigos numéricos (iniciando em `258`, padrão Flex/Bison),
 os padrões que os originam e o papel semântico que cada um cumpre no *parser*.
 
-### 3.1.1 Palavras-Chave (`KW_*`)
+### 1.1.1 Palavras-Chave (`KW_*`)
 
 | Token | Código | Lexema | Papel no Parser |
 | --- | --- | --- | --- |
@@ -55,7 +55,7 @@ os padrões que os originam e o papel semântico que cada um cumpre no *parser*.
 | `KW_VOLATILE` | 288 | `volatile` | Qualificador de tipo |
 | `KW_WHILE` | 289 | `while` | Estrutura de repetição |
 
-### 3.1.2 Identificadores e Literais
+### 1.1.2 Identificadores e Literais
 
 | Token | Código | Padrão | Carrega em `yylval` |
 | --- | --- | --- | --- |
@@ -63,7 +63,7 @@ os padrões que os originam e o papel semântico que cada um cumpre no *parser*.
 | `NUMBER` | 291 | `[0-9]+` | `ival` — valor convertido para inteiro |
 | `NUMBER` | 291 | `[0-9]+\\.[0-9]+` | `dval` — valor convertido para double |
 
-### 3.1.3 Operadores de Dois Caracteres (`TK_OP_*`)
+### 1.1.3 Operadores de Dois Caracteres (`TK_OP_*`)
 
 | Token | Código | Lexema | Papel no Parser |
 | --- | --- | --- | --- |
@@ -84,7 +84,7 @@ os padrões que os originam e o papel semântico que cada um cumpre no *parser*.
 | `TK_OP_DESLOCAMENTO_DIREITA` | 306 | `>>` | Deslocamento de bits à direita |
 | `TK_OP_PONTEIRO_ACESSO` | 307 | `->` | Acesso a membro via ponteiro |
 
-### 3.1.4 Operadores de Um Caractere e Delimitadores
+### 1.1.4 Operadores de Um Caractere e Delimitadores
 
 | Token | Código | Lexema | Papel no Parser |
 | --- | --- | --- | --- |
@@ -115,7 +115,7 @@ os padrões que os originam e o papel semântico que cada um cumpre no *parser*.
 
 ---
 
-## 3.2 A Interface `yylex()` — Como o Parser Consome Tokens
+## 1.2 A Interface `yylex()` — Como o Parser Consome Tokens
 
 No modelo Flex/Bison, o *parser* não lê o código-fonte diretamente. Em vez disso,
 ele invoca repetidamente a função `yylex()`, gerada pelo Flex, que:
@@ -135,13 +135,13 @@ O fluxo pode ser representado da seguinte forma:
 
 ---
 
-## 3.3 Estrutura de Valores — `yylval`
+## 1.3 Estrutura de Valores — `yylval`
 
 A variável `yylval` é o mecanismo pelo qual o léxico transmite o **valor semântico**
 de cada token ao *parser*. Ela é declarada como uma `union` no arquivo Bison, de
 modo que cada campo corresponde a um tipo de dado que um token pode carregar.
 
-### 3.3.1 Declaração da Union
+### 1.3.1 Declaração da Union
 
 ```c
 %union {
@@ -151,7 +151,7 @@ modo que cada campo corresponde a um tipo de dado que um token pode carregar.
 }
 ```
 
-### 3.3.2 Associação Token → Campo da Union
+### 1.3.2 Associação Token → Campo da Union
 
 | Token | Campo usado | Como é preenchido no scanner |
 | --- | --- | --- |
@@ -160,7 +160,7 @@ modo que cada campo corresponde a um tipo de dado que um token pode carregar.
 | `NUMBER` (ponto flutuante) | `dval` | `yylval.dval = atof(yytext);` |
 | Palavras-chave e operadores | — | Não carregam valor; o código do token já é suficiente |
 
-### 3.3.3 Proposta de Modificação do Scanner
+### 1.3.3 Proposta de Modificação do Scanner
 
 Para habilitar a integração com o Bison, as regras de `IDENT` e `NUMBER` no
 `scanner.l` deverão ser modificadas conforme abaixo:
@@ -202,7 +202,7 @@ responsável por liberar essa memória após o uso, evitando vazamentos.
 
 ---
 
-## 3.4 Exemplos de Entrada e Fluxo de Tokens
+## 1.4 Exemplos de Entrada e Fluxo de Tokens
 
 Os exemplos a seguir são extraídos diretamente dos testes automatizados do
 projeto (`scanner/inputs/`), garantindo correspondência exata com o comportamento
@@ -210,7 +210,7 @@ real do `scanner.l`.
 
 ---
 
-### 3.4.1 Identificadores e Literais Numéricos (`02_identifiers_numbers.in`)
+### 1.4.1 Identificadores e Literais Numéricos (`02_identifiers_numbers.in`)
 
 **Entrada:**
 
@@ -239,7 +239,7 @@ menos um dígito após o `.`; o scanner tokeniza como `NUMBER(10)` seguido de
 
 ---
 
-### 3.4.2 Comentários e Espaços em Branco (`05_comments_whitespace.in`)
+### 1.4.2 Comentários e Espaços em Branco (`05_comments_whitespace.in`)
 
 **Entrada:**
 
@@ -267,7 +267,7 @@ entre tokens também é descartado silenciosamente.
 
 ---
 
-### 3.4.3 Trecho Misto — Programa Completo (`07_mixed_snippet.in`)
+### 1.4.3 Trecho Misto — Programa Completo (`07_mixed_snippet.in`)
 
 Este caso de teste é o mais abrangente da suíte, combinando declaração de
 função, declaração de variável com inicialização, atribuição composta,
@@ -322,7 +322,7 @@ int main() {
 
 ---
 
-## 3.5 Tokens Ignorados pelo Parser
+## 1.5 Tokens Ignorados pelo Parser
 
 Os padrões a seguir são consumidos pelo léxico mas **não geram tokens** para o
 *parser*, pois não possuem relevância gramatical:
