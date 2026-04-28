@@ -61,7 +61,7 @@ os padrões que os originam e o papel semântico que cada um cumpre no *parser*.
 | --- | --- | --- | --- |
 | `IDENT` | 290 | `[a-zA-Z_][a-zA-Z0-9_]*` | `sval` — cópia de `yytext` |
 | `NUMBER` | 291 | `[0-9]+` | `ival` — valor convertido para inteiro |
-| `NUMBER` | 291 | `[0-9]+\\.[0-9]+` | `dval` — valor convertido para double |
+| `NUMBER` | 291 | `[0-9]+\.[0-9]+` | `dval` — valor convertido para double |
 
 ### 1.1.3 Operadores de Dois Caracteres (`TK_OP_*`)
 
