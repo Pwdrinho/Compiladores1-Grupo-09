@@ -106,6 +106,9 @@ void yyerror(const char *s);
 
 programa:
       lista_funcoes
+      {
+        printf("Análise sintática concluída\n");
+      }
 ;
 
 lista_funcoes:
@@ -114,7 +117,21 @@ lista_funcoes:
 ;
 
 funcao:
-      tipo IDENT TK_ABRE_PARENTESE TK_FECHA_PARENTESE bloco
+      tipo IDENT TK_ABRE_PARENTESE parametros TK_FECHA_PARENTESE bloco
+;
+
+parametros:
+      lista_parametros
+    | /* vazio */
+;
+
+lista_parametros:
+      lista_parametros TK_OP_VIRGULA parametro
+    | parametro
+;
+
+parametro:
+      tipo IDENT
 ;
 
 tipo:
@@ -138,23 +155,35 @@ comando:
     | retorno
     | comando_if
     | comando_while
+    | comando_for
+    | incremento
+    | bloco
 ;
 
 declaracao:
       tipo IDENT TK_OP_PONTO_VIRGULA
     | tipo IDENT TK_OP_IGUAL expressao TK_OP_PONTO_VIRGULA
+    | tipo IDENT TK_ABRE_COLCHETE NUMBER TK_FECHA_COLCHETE TK_OP_PONTO_VIRGULA
 ;
 
 atribuicao:
       IDENT TK_OP_IGUAL expressao TK_OP_PONTO_VIRGULA
 ;
 
+incremento:
+      IDENT TK_OP_INCREMENTO TK_OP_PONTO_VIRGULA
+    | IDENT TK_OP_DECREMENTO TK_OP_PONTO_VIRGULA
+    | TK_OP_INCREMENTO IDENT TK_OP_PONTO_VIRGULA
+    | TK_OP_DECREMENTO IDENT TK_OP_PONTO_VIRGULA
+;
+
 retorno:
       KW_RETURN expressao TK_OP_PONTO_VIRGULA
+    | KW_RETURN TK_OP_PONTO_VIRGULA
 ;
 
 comando_if:
-      KW_IF TK_ABRE_PARENTESE expressao_booleana TK_FECHA_PARENTESE bloco
+      KW_IF TK_ABRE_PARENTESE expressao_booleana TK_FECHA_PARENTESE bloco %prec LOWER_THAN_ELSE
     | KW_IF TK_ABRE_PARENTESE expressao_booleana TK_FECHA_PARENTESE bloco KW_ELSE bloco
 ;
 
@@ -162,8 +191,51 @@ comando_while:
       KW_WHILE TK_ABRE_PARENTESE expressao_booleana TK_FECHA_PARENTESE bloco
 ;
 
+comando_for:
+      KW_FOR TK_ABRE_PARENTESE for_init TK_OP_PONTO_VIRGULA for_condicao TK_OP_PONTO_VIRGULA for_atualizacao TK_FECHA_PARENTESE bloco
+;
+
+for_init:
+      declaracao_for
+    | atribuicao_for
+    | /* vazio */
+;
+
+for_condicao:
+      expressao_booleana
+    | /* vazio */
+;
+
+for_atualizacao:
+      atribuicao_for
+    | incremento_for
+    | /* vazio */
+;
+
+declaracao_for:
+      tipo IDENT
+    | tipo IDENT TK_OP_IGUAL expressao
+;
+
+atribuicao_for:
+      IDENT TK_OP_IGUAL expressao
+    | IDENT TK_OP_MAIS_IGUAL expressao
+    | IDENT TK_OP_MENOS_IGUAL expressao
+;
+
+incremento_for:
+      IDENT TK_OP_INCREMENTO
+    | IDENT TK_OP_DECREMENTO
+    | TK_OP_INCREMENTO IDENT
+    | TK_OP_DECREMENTO IDENT
+;
+
+
 expressao_booleana:
       expressao operador_relacional expressao
+    | expressao_booleana TK_OP_AND expressao_booleana
+    | expressao_booleana TK_OP_OR expressao_booleana
+    | TK_ABRE_PARENTESE expressao_booleana TK_FECHA_PARENTESE
 ;
 
 operador_relacional:
@@ -184,13 +256,19 @@ expressao:
 termo:
       termo TK_OP_MULTIPLICACAO fator
     | termo TK_OP_DIVISAO fator
+    | termo TK_OP_MODULO fator
     | fator
 ;
 
 fator:
       NUMBER
     | IDENT
+    | acesso_vetor
     | TK_ABRE_PARENTESE expressao TK_FECHA_PARENTESE
+;
+
+acesso_vetor:
+      IDENT TK_ABRE_COLCHETE expressao TK_FECHA_COLCHETE
 ;
 
 %%

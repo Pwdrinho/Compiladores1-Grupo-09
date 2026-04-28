@@ -1,7 +1,6 @@
 %{
 #include <stdio.h>
 #include "parser.tab.h"
-};
 %}
 /* Definições de padrões de token e ações */
 %%
