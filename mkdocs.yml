@@ -11,6 +11,8 @@ nav:
       - Introdução: analisador_léxico/introdução.md
       - Fundamentação: analisador_léxico/fundamentação.md
       - Palavras Reservadas: analisador_léxico/palavrasreservadas.md
+  - Analisador Sintático:
+      - Integração Léxico-Sintático: analisador_sintatico/integracao_lexico_sintatico.md
   - Manuais:
       - Instalação Flex e Bison: manuais/instalacao_flex_bison.md
       - Instrução Build Flex/Bison: manuais/instrucao_build_flex_bison.md
