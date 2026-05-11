@@ -52,3 +52,18 @@ Simbolo* buscar_simbolo(const char *nome) {
     }
     return NULL; // Não encontrado ou fora de escopo
 }
+
+
+// Remoção de Escopo - não deleta as coisas, mas melhora a performance
+void remover_escopo(int escopo) {
+    for (int i = 0; i < HASH_SIZE; i++) { //percorre a tabela toda
+        Simbolo *atual = tabela_hash[i];
+        while (atual != NULL) { //percorre a lista daquele indice até o final
+            // Se pertencer ao escopo alvo, desativamos para futuras buscas
+            if (atual->escopo == escopo && atual->ativo == 1) { // se for do escoppo atual e estiver ativo vamos desativá-lo
+                atual->ativo = 0;
+            }
+            atual = atual->proximo;
+        }
+    }
+}
