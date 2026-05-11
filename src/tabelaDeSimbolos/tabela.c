@@ -38,3 +38,17 @@ void inserir_simbolo(const char *nome, char *tipo, int escopo) {
     tabela_hash[indice] = novo_simbolo;
 }
 
+// Busca
+Simbolo* buscar_simbolo(const char *nome) {
+    unsigned int indice = calcular_hash(nome); //calcula o indice onde o simbolo deve estar
+    Simbolo *atual = tabela_hash[indice];
+
+    while (atual != NULL) {
+        // Retorna apenas se o nome coincidir e não tiver sido "removido" pelo escopo
+        if (strcmp(atual->nome, nome) == 0 && atual->ativo == 1) {
+            return atual;
+        }
+        atual = atual->proximo;
+    }
+    return NULL; // Não encontrado ou fora de escopo
+}
