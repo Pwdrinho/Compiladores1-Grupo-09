@@ -1,7 +1,6 @@
 site/
 __pycache__/
 venv/
-*.c
 *.out
 *txt
 *.sh
