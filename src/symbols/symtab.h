@@ -5,7 +5,7 @@
 
 // Tamanho primo - recomendação do monitor CHAT kkk - também representa o tamanho máximo da nossa tabela HASH
 #define HASH_SIZE 211 
-#define MAX_NAME_LEN 32
+#define MAX_NAME_LEN 256
 
 // Estrutura do nó da Tabela Hash
 typedef struct Simbolo {
