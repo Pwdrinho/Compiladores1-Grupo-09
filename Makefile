@@ -15,13 +15,13 @@ SCANNER_TEST_EXPECTED := tests/scanner/expected
 SCANNER_TEST_ACTUAL   := $(SCANNER_TEST_BUILD)/actual
 VERBOSE ?= 0
 
-TEST_01 := 01_keywords.in
-TEST_02 := 02_identifiers_numbers.in
-TEST_03 := 03_double_operators.in
-TEST_04 := 04_single_operators_delimiters.in
-TEST_05 := 05_comments_whitespace.in
-TEST_06 := 06_unknown_chars.in
-TEST_07 := 07_mixed_snippet.in
+TEST_01 := 01_keywords.c
+TEST_02 := 02_identifiers_numbers.c
+TEST_03 := 03_double_operators.c
+TEST_04 := 04_single_operators_delimiters.c
+TEST_05 := 05_comments_whitespace.c
+TEST_06 := 06_unknown_chars.c
+TEST_07 := 07_mixed_snippet.c
 TEST_08 := 08_simple_program.c
 TEST_09 := 09_function_and_condition.c
 TEST_10 := 10_pointers_arrays.c
@@ -78,7 +78,7 @@ scanner-test: $(SCANNER_TEST_TARGET)
 	@set -e; \
 	failed=0; \
 	total=0; \
-	for input in $(SCANNER_TEST_INPUTS)/*.in $(SCANNER_TEST_INPUTS)/*.c; do \
+	for input in $(SCANNER_TEST_INPUTS)/*.c; do \
 		if [ ! -f "$$input" ]; then \
 			continue; \
 		fi; \
@@ -111,7 +111,7 @@ scanner-test: $(SCANNER_TEST_TARGET)
 		fi; \
 	done; \
 	if [ "$$total" -eq 0 ]; then \
-		echo "Nenhum arquivo .in encontrado em $(SCANNER_TEST_INPUTS)"; \
+		echo "Nenhum arquivo .c encontrado em $(SCANNER_TEST_INPUTS)"; \
 		exit 1; \
 	fi; \
 	echo "Result: $$((total - failed))/$$total tests passed."; \
@@ -130,13 +130,13 @@ scanner-unit-test: $(SCANNER_TEST_TARGET)
 		else \
 			input="$(SCANNER_TEST_INPUTS)/$(TEST)"; \
 			case "$$input" in \
-				*.in|*.c) ;; \
-				*) if [ -f "$$input.in" ]; then \
-					input="$$input.in"; \
+				*.c) ;; \
+				*) if [ -f "$$input.c" ]; then \
+					input="$$input.c"; \
 				elif [ -f "$$input.c" ]; then \
 					input="$$input.c"; \
 				else \
-					input="$$input.in"; \
+					input="$$input.c"; \
 				fi ;; \
 			esac; \
 		fi; \

@@ -1,3 +1,10 @@
 site/
 __pycache__/
 venv/
+*txt
+sync-drive.sh
+lex.yy.c
+*.o
+parser.tab.c
+parser.tab.h
+.build/
