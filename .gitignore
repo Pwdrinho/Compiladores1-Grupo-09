@@ -7,3 +7,4 @@ lex.yy.c
 *.o
 parser.tab.c
 parser.tab.h
+.build/
