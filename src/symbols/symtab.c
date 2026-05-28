@@ -27,7 +27,7 @@ void inserir_simbolo(const char *nome, char *tipo, int escopo) {
         return;
     }
 
-    strncpy(novo_simbolo->nome, nome, MAX_NAME_LEN - 1); // copia o nome, mas garante que não passe de 32 letras
+    strncpy(novo_simbolo->nome, nome, MAX_NAME_LEN - 1); // copia o nome, mas garante que não passe de 256 letras
     novo_simbolo->nome[MAX_NAME_LEN - 1] = '\0'; // Garante terminação nula
     novo_simbolo->tipo = tipo;
     novo_simbolo->escopo = escopo;

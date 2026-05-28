@@ -1,6 +1,0 @@
-lex.yy.c
-scanner
-*.o
-compilador
-parser.tab.c
-parser.tab.h
