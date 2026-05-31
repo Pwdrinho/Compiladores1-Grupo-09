@@ -1,18 +1,38 @@
 CC      ?= gcc
 FLEX    ?= flex
+BISON   ?= bison
 LDLIBS  ?= -lfl
+CFLAGS  ?= -Wall -Wextra -g
 
 SCANNER ?= src/lexer/scanner.l
+PARSER  ?= src/parser/parser.y
+
+AST_H   := src/ast/ast.h
+AST_C   := src/ast/ast.c
+
+# Se existir symtab.c, ele será compilado junto.
+# Se não existir, o Makefile continua funcionando.
+SYMTAB_C := $(wildcard src/symbols/symtab.c)
+
 BUILD   ?= build
-GEN_C   := $(BUILD)/lex.yy.c
-TARGET  := $(BUILD)/lexer.exe
+
+PARSER_C := $(BUILD)/parser.tab.c
+PARSER_H := $(BUILD)/parser.tab.h
+LEX_C    := $(BUILD)/lex.yy.c
+
+COMPILER := $(BUILD)/compilador
+TARGET   := $(COMPILER)
+
+INCLUDES := -I$(BUILD) -Isrc/ast -Isrc/symbols
 
 SCANNER_TEST_BUILD    := $(BUILD)/scanner-tests
 SCANNER_TEST_GEN_C    := $(SCANNER_TEST_BUILD)/lex.yy.c
+SCANNER_TEST_STUB     := $(SCANNER_TEST_BUILD)/scanner_main.c
 SCANNER_TEST_TARGET   := $(SCANNER_TEST_BUILD)/scanner_tests
 SCANNER_TEST_INPUTS   := tests/scanner/inputs
 SCANNER_TEST_EXPECTED := tests/scanner/expected
 SCANNER_TEST_ACTUAL   := $(SCANNER_TEST_BUILD)/actual
+
 VERBOSE ?= 0
 
 TEST_01 := 01_keywords.c
@@ -26,9 +46,9 @@ TEST_08 := 08_simple_program.c
 TEST_09 := 09_function_and_condition.c
 TEST_10 := 10_pointers_arrays.c
 
-.PHONY: all run clean check check-scanner scanner-test test scanner_test test-scanner scanner-test-one help
+.PHONY: all run clean help test scanner-test scanner_test test-scanner scanner-unit-test check-parser check-scanner check-ast
 
-all: $(TARGET)
+all: $(COMPILER)
 
 test: scanner-test
 
@@ -37,41 +57,78 @@ scanner_test: scanner-test
 test-scanner: scanner-test
 
 help:
-	@echo "Targets available:";
-	@echo "  make all            - build the lexer in build/";
-	@echo "  make run            - run the main lexer binary";
-	@echo "  make scanner-test   - run the scanner test suite";
-	@echo "  make scanner-test VERBOSE=1 - print expected/actual .out content";
-	@echo "  make scanner-unit-test TEST=n - run the test mapped by TEST_n";
-	@echo "  make scanner-unit-test TEST=name - run one test by base name";
-	@echo "  make scanner-unit-test INPUT=tests/scanner/inputs/name - run one test by path";
-	@echo "  make test           - alias for scanner-test";
-	@echo "  make clean          - remove build artifacts";
+	@echo "Targets available:"
+	@echo "  make all                         - build the compiler in build/"
+	@echo "  make run                         - run the compiler"
+	@echo "  make scanner-test                - run scanner tests with DEBUG_LEXER=1"
+	@echo "  make scanner-test VERBOSE=1      - print expected/actual .out content"
+	@echo "  make scanner-unit-test TEST=n    - run one scanner test by number"
+	@echo "  make scanner-unit-test TEST=name - run one scanner test by base name"
+	@echo "  make clean                       - remove build artifacts"
+
+check-parser:
+	@if [ ! -f "$(PARSER)" ]; then \
+		echo "Erro: arquivo $(PARSER) nao encontrado."; \
+		exit 1; \
+	fi
 
 check-scanner:
 	@if [ ! -f "$(SCANNER)" ]; then \
 		echo "Erro: arquivo $(SCANNER) nao encontrado."; \
-		echo "Ajuste a variavel SCANNER no Makefile para apontar para o scanner correto."; \
+		exit 1; \
+	fi
+
+check-ast:
+	@if [ ! -f "$(AST_H)" ]; then \
+		echo "Erro: arquivo $(AST_H) nao encontrado."; \
+		exit 1; \
+	fi
+	@if [ ! -f "$(AST_C)" ]; then \
+		echo "Erro: arquivo $(AST_C) nao encontrado."; \
 		exit 1; \
 	fi
 
 $(BUILD):
 	mkdir -p $(BUILD)
 
-$(GEN_C): $(SCANNER) | check $(BUILD)
-	$(FLEX) -o $@ $<
-
-$(TARGET): $(GEN_C)
-	$(CC) $< -o $@ $(LDLIBS)
-
 $(SCANNER_TEST_BUILD):
 	mkdir -p $(SCANNER_TEST_BUILD)
 
-$(SCANNER_TEST_GEN_C): $(SCANNER) | check-scanner $(SCANNER_TEST_BUILD)
-	$(FLEX) -o $@ $<
+$(PARSER_C) $(PARSER_H): $(PARSER) $(AST_H) | check-parser check-ast $(BUILD)
+	$(BISON) -d -o $(PARSER_C) $(PARSER)
 
-$(SCANNER_TEST_TARGET): $(SCANNER_TEST_GEN_C)
-	$(CC) $< -o $@ $(LDLIBS)
+$(LEX_C): $(SCANNER) $(PARSER_H) | check-scanner $(BUILD)
+	$(FLEX) -o $(LEX_C) $(SCANNER)
+
+$(COMPILER): $(PARSER_C) $(LEX_C) $(AST_C) $(SYMTAB_C)
+	$(CC) $(CFLAGS) $(INCLUDES) $(PARSER_C) $(LEX_C) $(AST_C) $(SYMTAB_C) -o $(COMPILER) $(LDLIBS)
+
+run: $(COMPILER)
+	./$(COMPILER)
+
+# --------------------------------------------------------------------
+# Testes do scanner
+#
+# Como o scanner agora usa parser.tab.h e yylval.str, ele precisa de:
+# 1. parser.tab.h gerado pelo Bison
+# 2. um pequeno main de teste
+# 3. DEBUG_LEXER=1 para voltar a imprimir tokens
+# --------------------------------------------------------------------
+
+$(SCANNER_TEST_GEN_C): $(SCANNER) $(PARSER_H) | check-scanner $(SCANNER_TEST_BUILD)
+	$(FLEX) -o $(SCANNER_TEST_GEN_C) $(SCANNER)
+
+$(SCANNER_TEST_STUB): | $(SCANNER_TEST_BUILD)
+	@printf '#include "parser.tab.h"\n' > $(SCANNER_TEST_STUB)
+	@printf 'int yylex(void);\n' >> $(SCANNER_TEST_STUB)
+	@printf 'YYSTYPE yylval;\n' >> $(SCANNER_TEST_STUB)
+	@printf 'int main(void) {\n' >> $(SCANNER_TEST_STUB)
+	@printf '    while (yylex() != 0) {}\n' >> $(SCANNER_TEST_STUB)
+	@printf '    return 0;\n' >> $(SCANNER_TEST_STUB)
+	@printf '}\n' >> $(SCANNER_TEST_STUB)
+
+$(SCANNER_TEST_TARGET): $(SCANNER_TEST_GEN_C) $(SCANNER_TEST_STUB)
+	$(CC) $(CFLAGS) -DDEBUG_LEXER=1 $(INCLUDES) $(SCANNER_TEST_GEN_C) $(SCANNER_TEST_STUB) -o $(SCANNER_TEST_TARGET) $(LDLIBS)
 
 scanner-test: $(SCANNER_TEST_TARGET)
 	@mkdir -p $(SCANNER_TEST_ACTUAL)
@@ -133,8 +190,6 @@ scanner-unit-test: $(SCANNER_TEST_TARGET)
 				*.c) ;; \
 				*) if [ -f "$$input.c" ]; then \
 					input="$$input.c"; \
-				elif [ -f "$$input.c" ]; then \
-					input="$$input.c"; \
 				else \
 					input="$$input.c"; \
 				fi ;; \
@@ -172,9 +227,6 @@ scanner-unit-test: $(SCANNER_TEST_TARGET)
 		diff -u --strip-trailing-cr "$$expected" "$$actual" || true; \
 		exit 1; \
 	fi
-
-run: $(TARGET)
-	./$(TARGET)
 
 clean:
 	rm -rf $(BUILD)

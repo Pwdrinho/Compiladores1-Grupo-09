@@ -1,21 +1,68 @@
 #ifndef AST_H
 #define AST_H
 
+/*
+ * Enum que representa os tipos de nós possíveis na árvore sintática.
+ * Cada constante representa uma construção da linguagem:
+ * programa, função, declaração, expressão, etc.
+ */
 typedef enum {
-// Tipos de nós temos que ir adicionando conforme a gente for implementando o parser
+    NO_PROGRAMA,
+    NO_LISTA,
+    NO_FUNCAO,
+    NO_PARAMETRO,
+    NO_TIPO,
+    NO_BLOCO,
+
+    NO_DECLARACAO,
+    NO_ATRIBUICAO,
+    NO_RETORNO,
+
+    NO_IF,
+    NO_WHILE,
+    NO_FOR,
+
+    NO_BINARIO,
+    NO_UNARIO,
+
+    NO_IDENTIFICADOR,
+    NO_NUMERO,
+    NO_ACESSO_VETOR,
+
+    NO_VAZIO
 } TipoNo;
 
+/*
+ * Estrutura básica de um nó da AST.
+ *
+ * tipo  -> indica qual construção esse nó representa.
+ * valor -> guarda textos importantes, como nome de variável, número ou operador.
+ * esq   -> filho esquerdo.
+ * dir   -> filho direito.
+ *
+ * A árvore foi modelada como binária para simplificar a integração inicial.
+ */
 typedef struct NoAST {
-    TipoNo tipo;          // Fala o tipo do nó (variável, operação, etc.) ex: NO_SOMA
-    char *valor;          // O texto, se for um número ou variável
-    struct NoAST *esq;    // Filho da esquerda
-    struct NoAST *dir;    // Filho da direita
+    TipoNo tipo;
+    char *valor;
+    struct NoAST *esq;
+    struct NoAST *dir;
 } NoAST;
 
-// Função de criação
-NoAST* criar_no(TipoNo tipo, NoAST *esq, NoAST *dir, char *valor);
+/*
+ * Cria dinamicamente um novo nó da AST.
+ */
+NoAST* criar_no(TipoNo tipo, NoAST *esq, NoAST *dir, const char *valor);
 
-// Função para debugar (ver se a árvore foi montada certa)
+/*
+ * Imprime a árvore de forma recursiva.
+ * Usada principalmente para debug.
+ */
 void imprimir_ast(NoAST *raiz, int nivel);
+
+/*
+ * Libera toda a memória alocada pela AST.
+ */
+void liberar_ast(NoAST *raiz);
 
 #endif
