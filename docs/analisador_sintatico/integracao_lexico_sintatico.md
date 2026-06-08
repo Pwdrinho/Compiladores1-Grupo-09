@@ -211,7 +211,7 @@ real do `scanner.l`.
 
 ---
 
-### 5.1 Identificadores e Literais Numéricos (`02_identifiers_numbers.in`)
+### 5.1 Identificadores e Literais Numéricos (`02_identifiers_numbers.c`)
 
 **Entrada:**
 
@@ -240,7 +240,7 @@ menos um dígito após o `.`; o scanner tokeniza como `NUMBER(10)` seguido de
 
 ---
 
-### 5.2 Comentários e Espaços em Branco (`05_comments_whitespace.in`)
+### 5.2 Comentários e Espaços em Branco (`05_comments_whitespace.c`)
 
 **Entrada:**
 
@@ -268,7 +268,7 @@ entre tokens também é descartado silenciosamente.
 
 ---
 
-### 5.3 Trecho Misto — Programa Completo (`07_mixed_snippet.in`)
+### 5.3 Trecho Misto — Programa Completo (`07_mixed_snippet.c`)
 
 Este caso de teste é o mais abrangente da suíte, combinando declaração de
 função, declaração de variável com inicialização, atribuição composta,

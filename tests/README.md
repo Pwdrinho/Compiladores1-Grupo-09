@@ -16,7 +16,7 @@ or:
 make test
 ```
 
-The Makefile target compiles `src/lexer/scanner.l`, runs all `scanner/inputs/*.in`, compares with `scanner/expected/*.out`, and returns non-zero exit code if any test fails.
+The Makefile target compiles `src/lexer/scanner.l`, runs all `scanner/inputs/*.c`, compares with `scanner/expected/*.out`, and returns non-zero exit code if any test fails.
 
 ### Files
 
@@ -26,7 +26,7 @@ The Makefile target compiles `src/lexer/scanner.l`, runs all `scanner/inputs/*.i
 ### What make does
 
 1. Compiles `src/lexer/scanner.l`.
-2. Executes all `scanner/inputs/*.in` files.
+2. Executes all `scanner/inputs/*.c` files.
 3. Compares outputs with `scanner/expected/*.out`.
 4. Prints PASS/FAIL and exits with non-zero status if any test fails.
 
@@ -61,3 +61,13 @@ The Makefile target compiles the compiler, runs all `parser/inputs/*.c`, compare
 2. Executes all `parser/inputs/*.c` files.
 3. Compares outputs with `parser/expected/*.out`.
 4. Prints PASS/FAIL and exits with non-zero status if any test fails.
+
+### Notable scanner behavior locked by tests
+
+- `11_trailing_dot_literal.c`: `10.` is tokenized as `NUMBER(10)` followed by `TK_OP_PONTO`.
+- `12_unclosed_block_comment.c`: unclosed block comment is not consumed as a comment token; characters are tokenized according to existing rules.
+
+### Notable parser coverage
+
+- `08_while_prefix_return_void.c`: covers `while`, simple declaration, prefix `++`/`--` and `return;`.
+- `09_function_call_not_supported.c`: negative test documenting that function call statements are not yet supported by the grammar.
