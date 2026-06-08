@@ -1,0 +1,27 @@
+Análise sintática concluída
+NO_PROGRAMA
+  NO_FUNCAO (sum)
+    NO_LISTA
+      NO_TIPO (int)
+      NO_LISTA
+        NO_PARAMETRO (a)
+          NO_TIPO (int)
+        NO_PARAMETRO (b)
+          NO_TIPO (int)
+    NO_BLOCO
+      NO_LISTA
+        NO_LISTA
+          NO_IF (if)
+            NO_BINARIO (<=)
+              NO_IDENTIFICADOR (a)
+              NO_IDENTIFICADOR (b)
+            NO_BLOCO
+              NO_LISTA
+                NO_RETORNO
+                  NO_BINARIO (+)
+                    NO_IDENTIFICADOR (a)
+                    NO_IDENTIFICADOR (b)
+        NO_RETORNO
+          NO_BINARIO (-)
+            NO_IDENTIFICADOR (a)
+            NO_IDENTIFICADOR (b)

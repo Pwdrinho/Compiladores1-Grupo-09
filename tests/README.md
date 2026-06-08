@@ -20,7 +20,7 @@ The Makefile target compiles `src/lexer/scanner.l`, runs all `scanner/inputs/*.i
 
 ### Files
 
-- `scanner/inputs/*.in`: input samples consumed by the scanner
+- `scanner/inputs/*.c`: input samples consumed by the scanner
 - `scanner/expected/*.out`: expected token output for each input file
 
 ### What make does
@@ -28,4 +28,36 @@ The Makefile target compiles `src/lexer/scanner.l`, runs all `scanner/inputs/*.i
 1. Compiles `src/lexer/scanner.l`.
 2. Executes all `scanner/inputs/*.in` files.
 3. Compares outputs with `scanner/expected/*.out`.
+4. Prints PASS/FAIL and exits with non-zero status if any test fails.
+
+## Parser tests
+
+This folder also contains automated tests for `src/parser/parser.y`.
+
+### Preferred run (Makefile)
+
+From project root:
+
+```bash
+make parser-test
+```
+
+or:
+
+```bash
+make test
+```
+
+The Makefile target compiles the compiler, runs all `parser/inputs/*.c`, compares with `parser/expected/*.out`, and returns non-zero exit code if any test fails.
+
+### Files
+
+- `parser/inputs/*.c`: parser input samples
+- `parser/expected/*.out`: expected AST output for each input file
+
+### What make does
+
+1. Builds the compiler.
+2. Executes all `parser/inputs/*.c` files.
+3. Compares outputs with `parser/expected/*.out`.
 4. Prints PASS/FAIL and exits with non-zero status if any test fails.

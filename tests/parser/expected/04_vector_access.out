@@ -1,0 +1,14 @@
+Análise sintática concluída
+NO_PROGRAMA
+  NO_FUNCAO (main)
+    NO_LISTA
+      NO_TIPO (int)
+    NO_BLOCO
+      NO_LISTA
+        NO_LISTA
+          NO_DECLARACAO (values)
+            NO_TIPO (int)
+            NO_NUMERO (3)
+        NO_RETORNO
+          NO_ACESSO_VETOR (values)
+            NO_NUMERO (0)

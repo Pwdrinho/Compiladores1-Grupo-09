@@ -51,7 +51,15 @@ TEST_08 := 08_simple_program.c
 TEST_09 := 09_function_and_condition.c
 TEST_10 := 10_pointers_arrays.c
 
-.PHONY: all run clean help test scanner-test parser-test scanner_test test-scanner scanner-unit-test check-parser check-scanner check-ast
+PARSER_TEST_01 := 01_simple_function.c
+PARSER_TEST_02 := 02_function_with_params_and_if.c
+PARSER_TEST_03 := 03_local_decl_increment_return.c
+PARSER_TEST_04 := 04_vector_access.c
+PARSER_TEST_05 := 05_for_loop.c
+PARSER_TEST_06 := 06_if_else.c
+PARSER_TEST_07 := 07_multiple_functions.c
+
+.PHONY: all run clean help test scanner-test parser-test scanner_test test-scanner scanner-unit-test parser-unit-test parser_test test-parser check-parser check-scanner check-ast
 
 all: $(COMPILER)
 
@@ -70,6 +78,8 @@ help:
 	@echo "  make scanner-test VERBOSE=1      - print expected/actual .out content"
 	@echo "  make scanner-unit-test TEST=n    - run one scanner test by number"
 	@echo "  make scanner-unit-test TEST=name - run one scanner test by base name"
+	@echo "  make parser-unit-test TEST=n     - run one parser test by number"
+	@echo "  make parser-unit-test TEST=name  - run one parser test by base name"
 	@echo "  make clean                       - remove build artifacts"
 
 check-parser:
@@ -220,17 +230,16 @@ scanner-unit-test: $(SCANNER_TEST_TARGET)
 		input="$(INPUT)"; \
 	elif [ -n "$(TEST)" ]; then \
 		mapped="$(strip $(TEST_$(TEST)))"; \
+		if [ -z "$$mapped" ]; then \
+			mapped="$(strip $(TEST_0$(TEST)))"; \
+		fi; \
 		if [ -n "$$mapped" ]; then \
 			input="$(SCANNER_TEST_INPUTS)/$$mapped"; \
 		else \
-			input="$(SCANNER_TEST_INPUTS)/$(TEST)"; \
-			case "$$input" in \
-				*.c) ;; \
-				*) if [ -f "$$input.c" ]; then \
-					input="$$input.c"; \
-				else \
-					input="$$input.c"; \
-				fi ;; \
+			case "$(TEST)" in \
+				''|*[!0-9]*) input="$(SCANNER_TEST_INPUTS)/$(TEST)"; \
+					if [ "$${input##*.}" = "$$input" ]; then input="$$input.c"; fi ;; \
+				*) input="$(SCANNER_TEST_INPUTS)/$$(printf '%02d' "$(TEST)").c" ;; \
 			esac; \
 		fi; \
 	else \
@@ -265,6 +274,61 @@ scanner-unit-test: $(SCANNER_TEST_TARGET)
 		diff -u --strip-trailing-cr "$$expected" "$$actual" || true; \
 		exit 1; \
 	fi
+
+parser-unit-test: $(COMPILER)
+	@set -e; \
+	if [ -n "$(INPUT)" ]; then \
+		input="$(INPUT)"; \
+	elif [ -n "$(TEST)" ]; then \
+		mapped="$(strip $(PARSER_TEST_$(TEST)))"; \
+		if [ -z "$$mapped" ]; then \
+			mapped="$(strip $(PARSER_TEST_0$(TEST)))"; \
+		fi; \
+		if [ -n "$$mapped" ]; then \
+			input="$(PARSER_TEST_INPUTS)/$$mapped"; \
+		else \
+			case "$(TEST)" in \
+				''|*[!0-9]*) input="$(PARSER_TEST_INPUTS)/$(TEST)"; \
+					if [ "$${input##*.}" = "$$input" ]; then input="$$input.c"; fi ;; \
+				*) input="$(PARSER_TEST_INPUTS)/$$(printf '%02d' "$(TEST)").c" ;; \
+			esac; \
+		fi; \
+	else \
+		echo "Use TEST=<nome> ou INPUT=<caminho>"; \
+		exit 1; \
+	fi; \
+	name=$$(basename "$$input" | sed 's/\.[^.]*$$//'); \
+	expected="$(PARSER_TEST_EXPECTED)/$$name.out"; \
+	actual="$(PARSER_TEST_ACTUAL)/$$name.out"; \
+	mkdir -p $(PARSER_TEST_ACTUAL); \
+	if [ ! -f "$$input" ]; then \
+		echo "Arquivo de entrada nao encontrado: $$input"; \
+		exit 1; \
+	fi; \
+	if [ ! -f "$$expected" ]; then \
+		echo "Arquivo esperado nao encontrado: $$expected"; \
+		exit 1; \
+	fi; \
+	"$(COMPILER)" < "$$input" > "$$actual" 2>&1 || true; \
+	if diff -u --strip-trailing-cr "$$expected" "$$actual" > /dev/null; then \
+		echo "PASS $$name"; \
+		echo "--- expected: $$expected ---"; \
+		cat "$$expected"; \
+		echo "--- actual: $$actual ---"; \
+		cat "$$actual"; \
+	else \
+		echo "FAIL $$name"; \
+		echo "--- expected: $$expected ---"; \
+		cat "$$expected"; \
+		echo "--- actual: $$actual ---"; \
+		cat "$$actual"; \
+		diff -u --strip-trailing-cr "$$expected" "$$actual" || true; \
+		exit 1; \
+	fi
+
+parser_test: parser-unit-test
+
+test-parser: parser-unit-test
 
 clean:
 	rm -rf $(BUILD)
