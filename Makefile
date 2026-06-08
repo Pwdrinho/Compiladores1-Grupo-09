@@ -33,6 +33,11 @@ SCANNER_TEST_INPUTS   := tests/scanner/inputs
 SCANNER_TEST_EXPECTED := tests/scanner/expected
 SCANNER_TEST_ACTUAL   := $(SCANNER_TEST_BUILD)/actual
 
+PARSER_TEST_BUILD    := $(BUILD)/parser-tests
+PARSER_TEST_INPUTS   := tests/parser/inputs
+PARSER_TEST_EXPECTED := tests/parser/expected
+PARSER_TEST_ACTUAL   := $(PARSER_TEST_BUILD)/actual
+
 VERBOSE ?= 0
 
 TEST_01 := 01_keywords.c
@@ -46,11 +51,11 @@ TEST_08 := 08_simple_program.c
 TEST_09 := 09_function_and_condition.c
 TEST_10 := 10_pointers_arrays.c
 
-.PHONY: all run clean help test scanner-test scanner_test test-scanner scanner-unit-test check-parser check-scanner check-ast
+.PHONY: all run clean help test scanner-test parser-test scanner_test test-scanner scanner-unit-test check-parser check-scanner check-ast
 
 all: $(COMPILER)
 
-test: scanner-test
+test: scanner-test parser-test
 
 scanner_test: scanner-test
 
@@ -61,6 +66,7 @@ help:
 	@echo "  make all                         - build the compiler in build/"
 	@echo "  make run                         - run the compiler"
 	@echo "  make scanner-test                - run scanner tests with DEBUG_LEXER=1"
+	@echo "  make parser-test                 - run parser tests"
 	@echo "  make scanner-test VERBOSE=1      - print expected/actual .out content"
 	@echo "  make scanner-unit-test TEST=n    - run one scanner test by number"
 	@echo "  make scanner-unit-test TEST=name - run one scanner test by base name"
@@ -115,7 +121,7 @@ run: $(COMPILER)
 # 3. DEBUG_LEXER=1 para voltar a imprimir tokens
 # --------------------------------------------------------------------
 
-$(SCANNER_TEST_GEN_C): $(SCANNER) $(PARSER_H) | check-scanner $(SCANNER_TEST_BUILD)
+$(SCANNER_TEST_GEN_C): $(SCANNER) $(PARSER_C) $(PARSER_H) | check-scanner $(SCANNER_TEST_BUILD)
 	$(FLEX) -o $(SCANNER_TEST_GEN_C) $(SCANNER)
 
 $(SCANNER_TEST_STUB): | $(SCANNER_TEST_BUILD)
@@ -172,6 +178,38 @@ scanner-test: $(SCANNER_TEST_TARGET)
 		exit 1; \
 	fi; \
 	echo "Result: $$((total - failed))/$$total tests passed."; \
+	if [ "$$failed" -ne 0 ]; then \
+		exit 1; \
+	fi
+
+parser-test: $(COMPILER)
+	@mkdir -p $(PARSER_TEST_ACTUAL)
+	@set -e; \
+	failed=0; \
+	total=0; \
+	for input in $(PARSER_TEST_INPUTS)/*.c; do \
+		if [ ! -f "$$input" ]; then \
+			continue; \
+		fi; \
+		name=$$(basename "$$input" | sed 's/\.[^.]*$$//'); \
+		expected="$(PARSER_TEST_EXPECTED)/$$name.out"; \
+		actual="$(PARSER_TEST_ACTUAL)/$$name.out"; \
+		total=$$((total + 1)); \
+		if [ ! -f "$$expected" ]; then \
+			echo "FAIL $$name (arquivo esperado ausente: $$expected)"; \
+			failed=$$((failed + 1)); \
+			continue; \
+		fi; \
+		"$(COMPILER)" < "$$input" > "$$actual" 2>&1 || true; \
+		if diff -u --strip-trailing-cr "$$expected" "$$actual" > /dev/null; then \
+			echo "PASS $$name"; \
+		else \
+			echo "FAIL $$name"; \
+			diff -u --strip-trailing-cr "$$expected" "$$actual" || true; \
+			failed=$$((failed + 1)); \
+		fi; \
+	done; \
+	echo "Parser Result: $$((total - failed))/$$total tests passed."; \
 	if [ "$$failed" -ne 0 ]; then \
 		exit 1; \
 	fi
