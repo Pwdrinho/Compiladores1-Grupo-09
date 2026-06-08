@@ -153,7 +153,7 @@ while       { LEX_PRINT("KW_WHILE\n"); return KW_WHILE; }
 
 [ \t\n\r]+ { /* Ignora espaços, tabs e quebras de linha. */ }
 
-.           { printf("UNKNOWN(%s)\n", yytext); }
+.           { LEX_PRINT("UNKNOWN(%s)\n", yytext); }
 
 %%
 
