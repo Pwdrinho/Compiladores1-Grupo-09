@@ -50,6 +50,8 @@ TEST_07 := 07_mixed_snippet.c
 TEST_08 := 08_simple_program.c
 TEST_09 := 09_function_and_condition.c
 TEST_10 := 10_pointers_arrays.c
+TEST_11 := 11_trailing_dot_literal.c
+TEST_12 := 12_unclosed_block_comment.c
 
 PARSER_TEST_01 := 01_simple_function.c
 PARSER_TEST_02 := 02_function_with_params_and_if.c
@@ -58,6 +60,8 @@ PARSER_TEST_04 := 04_vector_access.c
 PARSER_TEST_05 := 05_for_loop.c
 PARSER_TEST_06 := 06_if_else.c
 PARSER_TEST_07 := 07_multiple_functions.c
+PARSER_TEST_08 := 08_while_prefix_return_void.c
+PARSER_TEST_09 := 09_function_call_not_supported.c
 
 .PHONY: all run clean help test scanner-test parser-test scanner_test test-scanner scanner-unit-test parser-unit-test parser_test test-parser check-parser check-scanner check-ast
 

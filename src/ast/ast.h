@@ -18,6 +18,11 @@ typedef enum {
     NO_ATRIBUICAO,
     NO_RETORNO,
 
+    /*
+     * NO_IF usa duas formas por limitação da AST binária:
+     * - if sem else: dir aponta direto para o bloco do if
+     * - if com else: dir aponta para NO_LISTA(bloco_if, bloco_else)
+     */
     NO_IF,
     NO_WHILE,
     NO_FOR,
