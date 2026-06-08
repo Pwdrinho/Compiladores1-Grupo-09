@@ -121,7 +121,7 @@ run: $(COMPILER)
 # 3. DEBUG_LEXER=1 para voltar a imprimir tokens
 # --------------------------------------------------------------------
 
-$(SCANNER_TEST_GEN_C): $(SCANNER) $(PARSER_H) | check-scanner $(SCANNER_TEST_BUILD)
+$(SCANNER_TEST_GEN_C): $(SCANNER) $(PARSER_C) $(PARSER_H) | check-scanner $(SCANNER_TEST_BUILD)
 	$(FLEX) -o $(SCANNER_TEST_GEN_C) $(SCANNER)
 
 $(SCANNER_TEST_STUB): | $(SCANNER_TEST_BUILD)
