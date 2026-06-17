@@ -4,6 +4,9 @@ BISON   ?= bison
 LDLIBS  ?= -lfl
 CFLAGS  ?= -Wall -Wextra -g
 
+# Flags de cobertura para os testes
+COV_FLAGS := -fprofile-arcs -ftest-coverage
+
 SCANNER ?= src/lexer/scanner.l
 PARSER  ?= src/parser/parser.y
 
@@ -32,6 +35,7 @@ SCANNER_TEST_TARGET   := $(SCANNER_TEST_BUILD)/scanner_tests
 SCANNER_TEST_INPUTS   := tests/scanner/inputs
 SCANNER_TEST_EXPECTED := tests/scanner/expected
 SCANNER_TEST_ACTUAL   := $(SCANNER_TEST_BUILD)/actual
+COV_REPORT_DIR        := $(BUILD)/coverage-html
 
 PARSER_TEST_BUILD    := $(BUILD)/parser-tests
 PARSER_TEST_INPUTS   := tests/parser/inputs
@@ -63,7 +67,7 @@ PARSER_TEST_07 := 07_multiple_functions.c
 PARSER_TEST_08 := 08_while_prefix_return_void.c
 PARSER_TEST_09 := 09_function_call_not_supported.c
 
-.PHONY: all run clean help test scanner-test parser-test scanner_test test-scanner scanner-unit-test parser-unit-test parser_test test-parser check-parser check-scanner check-ast
+.PHONY: all run clean help test scanner-test parser-test scanner_test test-scanner scanner-unit-test parser-unit-test parser_test test-parser check-parser check-scanner check-ast coverage
 
 all: $(COMPILER)
 
@@ -84,6 +88,7 @@ help:
 	@echo "  make scanner-unit-test TEST=name - run one scanner test by base name"
 	@echo "  make parser-unit-test TEST=n     - run one parser test by number"
 	@echo "  make parser-unit-test TEST=name  - run one parser test by base name"
+	@echo "  make coverage                    - run tests and generate an HTML coverage report using LCOV"
 	@echo "  make clean                       - remove build artifacts"
 
 check-parser:
@@ -120,19 +125,15 @@ $(PARSER_C) $(PARSER_H): $(PARSER) $(AST_H) | check-parser check-ast $(BUILD)
 $(LEX_C): $(SCANNER) $(PARSER_H) | check-scanner $(BUILD)
 	$(FLEX) -o $(LEX_C) $(SCANNER)
 
+# Alterado: adicionadas as flags $(COV_FLAGS) antes e depois para instrumentar o compilador de produção durante os testes
 $(COMPILER): $(PARSER_C) $(LEX_C) $(AST_C) $(SYMTAB_C)
-	$(CC) $(CFLAGS) $(INCLUDES) $(PARSER_C) $(LEX_C) $(AST_C) $(SYMTAB_C) -o $(COMPILER) $(LDLIBS)
+	$(CC) $(CFLAGS) $(COV_FLAGS) $(INCLUDES) $(PARSER_C) $(LEX_C) $(AST_C) $(SYMTAB_C) -o $(COMPILER) $(LDLIBS) $(COV_FLAGS)
 
 run: $(COMPILER)
 	./$(COMPILER)
 
 # --------------------------------------------------------------------
 # Testes do scanner
-#
-# Como o scanner agora usa parser.tab.h e yylval.str, ele precisa de:
-# 1. parser.tab.h gerado pelo Bison
-# 2. um pequeno main de teste
-# 3. DEBUG_LEXER=1 para voltar a imprimir tokens
 # --------------------------------------------------------------------
 
 $(SCANNER_TEST_GEN_C): $(SCANNER) $(PARSER_C) $(PARSER_H) | check-scanner $(SCANNER_TEST_BUILD)
@@ -148,13 +149,11 @@ $(SCANNER_TEST_STUB): | $(SCANNER_TEST_BUILD)
 	@printf '}\n' >> $(SCANNER_TEST_STUB)
 
 $(SCANNER_TEST_TARGET): $(SCANNER_TEST_GEN_C) $(SCANNER_TEST_STUB)
-	$(CC) $(CFLAGS) -DDEBUG_LEXER=1 $(INCLUDES) $(SCANNER_TEST_GEN_C) $(SCANNER_TEST_STUB) -o $(SCANNER_TEST_TARGET) $(LDLIBS)
+	$(CC) $(CFLAGS) $(COV_FLAGS) -DDEBUG_LEXER=1 $(INCLUDES) $(SCANNER_TEST_GEN_C) $(SCANNER_TEST_STUB) -o $(SCANNER_TEST_TARGET) $(LDLIBS) $(COV_FLAGS)
 
 scanner-test: $(SCANNER_TEST_TARGET)
 	@mkdir -p $(SCANNER_TEST_ACTUAL)
-	@set -e; \
-	failed=0; \
-	total=0; \
+	@set -e; failed=0; total=0; \
 	for input in $(SCANNER_TEST_INPUTS)/*.c; do \
 		if [ ! -f "$$input" ]; then \
 			continue; \
@@ -333,6 +332,23 @@ parser-unit-test: $(COMPILER)
 parser_test: parser-unit-test
 
 test-parser: parser-unit-test
+
+coverage: scanner-test parser-test
+	@echo "Coletando dados de cobertura de todas as etapas (Scanner + Parser)..."
+	lcov --capture --directory $(SCANNER_TEST_BUILD) --output-file $(BUILD)/scanner_coverage.info
+	lcov --capture --directory $(BUILD) --output-file $(BUILD)/parser_coverage.info
+	
+	@echo "Mesclando os relatórios de cobertura..."
+	lcov --add-tracefile $(BUILD)/scanner_coverage.info --add-tracefile $(BUILD)/parser_coverage.info --output-file $(BUILD)/total_coverage.info
+	
+	@echo "Limpando arquivos gerados e dependências externas..."
+	lcov --remove $(BUILD)/total_coverage.info '/usr/*' '$(SCANNER_TEST_BUILD)/*' '$(BUILD)/parser.tab.c' '$(BUILD)/lex.yy.c' --output-file $(BUILD)/coverage_clean.info --ignore-errors unused
+	
+	@echo "Gerando páginas visuais em HTML para o projeto..."
+	genhtml $(BUILD)/coverage_clean.info --output-directory $(COV_REPORT_DIR) --ignore-errors source,unsupported
+	@echo "========================================================================="
+	@echo "Relatório GLOBAL de cobertura gerado com sucesso em: $(COV_REPORT_DIR)/index.html"
+	@echo "========================================================================="
 
 clean:
 	rm -rf $(BUILD)
