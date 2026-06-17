@@ -1,0 +1,18 @@
+Análise sintática concluída
+NO_PROGRAMA
+  NO_FUNCAO (main)
+    NO_LISTA
+      NO_TIPO (int)
+    NO_BLOCO
+      NO_LISTA
+        NO_LISTA
+          NO_LISTA
+            NO_DECLARACAO (x)
+              NO_TIPO (int)
+              NO_ATRIBUICAO (=)
+                NO_IDENTIFICADOR (x)
+                NO_NUMERO (1)
+          NO_UNARIO (++pos)
+            NO_IDENTIFICADOR (x)
+        NO_RETORNO
+          NO_IDENTIFICADOR (x)

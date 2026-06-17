@@ -87,7 +87,7 @@ Prepare-Dir -Path $buildDir
 New-Item -Path $actualDir -ItemType Directory | Out-Null
 Build-Scanner
 
-$inputs = Get-ChildItem -Path $inputsDir -Filter "*.in" | Sort-Object Name
+$inputs = Get-ChildItem -Path $inputsDir -Filter "*.c" | Sort-Object Name
 if ($inputs.Count -eq 0) {
     throw "No test input files found in $inputsDir"
 }
