@@ -215,6 +215,7 @@ parser-test: $(COMPILER)
 			continue; \
 		fi; \
 		"$(COMPILER)" < "$$input" > "$$actual" 2>&1 || true; \
+		sed -E -i 's/0x[0-9a-fA-F]+/0xADDR/g' "$$actual"; \
 		if diff -u --strip-trailing-cr "$$expected" "$$actual" > /dev/null; then \
 			echo "PASS $$name"; \
 		else \
