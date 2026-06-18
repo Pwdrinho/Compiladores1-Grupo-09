@@ -83,14 +83,24 @@ void imprimir_ast(NoAST *raiz, int nivel) {
         return;
     }
 
-    for (int i = 0; i < nivel; i++) {
-        printf("  ");
+    (void)nivel;
+
+    printf("endereco=%p | tipo=%s",
+           (void *) raiz,
+           nome_tipo_no(raiz->tipo));
+
+    printf(" | esq=");
+    if (raiz->esq != NULL) {
+        printf("%p", (void *) raiz->esq);
+    } else {
+        printf("NULL");
     }
 
-    printf("%s", nome_tipo_no(raiz->tipo));
-
-    if (raiz->valor != NULL) {
-        printf(" (%s)", raiz->valor);
+    printf(" | dir=");
+    if (raiz->dir != NULL) {
+        printf("%p", (void *) raiz->dir);
+    } else {
+        printf("NULL");
     }
 
     printf("\n");
