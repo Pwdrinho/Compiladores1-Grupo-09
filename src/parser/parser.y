@@ -8,6 +8,7 @@
 #include "ast.h"
 #include "symtab.h"
 #include "semantico.h"
+#include "intermediario.h"
 
 int yylex(void);
 
@@ -135,8 +136,23 @@ NoAST *raiz_ast = NULL;
 programa:
       lista_elementos
       {
+
         raiz_ast = criar_no(NO_PROGRAMA, $1, NULL, NULL, NULL);
         $$ = raiz_ast;
+
+
+        // analise sintatica
+        analisar_semantica(raiz_ast);
+
+        printf("Análise sintática e semântica concluídas com sucesso.\n");
+        imprimir_ast(raiz_ast, 0);
+
+
+        // Geração do Código Intermediário
+        Intermediario *codigo_intermediario = gerar_codigo_intermediario(raiz_ast);
+        
+        imprimir_codigo_intermediario(codigo_intermediario);
+
       }
 ;
 
