@@ -160,14 +160,13 @@ programa:
         imprimir_ast(raiz_ast, 0);
 
 
-        // A geração final usa a AST antes do intermediário, pois o IR atual
-        // troca identificadores por nomes temporários durante a travessia.
-        gerar_codigo_go_ast(raiz_ast, "saida.go");
-
-        // Geração do Código Intermediário
+        // A partir daqui o código final não é mais gerado diretamente pela AST:
+        // primeiro criamos o intermediário estruturado e depois traduzimos esse IR para Go.
         Intermediario *codigo_intermediario = gerar_codigo_intermediario(raiz_ast);
-        
         imprimir_codigo_intermediario(codigo_intermediario);
+
+        gerar_codigo_go(codigo_intermediario, "saida.go");
+        liberar_codigo_intermediario(codigo_intermediario);
 
         liberar_ast(raiz_ast);
         printf("Liberamos a memoria da arvore sintatica \n");

@@ -25,9 +25,16 @@ tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
                 │   └── tipo=NO_CHAMADA_FUNCAO | valor='foo' | tipo_dado=TIPO_DADO_INT
                 └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
                     └── tipo=NO_NUMERO | valor='0' | tipo_dado=TIPO_DADO_INT
---> Código Go final gerado em 'saida.go'.
 
 --- CODIGO INTERMEDIARIO ---
+func foo int
+return 1
+endfunc
+func main int
+call foo()
+return 0
+endfunc
 ----------------------------------
 
+--> Código Go final gerado em 'saida.go'.
 Liberamos a memoria da arvore sintatica 
