@@ -9,6 +9,7 @@
 #include "symtab.h"
 #include "semantico.h"
 #include "intermediario.h"
+#include "gerador.h"
 
 int yylex(void);
 
@@ -152,6 +153,12 @@ programa:
         Intermediario *codigo_intermediario = gerar_codigo_intermediario(raiz_ast);
         
         imprimir_codigo_intermediario(codigo_intermediario);
+
+        // Geração do Código Final
+        gerar_codigo_go(codigo_tac, "programa_gerado.go");
+
+        liberar_ast(raiz_ast);
+        printf("Liberamos a memoria da arvore sintatica");
 
       }
 ;
