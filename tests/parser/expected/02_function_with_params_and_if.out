@@ -1,27 +1,27 @@
 Análise sintática concluída
-NO_PROGRAMA
-  NO_FUNCAO (sum)
-    NO_LISTA
-      NO_TIPO (int)
-      NO_LISTA
-        NO_PARAMETRO (a)
-          NO_TIPO (int)
-        NO_PARAMETRO (b)
-          NO_TIPO (int)
-    NO_BLOCO
-      NO_LISTA
-        NO_LISTA
-          NO_IF (if)
-            NO_BINARIO (<=)
-              NO_IDENTIFICADOR (a)
-              NO_IDENTIFICADOR (b)
-            NO_BLOCO
-              NO_LISTA
-                NO_RETORNO
-                  NO_BINARIO (+)
-                    NO_IDENTIFICADOR (a)
-                    NO_IDENTIFICADOR (b)
-        NO_RETORNO
-          NO_BINARIO (-)
-            NO_IDENTIFICADOR (a)
-            NO_IDENTIFICADOR (b)
+endereco=0xADDR | tipo=NO_PROGRAMA | esq=0xADDR | dir=NULL
+endereco=0xADDR | tipo=NO_FUNCAO | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_LISTA | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_TIPO | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_LISTA | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_PARAMETRO | esq=0xADDR | dir=NULL
+endereco=0xADDR | tipo=NO_TIPO | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_PARAMETRO | esq=0xADDR | dir=NULL
+endereco=0xADDR | tipo=NO_TIPO | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_BLOCO | esq=0xADDR | dir=NULL
+endereco=0xADDR | tipo=NO_LISTA | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_LISTA | esq=NULL | dir=0xADDR
+endereco=0xADDR | tipo=NO_IF | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_BINARIO | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_IDENTIFICADOR | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_IDENTIFICADOR | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_BLOCO | esq=0xADDR | dir=NULL
+endereco=0xADDR | tipo=NO_LISTA | esq=NULL | dir=0xADDR
+endereco=0xADDR | tipo=NO_RETORNO | esq=0xADDR | dir=NULL
+endereco=0xADDR | tipo=NO_BINARIO | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_IDENTIFICADOR | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_IDENTIFICADOR | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_RETORNO | esq=0xADDR | dir=NULL
+endereco=0xADDR | tipo=NO_BINARIO | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_IDENTIFICADOR | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_IDENTIFICADOR | esq=NULL | dir=NULL

@@ -1,27 +1,27 @@
 Análise sintática concluída
-NO_PROGRAMA
-  NO_FUNCAO (main)
-    NO_LISTA
-      NO_TIPO (void)
-    NO_BLOCO
-      NO_LISTA
-        NO_LISTA
-          NO_LISTA
-            NO_LISTA
-              NO_DECLARACAO (x)
-                NO_TIPO (int)
-            NO_ATRIBUICAO (=)
-              NO_IDENTIFICADOR (x)
-              NO_NUMERO (0)
-          NO_WHILE
-            NO_BINARIO (<)
-              NO_IDENTIFICADOR (x)
-              NO_NUMERO (3)
-            NO_BLOCO
-              NO_LISTA
-                NO_LISTA
-                  NO_UNARIO (++pre)
-                    NO_IDENTIFICADOR (x)
-                NO_UNARIO (--pre)
-                  NO_IDENTIFICADOR (x)
-        NO_RETORNO
+endereco=0xADDR | tipo=NO_PROGRAMA | esq=0xADDR | dir=NULL
+endereco=0xADDR | tipo=NO_FUNCAO | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_LISTA | esq=0xADDR | dir=NULL
+endereco=0xADDR | tipo=NO_TIPO | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_BLOCO | esq=0xADDR | dir=NULL
+endereco=0xADDR | tipo=NO_LISTA | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_LISTA | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_LISTA | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_LISTA | esq=NULL | dir=0xADDR
+endereco=0xADDR | tipo=NO_DECLARACAO | esq=0xADDR | dir=NULL
+endereco=0xADDR | tipo=NO_TIPO | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_ATRIBUICAO | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_IDENTIFICADOR | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_NUMERO | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_WHILE | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_BINARIO | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_IDENTIFICADOR | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_NUMERO | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_BLOCO | esq=0xADDR | dir=NULL
+endereco=0xADDR | tipo=NO_LISTA | esq=0xADDR | dir=0xADDR
+endereco=0xADDR | tipo=NO_LISTA | esq=NULL | dir=0xADDR
+endereco=0xADDR | tipo=NO_UNARIO | esq=0xADDR | dir=NULL
+endereco=0xADDR | tipo=NO_IDENTIFICADOR | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_UNARIO | esq=0xADDR | dir=NULL
+endereco=0xADDR | tipo=NO_IDENTIFICADOR | esq=NULL | dir=NULL
+endereco=0xADDR | tipo=NO_RETORNO | esq=NULL | dir=NULL
