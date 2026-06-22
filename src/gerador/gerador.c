@@ -4,6 +4,9 @@
 #include <string.h>
 #include "gerador.h"
 
+/* Gerador antigo baseado no código intermediário.
+ * Mantido para comparação e depuração; a entrega principal usa gerar_codigo_go_ast.
+ */
 void gerar_codigo_go(Intermediario *primeiro, const char *nome_arquivo) {
     FILE *arquivo = fopen(nome_arquivo, "w");
     if (arquivo == NULL) {
@@ -71,6 +74,9 @@ void gerar_codigo_go(Intermediario *primeiro, const char *nome_arquivo) {
     printf("--> Sucesso! Arquivo alvo '%s' gerado.\n", nome_arquivo);
 }
 
+/* As funções de expressão retornam strings alocadas dinamicamente.
+ * Estes helpers centralizam cópia/formatação e encerram o compilador em falha de memória.
+ */
 static char *duplicar_texto(const char *texto) {
     if (texto == NULL) {
         texto = "";
@@ -148,6 +154,9 @@ static char *gerar_expressao_go(NoAST *no);
 static void gerar_comando_go(FILE *arquivo, NoAST *no, int indentacao, int dentro_main);
 static void gerar_conteudo_bloco_go(FILE *arquivo, NoAST *no, int indentacao, int dentro_main);
 
+/* A AST representa listas como árvore binária. Esta função lineariza os argumentos
+ * preservando a ordem original para chamadas como soma(2, 3).
+ */
 static char *gerar_argumentos_go(NoAST *no) {
     if (no == NULL) {
         return duplicar_texto("");
@@ -190,6 +199,9 @@ static int main_usa_fmt(NoAST *no, int dentro_main) {
     return main_usa_fmt(no->esq, dentro_main) || main_usa_fmt(no->dir, dentro_main);
 }
 
+/* Traduz expressões C simples para expressões Go.
+ * O retorno sempre pertence ao chamador e deve ser liberado com free.
+ */
 static char *gerar_expressao_go(NoAST *no) {
     if (no == NULL) {
         return duplicar_texto("");
@@ -228,6 +240,7 @@ static char *gerar_expressao_go(NoAST *no) {
     }
 }
 
+/* Gera comandos usados dentro do cabeçalho de for, onde o Go não aceita quebra de linha. */
 static char *gerar_comando_inline_go(NoAST *no) {
     if (no == NULL) {
         return duplicar_texto("");
@@ -330,6 +343,7 @@ static void gerar_retorno_go(FILE *arquivo, NoAST *no, int indentacao, int dentr
     free(valor);
 }
 
+/* O parser marca if/else com valor "if_else"; por isso o bloco then/else é separado aqui. */
 static void gerar_if_go(FILE *arquivo, NoAST *no, int indentacao, int dentro_main) {
     char *condicao = gerar_expressao_go(no->esq);
     NoAST *bloco_if = no->dir;
@@ -369,6 +383,9 @@ static void gerar_while_go(FILE *arquivo, NoAST *no, int indentacao, int dentro_
     free(condicao);
 }
 
+/* O for da AST guarda inicialização/condição/atualização em subárvores.
+ * Aqui essas partes são extraídas para emitir o cabeçalho Go equivalente.
+ */
 static void gerar_for_go(FILE *arquivo, NoAST *no, int indentacao, int dentro_main) {
     NoAST *cabecalho = no->esq;
     NoAST *cabecalho_parcial = cabecalho != NULL ? cabecalho->esq : NULL;
@@ -410,6 +427,7 @@ static void gerar_unario_go(FILE *arquivo, NoAST *no, int indentacao) {
     free(comando);
 }
 
+/* Ponto central de emissão de comandos. Cada tipo de nó delega para um gerador específico. */
 static void gerar_comando_go(FILE *arquivo, NoAST *no, int indentacao, int dentro_main) {
     if (no == NULL) {
         return;
@@ -482,6 +500,9 @@ static void gerar_conteudo_bloco_go(FILE *arquivo, NoAST *no, int indentacao, in
     }
 }
 
+/* Parâmetros também chegam como lista binária, então são impressos recursivamente
+ * com controle explícito da vírgula entre eles.
+ */
 static void gerar_parametros_go(FILE *arquivo, NoAST *no, int *primeiro) {
     if (no == NULL) {
         return;
@@ -511,6 +532,7 @@ static TipoDado tipo_retorno_funcao(NoAST *funcao) {
     return funcao->esq->esq->tipo_dado;
 }
 
+/* Em Go, main não recebe retorno. As demais funções preservam o tipo inferido da AST. */
 static void gerar_funcao_go(FILE *arquivo, NoAST *funcao) {
     int eh_main = (funcao->valor != NULL && strcmp(funcao->valor, "main") == 0);
     NoAST *parametros = (funcao->esq != NULL) ? funcao->esq->dir : NULL;
@@ -535,6 +557,7 @@ static void gerar_funcao_go(FILE *arquivo, NoAST *funcao) {
     fprintf(arquivo, "}\n\n");
 }
 
+/* Percorre somente declarações globais e funções, que são os elementos válidos no topo do Go. */
 static void gerar_top_level_go(FILE *arquivo, NoAST *no) {
     if (no == NULL) {
         return;
@@ -564,6 +587,7 @@ static void gerar_top_level_go(FILE *arquivo, NoAST *no) {
     }
 }
 
+/* Entrada principal da geração final: cria o arquivo Go a partir da AST já validada. */
 void gerar_codigo_go_ast(NoAST *raiz, const char *nome_arquivo) {
     FILE *arquivo = fopen(nome_arquivo, "w");
     if (arquivo == NULL) {
