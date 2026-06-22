@@ -55,6 +55,31 @@ void analisar_semantica(NoAST *no) {
             }
             break;
 
+        case NO_BINARIO:
+            // Lida com as operações: +, -, *, / e outras lógicas
+            if (no->esq != NULL && no->dir != NULL) {
+                
+                // Validação: Divisão por Zero Literal
+                if (strcmp(no->valor, "/") == 0) {
+                    if (no->dir->tipo == NO_NUMERO && strcmp(no->dir->valor, "0") == 0) {
+                        printf("Erro Semântico: Divisão literal por zero detectada!\n");
+                        exit(1); // Erro fatal
+                    }
+                }
+
+                // Aplicação da Coerção de Tipos
+                TipoDado tipo_esq = no->esq->tipo_dado;
+                TipoDado tipo_dir = no->dir->tipo_dado;
+
+                // Se houver um float envolvido, o resultado sobe para float
+                if (tipo_esq == TIPO_DADO_FLOAT || tipo_dir == TIPO_DADO_FLOAT) {
+                    no->tipo_dado = TIPO_DADO_FLOAT;
+                } else {
+                    no->tipo_dado = TIPO_DADO_INT; // Caso contrário, fica int
+                }
+            }
+            break;
+
         default:
             printf("Semântico: Tipo de nó não tratado.\n");
             break;
