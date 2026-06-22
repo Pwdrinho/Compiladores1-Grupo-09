@@ -365,6 +365,25 @@ parser hoje aceita apenas `int`, `float` e `void` na regra `tipo`.
 
 ---
 
+## 2.9 Validações Semânticas Atuais
+
+Além de validar a gramática, o compilador executa uma passada semântica sobre a
+AST. Essa etapa cobre:
+
+- função declarada mais de uma vez;
+- chamada para função não declarada;
+- quantidade incorreta de argumentos;
+- conversão básica entre `int` e `float` em argumentos, atribuições e retornos;
+- `return` com valor em função `void`;
+- `return` sem valor em função não-`void`;
+- função não-`void` sem retorno com valor;
+- divisão literal por zero.
+
+Essas validações ainda são intencionalmente simples e seguem o escopo acadêmico
+do subconjunto suportado.
+
+---
+
 # 3. Especificação da Linguagem Alvo
 
 Esta seção define o escopo completo da linguagem que o compilador suportará.

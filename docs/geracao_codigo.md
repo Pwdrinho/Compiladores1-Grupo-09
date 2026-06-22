@@ -28,6 +28,9 @@ saida.go
 | `return expr;` em `main` | `fmt.Println(expr); return` |
 | `soma(2, 3)` | `soma(2, 3)` |
 
+Chamadas para funções definidas depois do ponto de uso também são aceitas, porque
+a análise semântica coleta as assinaturas antes de validar as chamadas.
+
 ## Exemplo
 
 Entrada C:

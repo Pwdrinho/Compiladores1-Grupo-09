@@ -17,6 +17,8 @@ O projeto demonstra as principais fases de um compilador:
 
 O compilador suporta funções simples, variáveis, expressões aritméticas e relacionais,
 `if`/`else`, `while`, `for`, `return`, incremento/decremento e chamadas simples de função.
+Também valida assinaturas de funções, quantidade de argumentos e compatibilidade
+básica de retornos.
 
 O foco é a tradução correta de um subconjunto pequeno e demonstrável, não a cobertura completa da linguagem C.
 

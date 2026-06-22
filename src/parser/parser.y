@@ -624,7 +624,13 @@ fator:
 acesso_vetor:
       IDENT TK_ABRE_COLCHETE expressao TK_FECHA_COLCHETE
       {
-        $$ = criar_no(NO_ACESSO_VETOR, $3, NULL, $1, NULL);
+        Simbolo *simb = buscar_simbolo($1);
+        if (simb == NULL) {
+            printf("Erro Semântico: Vetor '%s' não declarado.\n", $1);
+            exit(1);
+        }
+
+        $$ = criar_no(NO_ACESSO_VETOR, $3, NULL, $1, simb);
         free($1);
       }
 ;

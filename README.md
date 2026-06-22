@@ -22,6 +22,10 @@ acadêmica demonstrável com:
 - incremento/decremento como comando;
 - chamadas simples de função.
 
+As validações semânticas atuais cobrem assinaturas de funções, chamadas para
+função inexistente, quantidade de argumentos, retornos incompatíveis com o tipo
+da função e divisão literal por zero.
+
 ## Como compilar
 
 ```bash

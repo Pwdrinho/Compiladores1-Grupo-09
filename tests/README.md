@@ -71,6 +71,7 @@ The Makefile target compiles the compiler, runs all `parser/inputs/*.c`, compare
 
 - `08_while_prefix_return_void.c`: covers `while`, simple declaration, prefix `++`/`--` and `return;`.
 - `09_function_call.c`: covers simple function call statements.
+- `10_undeclared_function.c` to `14_duplicate_function.c`: cover semantic errors for function signatures, arguments and returns.
 
 ## Code generation tests
 
@@ -101,3 +102,4 @@ make test
 - `while` translated to Go `for`;
 - `if/else`;
 - simple functions with parameters and function calls.
+- calls before the called function definition.

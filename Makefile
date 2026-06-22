@@ -76,6 +76,11 @@ PARSER_TEST_06 := 06_if_else.c
 PARSER_TEST_07 := 07_multiple_functions.c
 PARSER_TEST_08 := 08_while_prefix_return_void.c
 PARSER_TEST_09 := 09_function_call.c
+PARSER_TEST_10 := 10_undeclared_function.c
+PARSER_TEST_11 := 11_wrong_argument_count.c
+PARSER_TEST_12 := 12_void_return_value.c
+PARSER_TEST_13 := 13_missing_return_value.c
+PARSER_TEST_14 := 14_duplicate_function.c
 
 .PHONY: all run clean help test scanner-test parser-test codegen-test scanner_test test-scanner scanner-unit-test parser-unit-test parser_test test-parser check-parser check-scanner check-ast coverage
 

@@ -8,7 +8,7 @@ Análise sintática e semântica concluídas com sucesso.
 AST 
 
 tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
-└── tipo=NO_FUNCAO | valor='main' | tipo_dado=TIPO_DADO_VOID
+└── tipo=NO_FUNCAO | valor='main' | tipo_dado=TIPO_DADO_INT
     ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
     │   └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
     └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
@@ -17,8 +17,8 @@ tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
             │   └── tipo=NO_DECLARACAO | valor='values' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
             │       ├── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
             │       └── tipo=NO_NUMERO | valor='3' | tipo_dado=TIPO_DADO_INT
-            └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_VOID
-                └── tipo=NO_ACESSO_VETOR | valor='values' | tipo_dado=TIPO_DADO_VOID
+            └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
+                └── tipo=NO_ACESSO_VETOR | valor='values' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
                     └── tipo=NO_NUMERO | valor='0' | tipo_dado=TIPO_DADO_INT
 --> Código Go final gerado em 'saida.go'.
 

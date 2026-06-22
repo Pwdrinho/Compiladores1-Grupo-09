@@ -28,3 +28,4 @@ These tests focus on parser acceptance and AST shape. The symbol table is still 
 Current suite highlights:
 - Coverage for `while`, simple declaration, prefix `++`/`--`, and `return;` in `08_while_prefix_return_void.c`.
 - `09_function_call.c` documents the supported syntax for simple function call statements.
+- `10_undeclared_function.c` to `14_duplicate_function.c` document semantic errors for function signatures, arguments and returns.

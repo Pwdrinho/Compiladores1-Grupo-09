@@ -40,6 +40,16 @@ tests/parser/expected/
 - `while`;
 - chamada simples de função.
 
+## Casos semânticos negativos
+
+A suíte também cobre erros detectados após a construção da AST:
+
+- chamada para função não declarada;
+- quantidade incorreta de argumentos;
+- função `void` retornando valor;
+- função não-`void` sem valor de retorno;
+- função declarada mais de uma vez.
+
 ## Observação
 
 Os testes do parser não validam a saída Go final. Essa responsabilidade fica com

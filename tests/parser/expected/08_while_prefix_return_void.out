@@ -28,9 +28,9 @@ tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
             │       └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
             │           └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
             │               ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
-            │               │   └── tipo=NO_UNARIO | valor='++pre' | tipo_dado=TIPO_DADO_VOID
+            │               │   └── tipo=NO_UNARIO | valor='++pre' | tipo_dado=TIPO_DADO_INT
             │               │       └── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
-            │               └── tipo=NO_UNARIO | valor='--pre' | tipo_dado=TIPO_DADO_VOID
+            │               └── tipo=NO_UNARIO | valor='--pre' | tipo_dado=TIPO_DADO_INT
             │                   └── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
             └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_VOID
 --> Código Go final gerado em 'saida.go'.
