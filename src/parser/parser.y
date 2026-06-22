@@ -141,11 +141,21 @@ programa:
         raiz_ast = criar_no(NO_PROGRAMA, $1, NULL, NULL, NULL);
         $$ = raiz_ast;
 
+        printf("\n");
+        printf("------------\n");
+        printf("\n");
 
         // analise sintatica
         analisar_semantica(raiz_ast);
 
         printf("Análise sintática e semântica concluídas com sucesso.\n");
+
+        printf("\n");
+        printf("------------\n");
+        printf("\n");
+        printf("AST \n");
+        printf("\n");
+
         imprimir_ast(raiz_ast, 0);
 
 
@@ -155,10 +165,10 @@ programa:
         imprimir_codigo_intermediario(codigo_intermediario);
 
         // Geração do Código Final
-        gerar_codigo_go(codigo_tac, "programa_gerado.go");
+        gerar_codigo_go(codigo_intermediario, "QUEREMOS_AO_MENOS_MS_POR_FAVOR.go");
 
         liberar_ast(raiz_ast);
-        printf("Liberamos a memoria da arvore sintatica");
+        printf("Liberamos a memoria da arvore sintatica \n");
 
       }
 ;

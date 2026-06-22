@@ -81,7 +81,7 @@ void analisar_semantica(NoAST *no) {
             break;
 
         default:
-            printf("Semântico: Tipo de nó não tratado.\n");
+            //printf("Semântico: Tipo de nó não tratado.\n");
             break;
     }
 }
