@@ -32,6 +32,11 @@ void analisar_semantica(NoAST *no) {
             }
             break;
 
+        case NO_CHAMADA_FUNCAO:
+            // No subconjunto atual assumimos retorno int para chamadas simples.
+            no->tipo_dado = TIPO_DADO_INT;
+            break;
+
         case NO_DECLARACAO:
             // o tipo da declaração é herdado do filho esquerdo que é o NO_TIPO
             if (no->esq != NULL) {

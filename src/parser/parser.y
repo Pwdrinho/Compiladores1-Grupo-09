@@ -129,6 +129,7 @@ NoAST *raiz_ast = NULL;
 %type <no> for_init for_condicao for_atualizacao
 %type <no> declaracao_for atribuicao_for incremento_for
 %type <no> expressao_booleana expressao termo fator acesso_vetor
+%type <no> chamada_funcao argumentos lista_argumentos
 %type <str> operador_relacional
 
 %%
@@ -159,13 +160,14 @@ programa:
         imprimir_ast(raiz_ast, 0);
 
 
+        // A geração final usa a AST antes do intermediário, pois o IR atual
+        // troca identificadores por nomes temporários durante a travessia.
+        gerar_codigo_go_ast(raiz_ast, "saida.go");
+
         // Geração do Código Intermediário
         Intermediario *codigo_intermediario = gerar_codigo_intermediario(raiz_ast);
         
         imprimir_codigo_intermediario(codigo_intermediario);
-
-        // Geração do Código Final
-        gerar_codigo_go(codigo_intermediario, "QUEREMOS_AO_MENOS_MS_POR_FAVOR.go");
 
         liberar_ast(raiz_ast);
         printf("Liberamos a memoria da arvore sintatica \n");
@@ -285,6 +287,7 @@ comando:
     | comando_while { $$ = $1; }
     | comando_for { $$ = $1; }
     | incremento { $$ = $1; }
+    | chamada_funcao TK_OP_PONTO_VIRGULA { $$ = $1; }
     | bloco { $$ = $1; }
 ;
 
@@ -608,6 +611,10 @@ fator:
       {
         $$ = $1;
       }
+    | chamada_funcao
+      {
+        $$ = $1;
+      }
     | TK_ABRE_PARENTESE expressao TK_FECHA_PARENTESE
       {
         $$ = $2;
@@ -619,6 +626,36 @@ acesso_vetor:
       {
         $$ = criar_no(NO_ACESSO_VETOR, $3, NULL, $1, NULL);
         free($1);
+      }
+;
+
+chamada_funcao:
+      IDENT TK_ABRE_PARENTESE argumentos TK_FECHA_PARENTESE
+      {
+        $$ = criar_no(NO_CHAMADA_FUNCAO, $3, NULL, $1, NULL);
+        free($1);
+      }
+;
+
+argumentos:
+      lista_argumentos
+      {
+        $$ = $1;
+      }
+    | /* vazio */
+      {
+        $$ = NULL;
+      }
+;
+
+lista_argumentos:
+      lista_argumentos TK_OP_VIRGULA expressao
+      {
+        $$ = criar_no(NO_LISTA, $1, $3, NULL, NULL);
+      }
+    | expressao
+      {
+        $$ = $1;
       }
 ;
 

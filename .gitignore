@@ -1,4 +1,5 @@
 site/
+build/
 __pycache__/
 venv/
 *.txt
@@ -9,3 +10,5 @@ parser.tab.c
 parser.tab.h
 .build/
 compilador
+saida.go
+QUEREMOS_AO_MENOS_MS_POR_FAVOR.go

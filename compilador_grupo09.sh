@@ -9,7 +9,7 @@ fi
 ARQUIVO_ENTRADA=$1
 # Extrai o nome base (ex: teste.c -> teste)
 NOME_BASE=$(basename "$ARQUIVO_ENTRADA" .c)
-ARQUIVO_GO="QUEREMOS_AO_MENOS_MS_POR_FAVOR.go"
+ARQUIVO_GO="saida.go"
 
 echo "--- Iniciando processo de build ---"
 

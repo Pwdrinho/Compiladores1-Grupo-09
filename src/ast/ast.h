@@ -25,6 +25,7 @@ typedef enum {
     NO_IDENTIFICADOR,
     NO_NUMERO,
     NO_ACESSO_VETOR,
+    NO_CHAMADA_FUNCAO,
 
     NO_VAZIO
 } TipoNo;
