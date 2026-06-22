@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include "ast.h"
 #include "symtab.h"
+#include "semantico.h"
 
 int yylex(void);
 
