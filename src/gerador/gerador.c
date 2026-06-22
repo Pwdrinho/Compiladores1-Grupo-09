@@ -5,7 +5,7 @@
 void gerar_codigo_go(Intermediario *primeiro, const char *nome_arquivo) {
     FILE *arquivo = fopen(nome_arquivo, "w");
     if (arquivo == NULL) {
-        printf("Erro: Não foi possível criar o arquivo de saída '%s'\n", nome_arquivo);
+        printf("Erro fatal: Não foi possível criar o arquivo de saída '%s'\n", nome_arquivo);
         return;
     }
 
@@ -38,6 +38,22 @@ void gerar_codigo_go(Intermediario *primeiro, const char *nome_arquivo) {
                 } else {
                     fprintf(arquivo, "%s = %s\n", atual->resultado, atual->operador1);
                 }
+                break;
+
+            case INTER_SOMA:
+                fprintf(arquivo, "%s := %s + %s\n", atual->resultado, atual->operador1, atual->operador2);
+                break;
+
+            case INTER_SUBTRACAO:
+                fprintf(arquivo, "%s := %s - %s\n", atual->resultado, atual->operador1, atual->operador2);
+                break;
+
+            case INTER_MULTIPLICACAO:
+                fprintf(arquivo, "%s := %s * %s\n", atual->resultado, atual->operador1, atual->operador2);
+                break;
+
+            case INTER_DIVISAO:
+                fprintf(arquivo, "%s := %s / %s\n", atual->resultado, atual->operador1, atual->operador2);
                 break;
         }
         
