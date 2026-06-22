@@ -10,8 +10,8 @@ O projeto demonstra as principais fases de um compilador:
 - análise sintática com Bison;
 - construção de AST;
 - tabela de símbolos e validações semânticas básicas;
-- geração de código intermediário para depuração;
-- geração de código Go final.
+- geração de código intermediário estruturado;
+- geração de código Go final a partir do intermediário.
 
 ## Escopo atual
 

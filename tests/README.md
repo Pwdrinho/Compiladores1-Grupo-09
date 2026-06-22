@@ -53,7 +53,7 @@ The Makefile target compiles the compiler, runs all `parser/inputs/*.c`, compare
 ### Files
 
 - `parser/inputs/*.c`: parser input samples
-- `parser/expected/*.out`: expected AST output for each input file
+- `parser/expected/*.out`: expected AST and intermediate-code output for each input file
 
 ### What make does
 
@@ -75,7 +75,8 @@ The Makefile target compiles the compiler, runs all `parser/inputs/*.c`, compare
 
 ## Code generation tests
 
-The code generation suite validates the final C to Go output generated in `saida.go`.
+The code generation suite validates the final C to Go output generated in `saida.go`
+from the structured intermediate code.
 
 ### Preferred run
 

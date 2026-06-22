@@ -3,7 +3,7 @@
 Projeto do grupo 09 da disciplina de Compiladores 1. O objetivo é traduzir um
 subconjunto da linguagem C para Go usando as etapas clássicas de um compilador:
 análise léxica, análise sintática, AST, validações semânticas básicas, código
-intermediário para depuração e geração de código final.
+intermediário estruturado e geração de código final.
 
 ## Subconjunto suportado
 
@@ -57,6 +57,12 @@ A saída Go final é gerada em:
 
 ```bash
 saida.go
+```
+
+O caminho principal da geração é:
+
+```text
+C -> lexer/parser -> AST -> semântica -> código intermediário -> Go
 ```
 
 ## Testes

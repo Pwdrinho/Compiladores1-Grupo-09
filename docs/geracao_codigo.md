@@ -1,7 +1,8 @@
 # Geração de Código C para Go
 
-Esta etapa percorre a AST e gera um arquivo Go equivalente para o subconjunto de C
-suportado pelo projeto. O arquivo de saída padrão é:
+Esta etapa gera um arquivo Go equivalente para o subconjunto de C suportado pelo
+projeto. A geração final passa pelo código intermediário estruturado, e o arquivo
+de saída padrão é:
 
 ```text
 saida.go
@@ -13,8 +14,17 @@ saida.go
 2. O Bison valida a gramática e constrói a AST.
 3. A tabela de símbolos registra variáveis e escopos.
 4. A análise semântica preenche tipos básicos e detecta alguns erros.
-5. O gerador percorre a AST e escreve o código Go final.
-6. O código intermediário continua sendo impresso para depuração.
+5. A AST é convertida para um código intermediário estruturado.
+6. O gerador percorre o intermediário e escreve o código Go final.
+
+O fluxo principal fica:
+
+```text
+C -> tokens -> AST -> semântica -> intermediário -> saida.go
+```
+
+O intermediário também é impresso no terminal para facilitar depuração e
+apresentação da etapa.
 
 ## Construções traduzidas
 
@@ -64,6 +74,20 @@ func main() {
 }
 ```
 
+Trecho do intermediário gerado para o mesmo exemplo:
+
+```text
+func soma int
+param a int
+param b int
+return (a + b)
+endfunc
+func main int
+decl r int = soma(2, 3)
+return r
+endfunc
+```
+
 ## Testes
 
 Os testes de geração ficam em:
@@ -79,8 +103,8 @@ Para executar:
 make codegen-test
 ```
 
-O teste compila cada entrada C, captura o `saida.go` gerado e compara com o Go
-esperado.
+O teste compila cada entrada C, passa por AST, semântica e intermediário, captura
+o `saida.go` gerado e compara com o Go esperado.
 
 ## Limitações assumidas
 
