@@ -184,7 +184,49 @@ make
 make clean
 ```
 
-# 9. Conclusão
+# 9. Alvos usados neste projeto
+
+O Makefile do projeto possui alvos específicos para cada etapa do compilador:
+
+```bash
+make all
+```
+
+Compila o compilador completo em `build/compilador`.
+
+```bash
+make scanner-test
+```
+
+Executa os testes do analisador léxico.
+
+```bash
+make parser-test
+```
+
+Executa os testes do analisador sintático e valida a saída de AST/intermediário.
+
+```bash
+make codegen-test
+```
+
+Executa os testes de geração C para Go, comparando o `saida.go` gerado com os
+arquivos esperados.
+
+```bash
+make test
+```
+
+Executa a suíte completa: léxico, sintático e geração de código.
+
+```bash
+make coverage
+```
+
+Recompila os testes com flags de cobertura e gera relatório HTML quando `lcov` e
+`genhtml` estão disponíveis.
+
+# 10. Conclusão
 
 O **Makefile** é uma ferramenta essencial para automatizar o processo de compilação.
 Em projetos que utilizam **Flex e Bison**, ele facilita a geração dos arquivos intermediários e a compilação final do analisador.

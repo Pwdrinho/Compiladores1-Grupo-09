@@ -42,13 +42,17 @@ pode ser validada pelo compilador.
 ## 2.1 Estrutura do Programa
 
 O ponto de entrada da gramática é `programa`. Um arquivo-fonte válido é composto
-por uma ou mais funções declaradas em sequência.
+por uma sequência de elementos. Atualmente, um elemento pode ser uma função ou
+uma declaração global simples.
 
 ```ebnf
-programa ::= lista_funcoes
+programa ::= lista_elementos
 
-lista_funcoes ::= lista_funcoes funcao
-               | funcao
+lista_elementos ::= lista_elementos elemento
+                  | elemento
+
+elemento ::= funcao
+           | declaracao
 ```
 
 ---
@@ -118,6 +122,7 @@ comando ::= declaracao
           | comando_while
           | comando_for
           | incremento
+          | chamada_funcao ';'
           | bloco
 ```
 
@@ -219,6 +224,27 @@ for (i = 0; i != n; i += 2) { ... }
 for ( ; ; ) { ... }
 ```
 
+### 2.5.8 Chamada de Função como Comando
+
+Chamadas simples de função podem aparecer como comando isolado:
+
+```ebnf
+chamada_funcao ::= IDENT '(' argumentos ')'
+
+argumentos ::= lista_argumentos
+             | /* vazio */
+
+lista_argumentos ::= lista_argumentos ',' expressao
+                   | expressao
+```
+
+Exemplos válidos:
+
+```c
+foo();
+soma(1, 2);
+```
+
 ---
 
 ## 2.6 Expressões
@@ -256,6 +282,7 @@ termo ::= termo '*' fator
 fator ::= NUMBER
         | IDENT
         | acesso_vetor
+        | chamada_funcao
         | '(' expressao ')'
 ```
 
@@ -263,6 +290,15 @@ fator ::= NUMBER
 
 ```ebnf
 acesso_vetor ::= IDENT '[' expressao ']'
+```
+
+### 2.6.4 Chamada de Função em Expressão
+
+Chamadas simples de função também são aceitas como fator de expressão, permitindo
+atribuições como:
+
+```c
+int r = soma(2, 3);
 ```
 
 ---
@@ -323,10 +359,9 @@ Inteiro x;   /* "Inteiro" é um tipo ou um identificador? */
 O parser não consegue distinguir os dois casos apenas com a gramática — a
 decisão depende de saber se `Inteiro` foi previamente declarado como `typedef`.
 
-**Solução adotada:** a resolução completa exige uma **tabela de símbolos**
-alimentada durante a análise sintática. Para o escopo atual do compilador,
-identificadores em posição de tipo são aceitos como `IDENT`, ficando a
-distinção para a fase de análise semântica.
+**Solução adotada:** `typedef` está fora do subconjunto atual. A resolução
+completa exigiria uma tabela de símbolos específica para nomes de tipos, mas o
+parser hoje aceita apenas `int`, `float` e `void` na regra `tipo`.
 
 ---
 
@@ -489,14 +524,9 @@ expressao_deslocamento ::= expressao '<<' expressao
 expressao_ternaria ::= expressao_booleana '?' expressao ':' expressao
 ```
 
-### 3.4.4 Chamada de Função e Acesso a Membros
+### 3.4.4 Acesso a Membros
 
 ```ebnf
-chamada_funcao ::= IDENT '(' lista_argumentos ')'
-                 | IDENT '(' ')'
-
-lista_argumentos ::= expressao { ',' expressao }
-
 acesso_membro ::= IDENT '.' IDENT
                | IDENT '->' IDENT
 ```
@@ -524,4 +554,3 @@ do menor para o maior nível:
 | 12    | `=` `+=` `-=` `*=` `/=` `%=`                    | Direita           |
 | 13    | `?` `:` (ternário)                              | Direita           |
 | 14    | `else` (via `LOWER_THAN_ELSE` / `KW_ELSE`)      | Não-associativo   |
-

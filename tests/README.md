@@ -70,4 +70,34 @@ The Makefile target compiles the compiler, runs all `parser/inputs/*.c`, compare
 ### Notable parser coverage
 
 - `08_while_prefix_return_void.c`: covers `while`, simple declaration, prefix `++`/`--` and `return;`.
-- `09_function_call_not_supported.c`: negative test documenting that function call statements are not yet supported by the grammar.
+- `09_function_call.c`: covers simple function call statements.
+
+## Code generation tests
+
+The code generation suite validates the final C to Go output generated in `saida.go`.
+
+### Preferred run
+
+From project root:
+
+```bash
+make codegen-test
+```
+
+or:
+
+```bash
+make test
+```
+
+### Files
+
+- `codegen/inputs/*.c`: small C programs accepted by the compiler
+- `codegen/expected/*.go`: expected Go output for each input
+
+### Current coverage
+
+- arithmetic expressions and `return` from `main`;
+- `while` translated to Go `for`;
+- `if/else`;
+- simple functions with parameters and function calls.
