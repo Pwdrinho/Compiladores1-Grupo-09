@@ -6,7 +6,11 @@
 // enum mapeando os tipos de instruções suportadas, vamos acrescentando conforme avançamos no projeto
 typedef enum {
     INTER_DECLARACAO,
-    INTER_ATRIBUICAO
+    INTER_ATRIBUICAO,
+    INTER_SOMA,
+    INTER_SUBTRACAO,
+    INTER_MULTIPLICACAO,
+    INTER_DIVISAO
 } TipoIntermediario;
 
 // estrutura do código de três endereços, estilo assambly
