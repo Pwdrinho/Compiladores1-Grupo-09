@@ -84,6 +84,30 @@ Intermediario* gerar_codigo_intermediario(NoAST *no) {
             break;
         }
 
+        case NO_BINARIO: {
+            TipoIntermediario tipo_op;
+            
+            // determina o tipo de acordo com o operador em no->valor
+            if (strcmp(no->valor, "+") == 0) tipo_op = INTER_SOMA;
+            else if (strcmp(no->valor, "-") == 0) tipo_op = INTER_SUBTRACAO;
+            else if (strcmp(no->valor, "*") == 0) tipo_op = INTER_MULTIPLICACAO;
+            else if (strcmp(no->valor, "/") == 0) tipo_op = INTER_DIVISAO;
+            else break;
+
+            // cria um registrador temporário
+            char *temp = criar_temp();
+            
+            // monta a instrução (ex: t0 = esq + dir)
+            Intermediario *instrucao = intermediario_criar(tipo_op, temp, no->esq->valor, no->dir->valor);
+            
+            // atualiza o próprio valor do nó para que o pai possa usá-lo
+            if (no->valor != NULL) free(no->valor);
+            no->valor = strdup(temp);
+
+            codigo_atual = intermediario_juntar(codigo_atual, instrucao);
+            break;
+        }
+
         default:
             break;
     }
