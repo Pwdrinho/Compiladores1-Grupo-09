@@ -55,6 +55,54 @@ void analisar_semantica(NoAST *no) {
             }
             break;
 
+        case NO_TIPO:
+            // o tipo de dado do nó NO_TIPO é derivado do seu valor literal ("int", "float", "void")
+            if (no->valor != NULL) {
+                if (strcmp(no->valor, "int") == 0) {
+                    no->tipo_dado = TIPO_DADO_INT;
+                } else if (strcmp(no->valor, "float") == 0) {
+                    no->tipo_dado = TIPO_DADO_FLOAT;
+                } else {
+                    no->tipo_dado = TIPO_DADO_VOID;
+                }
+            }
+            break;
+
+        case NO_FUNCAO:
+            // o tipo da função é herdado do nó NO_TIPO que está em esq->esq (NO_LISTA -> NO_TIPO)
+            if (no->esq != NULL && no->esq->esq != NULL) {
+                no->tipo_dado = no->esq->esq->tipo_dado;
+            }
+            break;
+
+        case NO_PARAMETRO:
+            // o tipo do parâmetro é herdado do filho esquerdo que é o NO_TIPO
+            if (no->esq != NULL) {
+                no->tipo_dado = no->esq->tipo_dado;
+            }
+            break;
+
+        case NO_RETORNO:
+            // o tipo do retorno é herdado do filho esquerdo que é a expressão retornada
+            if (no->esq != NULL) {
+                no->tipo_dado = no->esq->tipo_dado;
+            }
+            break;
+
+        case NO_UNARIO:
+            // o tipo do unário é herdado do operando (filho esquerdo)
+            if (no->esq != NULL) {
+                no->tipo_dado = no->esq->tipo_dado;
+            }
+            break;
+
+        case NO_ACESSO_VETOR:
+            // o tipo do acesso ao vetor vem da tabela de símbolos
+            if (no->simbolo != NULL) {
+                no->tipo_dado = no->simbolo->tipo_dado;
+            }
+            break;
+
         case NO_BINARIO:
             // Lida com as operações: +, -, *, / e outras lógicas
             if (no->esq != NULL && no->dir != NULL) {
