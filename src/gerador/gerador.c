@@ -66,5 +66,5 @@ void gerar_codigo_go(Intermediario *primeiro, const char *nome_arquivo) {
     fprintf(arquivo, "}\n");
     fclose(arquivo);
 
-    printf("--> Sucesso! Arquivo alvo '%s' gerado.\n", nome_arquivo);
+    printf("--> Código Go final gerado em '%s'.\n", nome_arquivo);
 }
