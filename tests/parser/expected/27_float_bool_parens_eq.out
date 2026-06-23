@@ -1,0 +1,62 @@
+
+------------
+
+Análise sintática e semântica concluídas com sucesso.
+
+------------
+
+AST 
+
+tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
+└── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+    ├── tipo=NO_FUNCAO | valor='to_float' | tipo_dado=TIPO_DADO_FLOAT
+    │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+    │   │   ├── tipo=NO_TIPO | valor='float' | tipo_dado=TIPO_DADO_FLOAT
+    │   │   └── tipo=NO_PARAMETRO | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+    │   │       └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+    │   └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+    │       └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+    │           ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+    │           │   └── tipo=NO_DECLARACAO | valor='result' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_FLOAT
+    │           │       ├── tipo=NO_TIPO | valor='float' | tipo_dado=TIPO_DADO_FLOAT
+    │           │       └── tipo=NO_ATRIBUICAO | valor='=' | tipo_dado=TIPO_DADO_FLOAT
+    │           │           ├── tipo=NO_IDENTIFICADOR | valor='result' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_FLOAT
+    │           │           └── tipo=NO_BINARIO | valor='*' | tipo_dado=TIPO_DADO_INT
+    │           │               ├── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+    │           │               └── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+    │           └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_FLOAT
+    │               └── tipo=NO_IDENTIFICADOR | valor='result' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_FLOAT
+    └── tipo=NO_FUNCAO | valor='check' | tipo_dado=TIPO_DADO_INT
+        ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+        │   ├── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+        │   └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+        │       ├── tipo=NO_PARAMETRO | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+        │       │   └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+        │       └── tipo=NO_PARAMETRO | valor='y' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+        │           └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+        └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+            └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+                ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+                │   └── tipo=NO_IF | valor='if' | tipo_dado=TIPO_DADO_VOID
+                │       ├── tipo=NO_BINARIO | valor='&&' | tipo_dado=TIPO_DADO_INT
+                │       │   ├── tipo=NO_BINARIO | valor='==' | tipo_dado=TIPO_DADO_INT
+                │       │   │   ├── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+                │       │   │   └── tipo=NO_IDENTIFICADOR | valor='y' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+                │       │   └── tipo=NO_BINARIO | valor='>' | tipo_dado=TIPO_DADO_INT
+                │       │       ├── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+                │       │       └── tipo=NO_NUMERO | valor='0' | tipo_dado=TIPO_DADO_INT
+                │       └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+                │           └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+                │               └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
+                │                   └── tipo=NO_NUMERO | valor='1' | tipo_dado=TIPO_DADO_INT
+                └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
+                    └── tipo=NO_NUMERO | valor='0' | tipo_dado=TIPO_DADO_INT
+--> Código Go final gerado em 'saida.go'.
+
+--- CODIGO INTERMEDIARIO ---
+var result_1
+t0 = x_0 * x_0
+result_1 = t0
+----------------------------------
+
+Liberamos a memoria da arvore sintatica 

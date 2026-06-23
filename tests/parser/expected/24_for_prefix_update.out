@@ -1,0 +1,82 @@
+
+------------
+
+Análise sintática e semântica concluídas com sucesso.
+
+------------
+
+AST 
+
+tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
+└── tipo=NO_FUNCAO | valor='main' | tipo_dado=TIPO_DADO_INT
+    ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+    │   └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+    └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+        └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   │   │   └── tipo=NO_DECLARACAO | valor='s' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │   │   │       └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+            │   │   │   └── tipo=NO_ATRIBUICAO | valor='=' | tipo_dado=TIPO_DADO_INT
+            │   │   │       ├── tipo=NO_IDENTIFICADOR | valor='s' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │   │       └── tipo=NO_NUMERO | valor='0' | tipo_dado=TIPO_DADO_INT
+            │   │   └── tipo=NO_FOR | tipo_dado=TIPO_DADO_VOID
+            │   │       ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │       │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │       │   │   ├── tipo=NO_DECLARACAO | valor='i' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │       │   │   │   ├── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+            │   │       │   │   │   └── tipo=NO_ATRIBUICAO | valor='=' | tipo_dado=TIPO_DADO_INT
+            │   │       │   │   │       ├── tipo=NO_IDENTIFICADOR | valor='i' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │       │   │   │       └── tipo=NO_NUMERO | valor='0' | tipo_dado=TIPO_DADO_INT
+            │   │       │   │   └── tipo=NO_BINARIO | valor='<' | tipo_dado=TIPO_DADO_INT
+            │   │       │   │       ├── tipo=NO_IDENTIFICADOR | valor='i' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │       │   │       └── tipo=NO_NUMERO | valor='5' | tipo_dado=TIPO_DADO_INT
+            │   │       │   └── tipo=NO_UNARIO | valor='++pre' | tipo_dado=TIPO_DADO_INT
+            │   │       │       └── tipo=NO_IDENTIFICADOR | valor='i' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │       └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+            │   │           └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │               └── tipo=NO_ATRIBUICAO | valor='=' | tipo_dado=TIPO_DADO_INT
+            │   │                   ├── tipo=NO_IDENTIFICADOR | valor='s' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │                   └── tipo=NO_BINARIO | valor='+' | tipo_dado=TIPO_DADO_INT
+            │   │                       ├── tipo=NO_IDENTIFICADOR | valor='s' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │                       └── tipo=NO_IDENTIFICADOR | valor='i' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   └── tipo=NO_FOR | tipo_dado=TIPO_DADO_VOID
+            │       ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │       │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │       │   │   ├── tipo=NO_DECLARACAO | valor='j' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │       │   │   │   ├── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+            │       │   │   │   └── tipo=NO_ATRIBUICAO | valor='=' | tipo_dado=TIPO_DADO_INT
+            │       │   │   │       ├── tipo=NO_IDENTIFICADOR | valor='j' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │       │   │   │       └── tipo=NO_NUMERO | valor='5' | tipo_dado=TIPO_DADO_INT
+            │       │   │   └── tipo=NO_BINARIO | valor='>' | tipo_dado=TIPO_DADO_INT
+            │       │   │       ├── tipo=NO_IDENTIFICADOR | valor='j' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │       │   │       └── tipo=NO_NUMERO | valor='0' | tipo_dado=TIPO_DADO_INT
+            │       │   └── tipo=NO_UNARIO | valor='--pre' | tipo_dado=TIPO_DADO_INT
+            │       │       └── tipo=NO_IDENTIFICADOR | valor='j' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │       └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+            │           └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │               └── tipo=NO_ATRIBUICAO | valor='=' | tipo_dado=TIPO_DADO_INT
+            │                   ├── tipo=NO_IDENTIFICADOR | valor='s' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │                   └── tipo=NO_BINARIO | valor='+' | tipo_dado=TIPO_DADO_INT
+            │                       ├── tipo=NO_IDENTIFICADOR | valor='s' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │                       └── tipo=NO_IDENTIFICADOR | valor='j' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
+                └── tipo=NO_IDENTIFICADOR | valor='s' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+--> Código Go final gerado em 'saida.go'.
+
+--- CODIGO INTERMEDIARIO ---
+var s_0
+s_0 = 0
+var i_1
+i_1 = 0
+t0 = s_0 + i_1
+s_0 = t0
+var j_2
+j_2 = 5
+t1 = s_0 + j_2
+s_0 = t1
+----------------------------------
+
+Liberamos a memoria da arvore sintatica 

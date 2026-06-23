@@ -1,0 +1,58 @@
+
+------------
+
+Análise sintática e semântica concluídas com sucesso.
+
+------------
+
+AST 
+
+tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
+└── tipo=NO_FUNCAO | valor='main' | tipo_dado=TIPO_DADO_INT
+    ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+    │   └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+    └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+        └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   │   │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   │   │   │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   │   │   │   │   └── tipo=NO_DECLARACAO | valor='a' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │   │   │   │   │       └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+            │   │   │   │   │   └── tipo=NO_DECLARACAO | valor='b' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │   │   │   │       └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+            │   │   │   │   └── tipo=NO_DECLARACAO | valor='c' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │   │   │       └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+            │   │   │   └── tipo=NO_ATRIBUICAO | valor='=' | tipo_dado=TIPO_DADO_INT
+            │   │   │       ├── tipo=NO_IDENTIFICADOR | valor='a' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │   │       └── tipo=NO_BINARIO | valor='*' | tipo_dado=TIPO_DADO_INT
+            │   │   │           ├── tipo=NO_NUMERO | valor='6' | tipo_dado=TIPO_DADO_INT
+            │   │   │           └── tipo=NO_NUMERO | valor='2' | tipo_dado=TIPO_DADO_INT
+            │   │   └── tipo=NO_ATRIBUICAO | valor='=' | tipo_dado=TIPO_DADO_INT
+            │   │       ├── tipo=NO_IDENTIFICADOR | valor='b' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │       └── tipo=NO_BINARIO | valor='/' | tipo_dado=TIPO_DADO_INT
+            │   │           ├── tipo=NO_NUMERO | valor='10' | tipo_dado=TIPO_DADO_INT
+            │   │           └── tipo=NO_NUMERO | valor='2' | tipo_dado=TIPO_DADO_INT
+            │   └── tipo=NO_ATRIBUICAO | valor='=' | tipo_dado=TIPO_DADO_INT
+            │       ├── tipo=NO_IDENTIFICADOR | valor='c' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │       └── tipo=NO_BINARIO | valor='%' | tipo_dado=TIPO_DADO_INT
+            │           ├── tipo=NO_NUMERO | valor='7' | tipo_dado=TIPO_DADO_INT
+            │           └── tipo=NO_NUMERO | valor='3' | tipo_dado=TIPO_DADO_INT
+            └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
+                └── tipo=NO_IDENTIFICADOR | valor='c' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+--> Código Go final gerado em 'saida.go'.
+
+--- CODIGO INTERMEDIARIO ---
+var a_0
+var b_1
+var c_2
+t0 = 6 * 2
+a_0 = t0
+t1 = 10 / 2
+b_1 = t1
+c_2 = %
+----------------------------------
+
+Liberamos a memoria da arvore sintatica 
