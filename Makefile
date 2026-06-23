@@ -17,6 +17,10 @@ AST_C   := src/ast/ast.c
 # Se não existir, o Makefile continua funcionando.
 SYMTAB_C := $(wildcard src/symbols/symtab.c)
 
+SEM_C   := $(wildcard src/semantico/semantico.c)
+INTER_C := $(wildcard src/intermediario/intermediario.c)
+GER_C   := $(wildcard src/gerador/gerador.c)
+
 BUILD   ?= build
 
 PARSER_C := $(BUILD)/parser.tab.c
@@ -26,7 +30,7 @@ LEX_C    := $(BUILD)/lex.yy.c
 COMPILER := $(BUILD)/compilador
 TARGET   := $(COMPILER)
 
-INCLUDES := -I$(BUILD) -Isrc/ast -Isrc/symbols
+INCLUDES := -I$(BUILD) -Isrc/ast -Isrc/symbols -Isrc/semantico -Isrc/intermediario -Isrc/gerador
 
 SCANNER_TEST_BUILD    := $(BUILD)/scanner-tests
 SCANNER_TEST_GEN_C    := $(SCANNER_TEST_BUILD)/lex.yy.c
@@ -42,7 +46,7 @@ PARSER_TEST_INPUTS   := tests/parser/inputs
 PARSER_TEST_EXPECTED := tests/parser/expected
 PARSER_TEST_ACTUAL   := $(PARSER_TEST_BUILD)/actual
 
-VERBOSE ?= 0
+DEBUG ?= 0
 
 TEST_01 := 01_keywords.c
 TEST_02 := 02_identifiers_numbers.c
@@ -57,6 +61,7 @@ TEST_10 := 10_pointers_arrays.c
 TEST_11 := 11_trailing_dot_literal.c
 TEST_12 := 12_unclosed_block_comment.c
 
+# Mapeamento atualizado com base nos arquivos reais do parser
 PARSER_TEST_01 := 01_simple_function.c
 PARSER_TEST_02 := 02_function_with_params_and_if.c
 PARSER_TEST_03 := 03_local_decl_increment_return.c
@@ -66,6 +71,20 @@ PARSER_TEST_06 := 06_if_else.c
 PARSER_TEST_07 := 07_multiple_functions.c
 PARSER_TEST_08 := 08_while_prefix_return_void.c
 PARSER_TEST_09 := 09_function_call_not_supported.c
+PARSER_TEST_10 := 10_binary_mul_div_mod.c
+PARSER_TEST_11 := 11_boolean_and_or_ne.c
+PARSER_TEST_12 := 12_for_compound_assign.c
+PARSER_TEST_13 := 13_for_empty_parts.c
+PARSER_TEST_14 := 14_decrement_post.c
+PARSER_TEST_15 := 15_nested_block.c
+PARSER_TEST_16 := 16_decl_init_expr.c
+PARSER_TEST_17 := 17_nested_if.c
+PARSER_TEST_19 := 19_for_assign_init.c
+PARSER_TEST_20 := 20_for_all_empty.c
+PARSER_TEST_21 := 21_unclosed_brace.c
+PARSER_TEST_23 := 23_missing_semicolon.c
+PARSER_TEST_24 := 24_for_prefix_update.c
+PARSER_TEST_27 := 27_float_bool_parens_eq.c
 
 .PHONY: all run clean help test scanner-test parser-test scanner_test test-scanner scanner-unit-test parser-unit-test parser_test test-parser check-parser check-scanner check-ast coverage
 
@@ -83,7 +102,8 @@ help:
 	@echo "  make run                         - run the compiler"
 	@echo "  make scanner-test                - run scanner tests with DEBUG_LEXER=1"
 	@echo "  make parser-test                 - run parser tests"
-	@echo "  make scanner-test VERBOSE=1      - print expected/actual .out content"
+	@echo "  make scanner-test DEBUG=1      - print expected/actual .out content"
+	@echo "  make parser-test DEBUG=1       - print expected/actual .out content"
 	@echo "  make scanner-unit-test TEST=n    - run one scanner test by number"
 	@echo "  make scanner-unit-test TEST=name - run one scanner test by base name"
 	@echo "  make parser-unit-test TEST=n     - run one parser test by number"
@@ -125,9 +145,8 @@ $(PARSER_C) $(PARSER_H): $(PARSER) $(AST_H) | check-parser check-ast $(BUILD)
 $(LEX_C): $(SCANNER) $(PARSER_H) | check-scanner $(BUILD)
 	$(FLEX) -o $(LEX_C) $(SCANNER)
 
-# Alterado: adicionadas as flags $(COV_FLAGS) antes e depois para instrumentar o compilador de produção durante os testes
-$(COMPILER): $(PARSER_C) $(LEX_C) $(AST_C) $(SYMTAB_C)
-	$(CC) $(CFLAGS) $(COV_FLAGS) $(INCLUDES) $(PARSER_C) $(LEX_C) $(AST_C) $(SYMTAB_C) -o $(COMPILER) $(LDLIBS) $(COV_FLAGS)
+$(COMPILER): $(PARSER_C) $(LEX_C) $(AST_C) $(SYMTAB_C) $(SEM_C) $(INTER_C) $(GER_C)
+	$(CC) $(CFLAGS) $(COV_FLAGS) $(INCLUDES) $(PARSER_C) $(LEX_C) $(AST_C) $(SYMTAB_C) $(SEM_C) $(INTER_C) $(GER_C) -o $(COMPILER) $(LDLIBS) $(COV_FLAGS)
 
 run: $(COMPILER)
 	./$(COMPILER)
@@ -170,7 +189,7 @@ scanner-test: $(SCANNER_TEST_TARGET)
 		"$(SCANNER_TEST_TARGET)" < "$$input" > "$$actual"; \
 		if diff -u --strip-trailing-cr "$$expected" "$$actual" > /dev/null; then \
 			echo "PASS $$name"; \
-			if [ "$(VERBOSE)" -ne 0 ]; then \
+			if [ "$(DEBUG)" -ne 0 ]; then \
 				echo "--- expected: $$expected ---"; \
 				cat "$$expected"; \
 				echo "--- actual: $$actual ---"; \
@@ -197,9 +216,7 @@ scanner-test: $(SCANNER_TEST_TARGET)
 
 parser-test: $(COMPILER)
 	@mkdir -p $(PARSER_TEST_ACTUAL)
-	@set -e; \
-	failed=0; \
-	total=0; \
+	@set -e; failed=0; total=0; \
 	for input in $(PARSER_TEST_INPUTS)/*.c; do \
 		if [ ! -f "$$input" ]; then \
 			continue; \
@@ -214,11 +231,20 @@ parser-test: $(COMPILER)
 			continue; \
 		fi; \
 		"$(COMPILER)" < "$$input" > "$$actual" 2>&1 || true; \
-		sed -E -i 's/0x[0-9a-fA-F]+/0xADDR/g' "$$actual"; \
 		if diff -u --strip-trailing-cr "$$expected" "$$actual" > /dev/null; then \
 			echo "PASS $$name"; \
+			if [ "$(DEBUG)" -ne 0 ]; then \
+				echo "--- expected: $$expected ---"; \
+				cat "$$expected"; \
+				echo "--- actual: $$actual ---"; \
+				cat "$$actual"; \
+			fi; \
 		else \
 			echo "FAIL $$name"; \
+			echo "--- expected: $$expected ---"; \
+			cat "$$expected"; \
+			echo "--- actual: $$actual ---"; \
+			cat "$$actual"; \
 			diff -u --strip-trailing-cr "$$expected" "$$actual" || true; \
 			failed=$$((failed + 1)); \
 		fi; \
