@@ -66,8 +66,3 @@ The Makefile target compiles the compiler, runs all `parser/inputs/*.c`, compare
 
 - `11_trailing_dot_literal.c`: `10.` is tokenized as `NUMBER(10)` followed by `TK_OP_PONTO`.
 - `12_unclosed_block_comment.c`: unclosed block comment is not consumed as a comment token; characters are tokenized according to existing rules.
-
-### Notable parser coverage
-
-- `08_while_prefix_return_void.c`: covers `while`, simple declaration, prefix `++`/`--` and `return;`.
-- `09_function_call_not_supported.c`: negative test documenting that function call statements are not yet supported by the grammar.
