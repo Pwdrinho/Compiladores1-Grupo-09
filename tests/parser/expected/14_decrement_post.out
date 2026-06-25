@@ -1,0 +1,51 @@
+
+------------
+
+Análise sintática e semântica concluídas com sucesso.
+
+------------
+
+AST 
+
+tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
+└── tipo=NO_FUNCAO | valor='main' | tipo_dado=TIPO_DADO_INT
+    ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+    │   └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+    └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+        └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   │   │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   │   │   │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   │   │   │   │   └── tipo=NO_DECLARACAO | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │   │   │   │   │       └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+            │   │   │   │   │   └── tipo=NO_ATRIBUICAO | valor='=' | tipo_dado=TIPO_DADO_INT
+            │   │   │   │   │       ├── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │   │   │   │       └── tipo=NO_NUMERO | valor='5' | tipo_dado=TIPO_DADO_INT
+            │   │   │   │   └── tipo=NO_UNARIO | valor='++pos' | tipo_dado=TIPO_DADO_INT
+            │   │   │   │       └── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │   │   └── tipo=NO_UNARIO | valor='--pos' | tipo_dado=TIPO_DADO_INT
+            │   │   │       └── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │   └── tipo=NO_UNARIO | valor='++pre' | tipo_dado=TIPO_DADO_INT
+            │   │       └── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   └── tipo=NO_UNARIO | valor='--pre' | tipo_dado=TIPO_DADO_INT
+            │       └── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
+                └── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+
+--- CODIGO INTERMEDIARIO ---
+func main int
+decl x int
+assign x = 5
+expr x++
+expr x--
+expr x++
+expr x--
+return x
+endfunc
+----------------------------------
+
+--> Código Go final gerado em 'saida.go'.
+Liberamos a memoria da arvore sintatica 

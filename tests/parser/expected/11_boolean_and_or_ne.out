@@ -1,0 +1,77 @@
+
+------------
+
+Análise sintática e semântica concluídas com sucesso.
+
+------------
+
+AST 
+
+tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
+└── tipo=NO_FUNCAO | valor='check' | tipo_dado=TIPO_DADO_INT
+    ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+    │   ├── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+    │   └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+    │       ├── tipo=NO_PARAMETRO | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+    │       │   └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+    │       └── tipo=NO_PARAMETRO | valor='y' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+    │           └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+    └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+        └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   │   └── tipo=NO_IF | valor='if' | tipo_dado=TIPO_DADO_VOID
+            │   │   │       ├── tipo=NO_BINARIO | valor='!=' | tipo_dado=TIPO_DADO_INT
+            │   │   │       │   ├── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │   │       │   └── tipo=NO_IDENTIFICADOR | valor='y' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │   │       └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+            │   │   │           └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   │               └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
+            │   │   │                   └── tipo=NO_NUMERO | valor='1' | tipo_dado=TIPO_DADO_INT
+            │   │   └── tipo=NO_IF | valor='if' | tipo_dado=TIPO_DADO_VOID
+            │   │       ├── tipo=NO_BINARIO | valor='&&' | tipo_dado=TIPO_DADO_INT
+            │   │       │   ├── tipo=NO_BINARIO | valor='>' | tipo_dado=TIPO_DADO_INT
+            │   │       │   │   ├── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │       │   │   └── tipo=NO_NUMERO | valor='0' | tipo_dado=TIPO_DADO_INT
+            │   │       │   └── tipo=NO_BINARIO | valor='>=' | tipo_dado=TIPO_DADO_INT
+            │   │       │       ├── tipo=NO_IDENTIFICADOR | valor='y' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │       │       └── tipo=NO_NUMERO | valor='1' | tipo_dado=TIPO_DADO_INT
+            │   │       └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+            │   │           └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │               └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
+            │   │                   └── tipo=NO_NUMERO | valor='2' | tipo_dado=TIPO_DADO_INT
+            │   └── tipo=NO_IF | valor='if' | tipo_dado=TIPO_DADO_VOID
+            │       ├── tipo=NO_BINARIO | valor='||' | tipo_dado=TIPO_DADO_INT
+            │       │   ├── tipo=NO_BINARIO | valor='<' | tipo_dado=TIPO_DADO_INT
+            │       │   │   ├── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │       │   │   └── tipo=NO_NUMERO | valor='0' | tipo_dado=TIPO_DADO_INT
+            │       │   └── tipo=NO_BINARIO | valor='>' | tipo_dado=TIPO_DADO_INT
+            │       │       ├── tipo=NO_IDENTIFICADOR | valor='y' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │       │       └── tipo=NO_NUMERO | valor='10' | tipo_dado=TIPO_DADO_INT
+            │       └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+            │           └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │               └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
+            │                   └── tipo=NO_NUMERO | valor='3' | tipo_dado=TIPO_DADO_INT
+            └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
+                └── tipo=NO_NUMERO | valor='0' | tipo_dado=TIPO_DADO_INT
+
+--- CODIGO INTERMEDIARIO ---
+func check int
+param x int
+param y int
+if (x != y)
+return 1
+endif
+if ((x > 0) && (y >= 1))
+return 2
+endif
+if ((x < 0) || (y > 10))
+return 3
+endif
+return 0
+endfunc
+----------------------------------
+
+--> Código Go final gerado em 'saida.go'.
+Liberamos a memoria da arvore sintatica 

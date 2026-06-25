@@ -1,5 +1,5 @@
 ## 1. Visão Geral
-Na **AST cada nó na árvore (`NoAST`) encapsula uma unidade sintática (uma operação, uma declaração, um laço de repetição, etc.), mantendo dados para as fases de análise semântica e geração de código.
+Na **AST** cada nó na árvore (`NoAST`) encapsula uma unidade sintática (uma operação, uma declaração, um laço de repetição, etc.), mantendo dados para as fases de análise semântica e geração de código.
 
 ## 2. Estrutura de Dados (`ast.h`)
 O nó é definido por uma estrutura que contém:
