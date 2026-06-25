@@ -1,20 +1,41 @@
-Análise sintática concluída
-NO_PROGRAMA
-  NO_FUNCAO (main)
-    NO_LISTA
-      NO_TIPO (int)
-    NO_BLOCO
-      NO_LISTA
-        NO_IF (if_else)
-          NO_BINARIO (<)
-            NO_NUMERO (1)
-            NO_NUMERO (2)
-          NO_LISTA
-            NO_BLOCO
-              NO_LISTA
-                NO_RETORNO
-                  NO_NUMERO (1)
-            NO_BLOCO
-              NO_LISTA
-                NO_RETORNO
-                  NO_NUMERO (0)
+
+------------
+
+Análise sintática e semântica concluídas com sucesso.
+
+------------
+
+AST 
+
+tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
+└── tipo=NO_FUNCAO | valor='main' | tipo_dado=TIPO_DADO_INT
+    ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+    │   └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+    └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+        └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            └── tipo=NO_IF | valor='if_else' | tipo_dado=TIPO_DADO_VOID
+                ├── tipo=NO_BINARIO | valor='<' | tipo_dado=TIPO_DADO_INT
+                │   ├── tipo=NO_NUMERO | valor='1' | tipo_dado=TIPO_DADO_INT
+                │   └── tipo=NO_NUMERO | valor='2' | tipo_dado=TIPO_DADO_INT
+                └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+                    ├── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+                    │   └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+                    │       └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
+                    │           └── tipo=NO_NUMERO | valor='1' | tipo_dado=TIPO_DADO_INT
+                    └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+                        └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+                            └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
+                                └── tipo=NO_NUMERO | valor='0' | tipo_dado=TIPO_DADO_INT
+
+--- CODIGO INTERMEDIARIO ---
+func main int
+if (1 < 2)
+return 1
+else
+return 0
+endif
+endfunc
+----------------------------------
+
+--> Código Go final gerado em 'saida.go'.
+Liberamos a memoria da arvore sintatica 

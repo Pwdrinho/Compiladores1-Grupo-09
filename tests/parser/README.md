@@ -19,12 +19,13 @@ make test
 ### Layout
 
 - `inputs/*.c`: programs used as parser input
-- `expected/*.out`: expected parser output, including the AST printed by the compiler
+- `expected/*.out`: expected parser output, including the AST and intermediate code printed by the compiler
 
 ### Scope
 
-These tests focus on parser acceptance and AST shape. The symbol table is still compiled with the project, but it is not deeply exercised by the grammar yet.
+These tests focus on parser acceptance, AST shape, semantic errors and the structured intermediate code printed by the compiler.
 
 Current suite highlights:
 - Coverage for `while`, simple declaration, prefix `++`/`--`, and `return;` in `08_while_prefix_return_void.c`.
-- Negative case `09_function_call_not_supported.c` documents current grammar limitation: function call statements are not yet supported.
+- `09_function_call.c` documents the supported syntax for simple function call statements.
+- `10_undeclared_function.c` to `14_duplicate_function.c` document semantic errors for function signatures, arguments and returns.

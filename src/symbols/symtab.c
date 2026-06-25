@@ -3,64 +3,98 @@
 #include <string.h>
 #include "symtab.h"
 
-// Tabela Hash inicializada com NULL
 Simbolo* tabela_hash[HASH_SIZE] = {NULL};
 
-// Cálculo de Hash
-unsigned int calcular_hash(const char *nome) { // tem como objetivo pegar o nome do simbolo e calcular em um indice para armazenar
-    unsigned int hash = 5381; //semente inicial, pode ser qualquer número, mas 5381 é comumente usado
+// inicializa escopo global com 0
+int escopo_atual = 0;
+
+// contador: usamos apenas para gerar IDs únicos para os nomes dos intermediários.
+static int contador_variaveis_globais = 0; 
+
+// calculo de hash para posição na tabela
+unsigned int calcular_hash(const char *nome) { 
+    unsigned int hash = 5381; // recomendação do monitor chatGPT
     int contador;
-    while ((contador = *nome++)) { //vai endereçando letra por letra
+    while ((contador = *nome++)) { // lê letra por letra
         hash = hash * 33 + contador;
-    } //vai interando letra por letra até ter um número grande
-    return hash % HASH_SIZE; //é feito o módulo que será o edereço da variável em nossa tabela
+    } 
+    return hash % HASH_SIZE;  // faz o modulo para saber o indice na tabela
 }
 
-// Inserção
-void inserir_simbolo(const char *nome, char *tipo, int escopo) {
-    unsigned int indice = calcular_hash(nome); //endereço onde o simbolo deve ser inserido
+// inserir elemento na tabela
+void inserir_simbolo(const char *nome, TipoDado tipo, int escopo) {
+    unsigned int indice = calcular_hash(nome); // calcula o hash e acha o indice
     
-    // Criação do novo símbolo
-    Simbolo *novo_simbolo = (Simbolo*) malloc(sizeof(Simbolo)); //aloca uma memoria para o novo simbolo
-    if (novo_simbolo == NULL) {
+    Simbolo *novo_simbolo = (Simbolo*) malloc(sizeof(Simbolo)); // aloca espaço na memoria para o novo simbolo
+    
+    if (novo_simbolo == NULL) { // verifica se a alocação foi bem sucedida
         printf("Erro: Falha na alocação de memória para o símbolo.\n");
-        return;
+        exit(1);
     }
 
-    strncpy(novo_simbolo->nome, nome, MAX_NAME_LEN - 1); // copia no máximo MAX_NAME_LEN - 1 caracteres, deixando espaço para '\0'
-    novo_simbolo->nome[MAX_NAME_LEN - 1] = '\0'; // Garante terminação nula
-    novo_simbolo->tipo = tipo;
-    novo_simbolo->escopo = escopo;
-    novo_simbolo->ativo = 1; // Símbolo ativo ao ser criado
+    // salva o nome original
+    strncpy(novo_simbolo->nome, nome, MAX_NAME_LEN - 1); // Copia o nome com segurança, evitando buffer overflow
+    novo_simbolo->nome[MAX_NAME_LEN - 1] = '\0'; 
+    
+    // salva o nome intermediário (ex: "x_0", "x_1", etc.) 
+    snprintf(novo_simbolo->nome_intermediario, 259, "%s_%d", nome, contador_variaveis_globais++);
 
-    // Insere no início da lista encadeada (tratamento de colisão)
+    novo_simbolo->tipo_dado = tipo;
+    novo_simbolo->escopo = escopo;
+    novo_simbolo->ativo = 1; 
+
+    // insere no inicio da lista encadeada daquele índice
     novo_simbolo->proximo = tabela_hash[indice];
     tabela_hash[indice] = novo_simbolo;
 }
 
-// Busca
+// busca geral, pega a variável ativa mais recente com aquele nome - usamos para chamar variaveis, em contas x = y + z por exemplo
 Simbolo* buscar_simbolo(const char *nome) {
-    unsigned int indice = calcular_hash(nome); //calcula o indice onde o simbolo deve estar
+    unsigned int indice = calcular_hash(nome); 
     Simbolo *atual = tabela_hash[indice];
 
     while (atual != NULL) {
-        // Retorna apenas se o nome coincidir e não tiver sido "removido" pelo escopo
-        if (strcmp(atual->nome, nome) == 0 && atual->ativo == 1) {
+        // retorna a primeira ocorrencia ativa
+        if (strcmp(atual->nome, nome) == 0 && atual->ativo == 1) { // strcmp(atual->nome, nome) == 0 verifica se as strings são iguais vendo endereço na memoria
             return atual;
         }
         atual = atual->proximo;
     }
-    return NULL; // Não encontrado ou fora de escopo
+    return NULL; // se não achar, a variável não existe ou não está ativa
 }
 
+// busca mais detalhada, vamos olhar na declaração pra ver se já existe alguma variavel com mesmo nome
+Simbolo* buscar_simbolo_escopo(const char *nome, int escopo_alvo) {
+    unsigned int indice = calcular_hash(nome); 
+    Simbolo *atual = tabela_hash[indice];
 
-// Remoção de Escopo - não deleta as coisas, mas melhora a performance
+    while (atual != NULL) {
+        if (strcmp(atual->nome, nome) == 0 && atual->ativo == 1 && atual->escopo == escopo_alvo) {
+            return atual;
+        }
+        atual = atual->proximo;
+    }
+    return NULL; // Se não achar no escopo atual, está livre para ser declarada
+}
+
+void entrar_escopo() {
+    escopo_atual++;
+}
+
+void sair_escopo() {
+
+    // Inativa todas as variáveis do escopo que estamos fechando
+    remover_escopo(escopo_atual);
+
+    escopo_atual--;
+}
+
+// deixa inativo todas as variaveis daquele escopo
 void remover_escopo(int escopo) {
-    for (int i = 0; i < HASH_SIZE; i++) { //percorre a tabela toda
+    for (int i = 0; i < HASH_SIZE; i++) { 
         Simbolo *atual = tabela_hash[i];
-        while (atual != NULL) { //percorre a lista daquele indice até o final
-            // Se pertencer ao escopo alvo, desativamos para futuras buscas
-            if (atual->escopo == escopo && atual->ativo == 1) { // se for do escoppo atual e estiver ativo vamos desativá-lo
+        while (atual != NULL) { 
+            if (atual->escopo == escopo && atual->ativo == 1) { 
                 atual->ativo = 0;
             }
             atual = atual->proximo;

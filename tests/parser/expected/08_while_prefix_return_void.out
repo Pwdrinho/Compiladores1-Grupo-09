@@ -1,27 +1,50 @@
-Análise sintática concluída
-NO_PROGRAMA
-  NO_FUNCAO (main)
-    NO_LISTA
-      NO_TIPO (void)
-    NO_BLOCO
-      NO_LISTA
-        NO_LISTA
-          NO_LISTA
-            NO_LISTA
-              NO_DECLARACAO (x)
-                NO_TIPO (int)
-            NO_ATRIBUICAO (=)
-              NO_IDENTIFICADOR (x)
-              NO_NUMERO (0)
-          NO_WHILE
-            NO_BINARIO (<)
-              NO_IDENTIFICADOR (x)
-              NO_NUMERO (3)
-            NO_BLOCO
-              NO_LISTA
-                NO_LISTA
-                  NO_UNARIO (++pre)
-                    NO_IDENTIFICADOR (x)
-                NO_UNARIO (--pre)
-                  NO_IDENTIFICADOR (x)
-        NO_RETORNO
+
+------------
+
+Análise sintática e semântica concluídas com sucesso.
+
+------------
+
+AST 
+
+tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
+└── tipo=NO_FUNCAO | valor='main' | tipo_dado=TIPO_DADO_VOID
+    ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+    │   └── tipo=NO_TIPO | valor='void' | tipo_dado=TIPO_DADO_VOID
+    └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+        └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   │   │   └── tipo=NO_DECLARACAO | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │   │       └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+            │   │   └── tipo=NO_ATRIBUICAO | valor='=' | tipo_dado=TIPO_DADO_INT
+            │   │       ├── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │   │       └── tipo=NO_NUMERO | valor='0' | tipo_dado=TIPO_DADO_INT
+            │   └── tipo=NO_WHILE | tipo_dado=TIPO_DADO_VOID
+            │       ├── tipo=NO_BINARIO | valor='<' | tipo_dado=TIPO_DADO_INT
+            │       │   ├── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │       │   └── tipo=NO_NUMERO | valor='3' | tipo_dado=TIPO_DADO_INT
+            │       └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+            │           └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │               ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │               │   └── tipo=NO_UNARIO | valor='++pre' | tipo_dado=TIPO_DADO_INT
+            │               │       └── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │               └── tipo=NO_UNARIO | valor='--pre' | tipo_dado=TIPO_DADO_INT
+            │                   └── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_VOID
+
+--- CODIGO INTERMEDIARIO ---
+func main void
+decl x int
+assign x = 0
+while (x < 3)
+expr x++
+expr x--
+endwhile
+return
+endfunc
+----------------------------------
+
+--> Código Go final gerado em 'saida.go'.
+Liberamos a memoria da arvore sintatica 

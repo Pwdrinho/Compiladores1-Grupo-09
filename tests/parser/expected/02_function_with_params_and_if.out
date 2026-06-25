@@ -1,27 +1,49 @@
-Análise sintática concluída
-NO_PROGRAMA
-  NO_FUNCAO (sum)
-    NO_LISTA
-      NO_TIPO (int)
-      NO_LISTA
-        NO_PARAMETRO (a)
-          NO_TIPO (int)
-        NO_PARAMETRO (b)
-          NO_TIPO (int)
-    NO_BLOCO
-      NO_LISTA
-        NO_LISTA
-          NO_IF (if)
-            NO_BINARIO (<=)
-              NO_IDENTIFICADOR (a)
-              NO_IDENTIFICADOR (b)
-            NO_BLOCO
-              NO_LISTA
-                NO_RETORNO
-                  NO_BINARIO (+)
-                    NO_IDENTIFICADOR (a)
-                    NO_IDENTIFICADOR (b)
-        NO_RETORNO
-          NO_BINARIO (-)
-            NO_IDENTIFICADOR (a)
-            NO_IDENTIFICADOR (b)
+
+------------
+
+Análise sintática e semântica concluídas com sucesso.
+
+------------
+
+AST 
+
+tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
+└── tipo=NO_FUNCAO | valor='sum' | tipo_dado=TIPO_DADO_INT
+    ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+    │   ├── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+    │   └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+    │       ├── tipo=NO_PARAMETRO | valor='a' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+    │       │   └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+    │       └── tipo=NO_PARAMETRO | valor='b' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+    │           └── tipo=NO_TIPO | valor='int' | tipo_dado=TIPO_DADO_INT
+    └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+        └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            ├── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │   └── tipo=NO_IF | valor='if' | tipo_dado=TIPO_DADO_VOID
+            │       ├── tipo=NO_BINARIO | valor='<=' | tipo_dado=TIPO_DADO_INT
+            │       │   ├── tipo=NO_IDENTIFICADOR | valor='a' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │       │   └── tipo=NO_IDENTIFICADOR | valor='b' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │       └── tipo=NO_BLOCO | tipo_dado=TIPO_DADO_VOID
+            │           └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
+            │               └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
+            │                   └── tipo=NO_BINARIO | valor='+' | tipo_dado=TIPO_DADO_INT
+            │                       ├── tipo=NO_IDENTIFICADOR | valor='a' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            │                       └── tipo=NO_IDENTIFICADOR | valor='b' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+            └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
+                └── tipo=NO_BINARIO | valor='-' | tipo_dado=TIPO_DADO_INT
+                    ├── tipo=NO_IDENTIFICADOR | valor='a' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+                    └── tipo=NO_IDENTIFICADOR | valor='b' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
+
+--- CODIGO INTERMEDIARIO ---
+func sum int
+param a int
+param b int
+if (a <= b)
+return (a + b)
+endif
+return (a - b)
+endfunc
+----------------------------------
+
+--> Código Go final gerado em 'saida.go'.
+Liberamos a memoria da arvore sintatica 
