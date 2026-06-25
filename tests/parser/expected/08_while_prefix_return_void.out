@@ -33,11 +33,18 @@ tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
             │               └── tipo=NO_UNARIO | valor='--pre' | tipo_dado=TIPO_DADO_INT
             │                   └── tipo=NO_IDENTIFICADOR | valor='x' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
             └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_VOID
---> Código Go final gerado em 'saida.go'.
 
 --- CODIGO INTERMEDIARIO ---
-var x_0
-x_0 = 0
+func main void
+decl x int
+assign x = 0
+while (x < 3)
+expr x++
+expr x--
+endwhile
+return
+endfunc
 ----------------------------------
 
+--> Código Go final gerado em 'saida.go'.
 Liberamos a memoria da arvore sintatica 

@@ -65,6 +65,7 @@ static const char *nome_tipo_no(TipoNo tipo) {
         case NO_IDENTIFICADOR: return "NO_IDENTIFICADOR";
         case NO_NUMERO: return "NO_NUMERO";
         case NO_ACESSO_VETOR: return "NO_ACESSO_VETOR";
+        case NO_CHAMADA_FUNCAO: return "NO_CHAMADA_FUNCAO";
 
         case NO_VAZIO: return "NO_VAZIO";
 

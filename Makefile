@@ -4,8 +4,9 @@ BISON   ?= bison
 LDLIBS  ?= -lfl
 CFLAGS  ?= -Wall -Wextra -g
 
-# Flags de cobertura para os testes
-COV_FLAGS := -fprofile-arcs -ftest-coverage
+# Flags opcionais de cobertura. O build normal fica limpo; make coverage ativa essas flags.
+COV_FLAGS ?=
+COVERAGE_FLAGS := -fprofile-arcs -ftest-coverage
 
 SCANNER ?= src/lexer/scanner.l
 PARSER  ?= src/parser/parser.y
@@ -16,10 +17,10 @@ AST_C   := src/ast/ast.c
 # Se existir symtab.c, ele será compilado junto.
 # Se não existir, o Makefile continua funcionando.
 SYMTAB_C := $(wildcard src/symbols/symtab.c)
-
-SEM_C   := $(wildcard src/semantico/semantico.c)
-INTER_C := $(wildcard src/intermediario/intermediario.c)
-GER_C   := $(wildcard src/gerador/gerador.c)
+SEMANTICO_C := src/semantico/semantico.c
+INTERMEDIARIO_C := src/intermediario/intermediario.c
+GERADOR_C := src/gerador/gerador.c
+COMPILER_SRCS := $(AST_C) $(SYMTAB_C) $(SEMANTICO_C) $(INTERMEDIARIO_C) $(GERADOR_C)
 
 BUILD   ?= build
 
@@ -46,7 +47,12 @@ PARSER_TEST_INPUTS   := tests/parser/inputs
 PARSER_TEST_EXPECTED := tests/parser/expected
 PARSER_TEST_ACTUAL   := $(PARSER_TEST_BUILD)/actual
 
-DEBUG ?= 0
+CODEGEN_TEST_BUILD    := $(BUILD)/codegen-tests
+CODEGEN_TEST_INPUTS   := tests/codegen/inputs
+CODEGEN_TEST_EXPECTED := tests/codegen/expected
+CODEGEN_TEST_ACTUAL   := $(CODEGEN_TEST_BUILD)/actual
+
+VERBOSE ?= 0
 
 TEST_01 := 01_keywords.c
 TEST_02 := 02_identifiers_numbers.c
@@ -61,7 +67,6 @@ TEST_10 := 10_pointers_arrays.c
 TEST_11 := 11_trailing_dot_literal.c
 TEST_12 := 12_unclosed_block_comment.c
 
-# Mapeamento atualizado com base nos arquivos reais do parser
 PARSER_TEST_01 := 01_simple_function.c
 PARSER_TEST_02 := 02_function_with_params_and_if.c
 PARSER_TEST_03 := 03_local_decl_increment_return.c
@@ -70,27 +75,18 @@ PARSER_TEST_05 := 05_for_loop.c
 PARSER_TEST_06 := 06_if_else.c
 PARSER_TEST_07 := 07_multiple_functions.c
 PARSER_TEST_08 := 08_while_prefix_return_void.c
-PARSER_TEST_09 := 09_function_call_not_supported.c
-PARSER_TEST_10 := 10_binary_mul_div_mod.c
-PARSER_TEST_11 := 11_boolean_and_or_ne.c
-PARSER_TEST_12 := 12_for_compound_assign.c
-PARSER_TEST_13 := 13_for_empty_parts.c
-PARSER_TEST_14 := 14_decrement_post.c
-PARSER_TEST_15 := 15_nested_block.c
-PARSER_TEST_16 := 16_decl_init_expr.c
-PARSER_TEST_17 := 17_nested_if.c
-PARSER_TEST_19 := 19_for_assign_init.c
-PARSER_TEST_20 := 20_for_all_empty.c
-PARSER_TEST_21 := 21_unclosed_brace.c
-PARSER_TEST_23 := 23_missing_semicolon.c
-PARSER_TEST_24 := 24_for_prefix_update.c
-PARSER_TEST_27 := 27_float_bool_parens_eq.c
+PARSER_TEST_09 := 09_function_call.c
+PARSER_TEST_10 := 10_undeclared_function.c
+PARSER_TEST_11 := 11_wrong_argument_count.c
+PARSER_TEST_12 := 12_void_return_value.c
+PARSER_TEST_13 := 13_missing_return_value.c
+PARSER_TEST_14 := 14_duplicate_function.c
 
-.PHONY: all run clean help test scanner-test parser-test scanner_test test-scanner scanner-unit-test parser-unit-test parser_test test-parser check-parser check-scanner check-ast coverage
+.PHONY: all run clean help test scanner-test parser-test codegen-test scanner_test test-scanner scanner-unit-test parser-unit-test parser_test test-parser check-parser check-scanner check-ast coverage
 
 all: $(COMPILER)
 
-test: scanner-test parser-test
+test: scanner-test parser-test codegen-test
 
 scanner_test: scanner-test
 
@@ -102,8 +98,8 @@ help:
 	@echo "  make run                         - run the compiler"
 	@echo "  make scanner-test                - run scanner tests with DEBUG_LEXER=1"
 	@echo "  make parser-test                 - run parser tests"
-	@echo "  make scanner-test DEBUG=1      - print expected/actual .out content"
-	@echo "  make parser-test DEBUG=1       - print expected/actual .out content"
+	@echo "  make codegen-test                - run C to Go generation tests"
+	@echo "  make scanner-test VERBOSE=1      - print expected/actual .out content"
 	@echo "  make scanner-unit-test TEST=n    - run one scanner test by number"
 	@echo "  make scanner-unit-test TEST=name - run one scanner test by base name"
 	@echo "  make parser-unit-test TEST=n     - run one parser test by number"
@@ -145,8 +141,8 @@ $(PARSER_C) $(PARSER_H): $(PARSER) $(AST_H) | check-parser check-ast $(BUILD)
 $(LEX_C): $(SCANNER) $(PARSER_H) | check-scanner $(BUILD)
 	$(FLEX) -o $(LEX_C) $(SCANNER)
 
-$(COMPILER): $(PARSER_C) $(LEX_C) $(AST_C) $(SYMTAB_C) $(SEM_C) $(INTER_C) $(GER_C)
-	$(CC) $(CFLAGS) $(COV_FLAGS) $(INCLUDES) $(PARSER_C) $(LEX_C) $(AST_C) $(SYMTAB_C) $(SEM_C) $(INTER_C) $(GER_C) -o $(COMPILER) $(LDLIBS) $(COV_FLAGS)
+$(COMPILER): $(PARSER_C) $(LEX_C) $(COMPILER_SRCS) Makefile
+	$(CC) $(CFLAGS) $(COV_FLAGS) $(INCLUDES) $(PARSER_C) $(LEX_C) $(COMPILER_SRCS) -o $(COMPILER) $(LDLIBS) $(COV_FLAGS)
 
 run: $(COMPILER)
 	./$(COMPILER)
@@ -167,7 +163,7 @@ $(SCANNER_TEST_STUB): | $(SCANNER_TEST_BUILD)
 	@printf '    return 0;\n' >> $(SCANNER_TEST_STUB)
 	@printf '}\n' >> $(SCANNER_TEST_STUB)
 
-$(SCANNER_TEST_TARGET): $(SCANNER_TEST_GEN_C) $(SCANNER_TEST_STUB)
+$(SCANNER_TEST_TARGET): $(SCANNER_TEST_GEN_C) $(SCANNER_TEST_STUB) Makefile
 	$(CC) $(CFLAGS) $(COV_FLAGS) -DDEBUG_LEXER=1 $(INCLUDES) $(SCANNER_TEST_GEN_C) $(SCANNER_TEST_STUB) -o $(SCANNER_TEST_TARGET) $(LDLIBS) $(COV_FLAGS)
 
 scanner-test: $(SCANNER_TEST_TARGET)
@@ -189,7 +185,7 @@ scanner-test: $(SCANNER_TEST_TARGET)
 		"$(SCANNER_TEST_TARGET)" < "$$input" > "$$actual"; \
 		if diff -u --strip-trailing-cr "$$expected" "$$actual" > /dev/null; then \
 			echo "PASS $$name"; \
-			if [ "$(DEBUG)" -ne 0 ]; then \
+			if [ "$(VERBOSE)" -ne 0 ]; then \
 				echo "--- expected: $$expected ---"; \
 				cat "$$expected"; \
 				echo "--- actual: $$actual ---"; \
@@ -216,7 +212,9 @@ scanner-test: $(SCANNER_TEST_TARGET)
 
 parser-test: $(COMPILER)
 	@mkdir -p $(PARSER_TEST_ACTUAL)
-	@set -e; failed=0; total=0; \
+	@set -e; \
+	failed=0; \
+	total=0; \
 	for input in $(PARSER_TEST_INPUTS)/*.c; do \
 		if [ ! -f "$$input" ]; then \
 			continue; \
@@ -231,25 +229,64 @@ parser-test: $(COMPILER)
 			continue; \
 		fi; \
 		"$(COMPILER)" < "$$input" > "$$actual" 2>&1 || true; \
+		sed -E -i 's/0x[0-9a-fA-F]+/0xADDR/g' "$$actual"; \
 		if diff -u --strip-trailing-cr "$$expected" "$$actual" > /dev/null; then \
 			echo "PASS $$name"; \
-			if [ "$(DEBUG)" -ne 0 ]; then \
-				echo "--- expected: $$expected ---"; \
-				cat "$$expected"; \
-				echo "--- actual: $$actual ---"; \
-				cat "$$actual"; \
-			fi; \
 		else \
 			echo "FAIL $$name"; \
-			echo "--- expected: $$expected ---"; \
-			cat "$$expected"; \
-			echo "--- actual: $$actual ---"; \
-			cat "$$actual"; \
 			diff -u --strip-trailing-cr "$$expected" "$$actual" || true; \
 			failed=$$((failed + 1)); \
 		fi; \
 	done; \
 	echo "Parser Result: $$((total - failed))/$$total tests passed."; \
+	if [ "$$failed" -ne 0 ]; then \
+		exit 1; \
+	fi
+
+codegen-test: $(COMPILER)
+	@mkdir -p $(CODEGEN_TEST_ACTUAL)
+	@set -e; \
+	failed=0; \
+	total=0; \
+	for input in $(CODEGEN_TEST_INPUTS)/*.c; do \
+		if [ ! -f "$$input" ]; then \
+			continue; \
+		fi; \
+		name=$$(basename "$$input" | sed 's/\.[^.]*$$//'); \
+		expected="$(CODEGEN_TEST_EXPECTED)/$$name.go"; \
+		actual="$(CODEGEN_TEST_ACTUAL)/$$name.go"; \
+		compiler_out="$(CODEGEN_TEST_ACTUAL)/$$name.compiler.out"; \
+		total=$$((total + 1)); \
+		if [ ! -f "$$expected" ]; then \
+			echo "FAIL $$name (arquivo esperado ausente: $$expected)"; \
+			failed=$$((failed + 1)); \
+			continue; \
+		fi; \
+		if ! "$(COMPILER)" < "$$input" > "$$compiler_out" 2>&1; then \
+			echo "FAIL $$name (compilador retornou erro)"; \
+			cat "$$compiler_out"; \
+			failed=$$((failed + 1)); \
+			continue; \
+		fi; \
+		if [ ! -f saida.go ]; then \
+			echo "FAIL $$name (saida.go nao foi gerado)"; \
+			failed=$$((failed + 1)); \
+			continue; \
+		fi; \
+		cp saida.go "$$actual"; \
+		if diff -u --strip-trailing-cr "$$expected" "$$actual" > /dev/null; then \
+			echo "PASS $$name"; \
+		else \
+			echo "FAIL $$name"; \
+			diff -u --strip-trailing-cr "$$expected" "$$actual" || true; \
+			failed=$$((failed + 1)); \
+		fi; \
+	done; \
+	if [ "$$total" -eq 0 ]; then \
+		echo "Nenhum arquivo .c encontrado em $(CODEGEN_TEST_INPUTS)"; \
+		exit 1; \
+	fi; \
+	echo "Codegen Result: $$((total - failed))/$$total tests passed."; \
 	if [ "$$failed" -ne 0 ]; then \
 		exit 1; \
 	fi
@@ -360,7 +397,9 @@ parser_test: parser-unit-test
 
 test-parser: parser-unit-test
 
-coverage: scanner-test parser-test
+coverage:
+	$(MAKE) clean
+	$(MAKE) test COV_FLAGS="$(COVERAGE_FLAGS)"
 	@echo "Coletando dados de cobertura de todas as etapas (Scanner + Parser)..."
 	lcov --capture --directory $(SCANNER_TEST_BUILD) --output-file $(BUILD)/scanner_coverage.info
 	lcov --capture --directory $(BUILD) --output-file $(BUILD)/parser_coverage.info

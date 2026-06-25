@@ -55,9 +55,23 @@ tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
             │                   └── tipo=NO_NUMERO | valor='3' | tipo_dado=TIPO_DADO_INT
             └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
                 └── tipo=NO_NUMERO | valor='0' | tipo_dado=TIPO_DADO_INT
---> Código Go final gerado em 'saida.go'.
 
 --- CODIGO INTERMEDIARIO ---
+func check int
+param x int
+param y int
+if (x != y)
+return 1
+endif
+if ((x > 0) && (y >= 1))
+return 2
+endif
+if ((x < 0) || (y > 10))
+return 3
+endif
+return 0
+endfunc
 ----------------------------------
 
+--> Código Go final gerado em 'saida.go'.
 Liberamos a memoria da arvore sintatica 

@@ -11,13 +11,16 @@ nav:
       - Introdução: analisador_léxico/introdução.md
       - Fundamentação: analisador_léxico/fundamentação.md
       - Palavras Reservadas: analisador_léxico/palavrasreservadas.md
+      - Testes Léxicos: analisador_léxico/testes_lexico.md
   - Analisador Sintático:
       - Integração Léxico-Sintático: analisador_sintatico/integracao_lexico_sintatico.md
       - Especificação da Gramática da Linguagem: analisador_sintatico/especificacao_gramatica.md
-  - Testes:
-      - Visão Geral: testes/visao_geral.md
-      - Analisador Léxico: testes/testes_lexico.md
-      - Analisador Sintático: testes/testes_sintatico.md
+      - Testes Sintáticos: analisador_sintatico/testes_sintatico.md
+  - AST e Tabela de Símbolos:
+      - AST: ast_symtab/ast.md
+      - Tabela de Símbolos: ast_symtab/symtab.md
+  - Geração de Código:
+      - C para Go: geracao_codigo.md
   - Manuais:
       - Instalação Flex e Bison: manuais/instalacao_flex_bison.md
       - Instrução Build Flex/Bison: manuais/instrucao_build_flex_bison.md

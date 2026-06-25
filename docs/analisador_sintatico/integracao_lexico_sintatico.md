@@ -60,9 +60,8 @@ os padrões que os originam e o papel semântico que cada um cumpre no *parser*.
 
 | Token | Código | Padrão | Carrega em `yylval` |
 | --- | --- | --- | --- |
-| `IDENT` | 290 | `[a-zA-Z_][a-zA-Z0-9_]*` | `sval` — cópia de `yytext` |
-| `NUMBER` | 291 | `[0-9]+` | `ival` — valor convertido para inteiro |
-| `NUMBER` | 291 | `[0-9]+\.[0-9]+` | `dval` — valor convertido para double |
+| `IDENT` | 290 | `[a-zA-Z_][a-zA-Z0-9_]*` | `str` — cópia de `yytext` |
+| `NUMBER` | 291 | `[0-9]+(\.[0-9]+)?` | `str` — número preservado como texto |
 
 ### 2.3 Operadores de Dois Caracteres (`TK_OP_*`)
 
@@ -131,7 +130,7 @@ O fluxo pode ser representado da seguinte forma:
 | Fase / Componente | Ação Principal | O que é transmitido? |
 | --- | --- | --- |
 | **1. Arquivo `.c`** | Fornece o código-fonte bruto. | Fluxo de caracteres (texto). |
-| **2. `yylex()`** *(Léxico)* | Lê o texto, identifica padrões e gera tokens. | **Código do Token:** ex: `IDENT = 290`<br>**Valor Semântico:** ex: `yylval.sval = "total"` |
+| **2. `yylex()`** *(Léxico)* | Lê o texto, identifica padrões e gera tokens. | **Código do Token:** ex: `IDENT = 290`<br>**Valor Semântico:** ex: `yylval.str = "total"` |
 | **3. Parser** *(Sintático)* | Consome a saída do léxico para validar a gramática. | **Decisão:** Usa o código numérico.<br>**Árvore (AST):** Usa o conteúdo de `yylval`. |
 
 ---
@@ -146,9 +145,8 @@ modo que cada campo corresponde a um tipo de dado que um token pode carregar.
 
 ```c
 %union {
-    char*  sval;   /* valor textual: usado por IDENT */
-    int    ival;   /* valor inteiro: usado por NUMBER inteiro */
-    double dval;   /* valor real: usado por NUMBER com ponto flutuante */
+    char *str;
+    NoAST *no;
 }
 ```
 
@@ -156,49 +154,30 @@ modo que cada campo corresponde a um tipo de dado que um token pode carregar.
 
 | Token | Campo usado | Como é preenchido no scanner |
 | --- | --- | --- |
-| `IDENT` | `sval` | `yylval.sval = strdup(yytext);` |
-| `NUMBER` (inteiro) | `ival` | `yylval.ival = atoi(yytext);` |
-| `NUMBER` (ponto flutuante) | `dval` | `yylval.dval = atof(yytext);` |
+| `IDENT` | `str` | `yylval.str = copiar_yytext(yytext);` |
+| `NUMBER` | `str` | `yylval.str = copiar_yytext(yytext);` |
 | Palavras-chave e operadores | — | Não carregam valor; o código do token já é suficiente |
 
-### 4.3 Proposta de Modificação do Scanner
+### 4.3 Implementação Atual do Scanner
 
-Para habilitar a integração com o Bison, as regras de `IDENT` e `NUMBER` no
-`scanner.l` deverão ser modificadas conforme abaixo:
+As regras de `IDENT` e `NUMBER` já estão integradas ao Bison. O léxico preserva o
+lexema como texto para que a AST e a análise semântica decidam depois como
+interpretar o valor.
 
 ```c
-/* Antes (versão atual — apenas imprime) */
 [a-zA-Z_][a-zA-Z0-9_]* {
-    printf("IDENT(%s)\\n", yytext);
+    yylval.str = copiar_yytext(yytext);
     return IDENT;
 }
 
 [0-9]+(\\.[0-9]+)? {
-    printf("NUMBER(%s)\\n", yytext);
-    return NUMBER;
-}
-
-/* Depois (versão integrada com Bison) */
-[a-zA-Z_][a-zA-Z0-9_]* {
-    yylval.sval = strdup(yytext);
-    return IDENT;
-}
-
-/* Regra para números decimais (float/double) */
-[0-9]+\.[0-9]+ {
-    yylval.dval = atof(yytext);
-    return NUMBER;
-}
-
-/* Regra para números inteiros */
-[0-9]+ {
-    yylval.ival = atoi(yytext);
+    yylval.str = copiar_yytext(yytext);
     return NUMBER;
 }
 ```
 
-> **Observação:** O `strdup` aloca uma cópia do lexema na heap. O *parser* é
-responsável por liberar essa memória após o uso, evitando vazamentos.
+> **Observação:** `copiar_yytext` aloca uma cópia do lexema na heap. O parser
+> libera essa memória após criar o nó da AST correspondente.
 > 
 
 ---
@@ -223,13 +202,13 @@ _tmp var1 intx 0 42 3.14 10.
 
 | Lexema | Token | `yylval` |
 | --- | --- | --- |
-| `_tmp` | `IDENT` (290) | `sval = "_tmp"` |
-| `var1` | `IDENT` (290) | `sval = "var1"` |
-| `intx` | `IDENT` (290) | `sval = "intx"` |
-| `0` | `NUMBER` (291) | `ival = 0` |
-| `42` | `NUMBER` (291) | `ival = 42` |
-| `3.14` | `NUMBER` (291) | `dval = 3.14` |
-| `10.` | `NUMBER` (291) | `ival = 10` + `TK_OP_PONTO` |
+| `_tmp` | `IDENT` (290) | `str = "_tmp"` |
+| `var1` | `IDENT` (290) | `str = "var1"` |
+| `intx` | `IDENT` (290) | `str = "intx"` |
+| `0` | `NUMBER` (291) | `str = "0"` |
+| `42` | `NUMBER` (291) | `str = "42"` |
+| `3.14` | `NUMBER` (291) | `str = "3.14"` |
+| `10.` | `NUMBER` (291) | `str = "10"` + `TK_OP_PONTO` |
 
 > **Nota:** O lexema `intx` é reconhecido como `IDENT` e **não** como a
 palavra-chave `int`, pois o padrão de keywords exige correspondência exata
@@ -255,10 +234,10 @@ int value /* ignored block comment */ = 12;
 | --- | --- | --- |
 | `// this line is a comment` | *(descartado)* | — |
 | `int` | `KW_INT` (274) | — |
-| `value` | `IDENT` (290) | `sval = "value"` |
+| `value` | `IDENT` (290) | `str = "value"` |
 | `/* ignored block comment */` | *(descartado)* | — |
 | `=` | `TK_OP_IGUAL` (313) | — |
-| `12` | `NUMBER` (291) | `ival = 12` |
+| `12` | `NUMBER` (291) | `str = "12"` |
 | `;` | `TK_OP_PONTO_VIRGULA` (325) | — |
 
 > **Nota:** Comentários de linha (`//`) e de bloco (`/* */`) são consumidos
@@ -291,31 +270,31 @@ int main() {
 | Lexema | Token | `yylval` |
 | --- | --- | --- |
 | `int` | `KW_INT` (274) | — |
-| `main` | `IDENT` (290) | `sval = "main"` |
+| `main` | `IDENT` (290) | `str = "main"` |
 | `(` | `TK_ABRE_PARENTESE` (326) | — |
 | `)` | `TK_FECHA_PARENTESE` (327) | — |
 | `{` | `TK_ABRE_CHAVE` (328) | — |
 | `int` | `KW_INT` (274) | — |
-| `a` | `IDENT` (290) | `sval = "a"` |
+| `a` | `IDENT` (290) | `str = "a"` |
 | `=` | `TK_OP_IGUAL` (313) | — |
-| `10` | `NUMBER` (291) | `ival = 10` |
+| `10` | `NUMBER` (291) | `str = "10"` |
 | `;` | `TK_OP_PONTO_VIRGULA` (325) | — |
-| `a` | `IDENT` (290) | `sval = "a"` |
+| `a` | `IDENT` (290) | `str = "a"` |
 | `+=` | `TK_OP_MAIS_IGUAL` (300) | — |
-| `2` | `NUMBER` (291) | `ival = 2` |
+| `2` | `NUMBER` (291) | `str = "2"` |
 | `;` | `TK_OP_PONTO_VIRGULA` (325) | — |
 | `if` | `KW_IF` (273) | — |
 | `(` | `TK_ABRE_PARENTESE` (326) | — |
-| `a` | `IDENT` (290) | `sval = "a"` |
+| `a` | `IDENT` (290) | `str = "a"` |
 | `>=` | `TK_OP_MAIOR_IGUAL` (295) | — |
-| `12` | `NUMBER` (291) | `ival = 12` |
+| `12` | `NUMBER` (291) | `str = "12"` |
 | `&&` | `TK_OP_AND` (296) | — |
-| `a` | `IDENT` (290) | `sval = "a"` |
+| `a` | `IDENT` (290) | `str = "a"` |
 | `!=` | `TK_OP_DIFERENTE` (293) | — |
-| `0` | `NUMBER` (291) | `ival = 0` |
+| `0` | `NUMBER` (291) | `str = "0"` |
 | `)` | `TK_FECHA_PARENTESE` (327) | — |
 | `{` | `TK_ABRE_CHAVE` (328) | — |
-| `a` | `IDENT` (290) | `sval = "a"` |
+| `a` | `IDENT` (290) | `str = "a"` |
 | `--` | `TK_OP_DECREMENTO` (299) | — |
 | `;` | `TK_OP_PONTO_VIRGULA` (325) | — |
 | `}` | `TK_FECHA_CHAVE` (329) | — |

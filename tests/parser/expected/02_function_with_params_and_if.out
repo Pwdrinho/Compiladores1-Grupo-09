@@ -33,11 +33,17 @@ tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
                 └── tipo=NO_BINARIO | valor='-' | tipo_dado=TIPO_DADO_INT
                     ├── tipo=NO_IDENTIFICADOR | valor='a' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
                     └── tipo=NO_IDENTIFICADOR | valor='b' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
---> Código Go final gerado em 'saida.go'.
 
 --- CODIGO INTERMEDIARIO ---
-t0 = a_0 + b_1
-t1 = a_0 - b_1
+func sum int
+param a int
+param b int
+if (a <= b)
+return (a + b)
+endif
+return (a - b)
+endfunc
 ----------------------------------
 
+--> Código Go final gerado em 'saida.go'.
 Liberamos a memoria da arvore sintatica 

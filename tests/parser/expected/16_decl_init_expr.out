@@ -39,17 +39,17 @@ tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
             │               └── tipo=NO_IDENTIFICADOR | valor='b' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
             └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
                 └── tipo=NO_IDENTIFICADOR | valor='c' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
---> Código Go final gerado em 'saida.go'.
 
 --- CODIGO INTERMEDIARIO ---
-var a_0
-var b_1
-a_0 = 3
-b_1 = 4
-var c_2
-t0 = a_0 * 2
-t1 = t0 + b_1
-c_2 = t1
+func main int
+decl a int
+decl b int
+assign a = 3
+assign b = 4
+decl c int = ((a * 2) + b)
+return c
+endfunc
 ----------------------------------
 
+--> Código Go final gerado em 'saida.go'.
 Liberamos a memoria da arvore sintatica 

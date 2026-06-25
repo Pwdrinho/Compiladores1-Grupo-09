@@ -30,11 +30,14 @@ tipo=NO_PROGRAMA | tipo_dado=TIPO_DADO_VOID
                     └── tipo=NO_LISTA | tipo_dado=TIPO_DADO_VOID
                         └── tipo=NO_RETORNO | tipo_dado=TIPO_DADO_INT
                             └── tipo=NO_IDENTIFICADOR | valor='i' | SIMBOLO=[Ativo] | tipo_dado=TIPO_DADO_INT
---> Código Go final gerado em 'saida.go'.
 
 --- CODIGO INTERMEDIARIO ---
-var i_0
-i_0 = 0
+func main int
+for i := 0; (i < 3); i++
+return i
+endfor
+endfunc
 ----------------------------------
 
+--> Código Go final gerado em 'saida.go'.
 Liberamos a memoria da arvore sintatica 
