@@ -16,6 +16,9 @@ nav:
       - Integração Léxico-Sintático: analisador_sintatico/integracao_lexico_sintatico.md
       - Especificação da Gramática da Linguagem: analisador_sintatico/especificacao_gramatica.md
       - Testes Sintáticos: analisador_sintatico/testes_sintatico.md
+  - AST e Tabela de Símbolos:
+      - AST: ast_symtab/ast.md
+      - Tabela de Símbolos: ast_symtab/symtab.md
   - Geração de Código:
       - C para Go: geracao_codigo.md
   - Manuais:
