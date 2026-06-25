@@ -1,0 +1,2382 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação do projeto">
+      
+      
+      
+      
+        <link rel="prev" href="../../analisador_l%C3%A9xico/palavrasreservadas/">
+      
+      
+        <link rel="next" href="../especificacao_gramatica/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Integração Léxico-Sintático - Compiladores 1 Grupo 09</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-integracao-lexico-sintatico" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Compiladores 1 Grupo 09" class="md-header__button md-logo" aria-label="Compiladores 1 Grupo 09" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Compiladores 1 Grupo 09
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Integração Léxico-Sintático
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Compiladores 1 Grupo 09" class="md-nav__button md-logo" aria-label="Compiladores 1 Grupo 09" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Compiladores 1 Grupo 09
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analisador Léxico
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Analisador Léxico
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analisador_l%C3%A9xico/introdu%C3%A7%C3%A3o/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introdução
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analisador_l%C3%A9xico/fundamenta%C3%A7%C3%A3o/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundamentação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analisador_l%C3%A9xico/palavrasreservadas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Palavras Reservadas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analisador_léxico/testes_lexico.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testes Léxicos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analisador Sintático
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Analisador Sintático
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integração Léxico-Sintático
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integração Léxico-Sintático
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#11-introducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Introdução
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-tabela-completa-de-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Tabela Completa de Tokens
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Tabela Completa de Tokens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-palavras-chave-kw_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Palavras-Chave (KW_*)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-identificadores-e-literais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Identificadores e Literais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-operadores-de-dois-caracteres-tk_op_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Operadores de Dois Caracteres (TK_OP_*)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-operadores-de-um-caractere-e-delimitadores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Operadores de Um Caractere e Delimitadores
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-a-interface-yylex-como-o-parser-consome-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. A Interface yylex() — Como o Parser Consome Tokens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-estrutura-de-valores-yylval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Estrutura de Valores — yylval
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Estrutura de Valores — yylval">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-declaracao-da-union" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Declaração da Union
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-associacao-token-campo-da-union" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Associação Token → Campo da Union
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-implementacao-atual-do-scanner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Implementação Atual do Scanner
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-exemplos-de-entrada-e-fluxo-de-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Exemplos de Entrada e Fluxo de Tokens
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Exemplos de Entrada e Fluxo de Tokens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-identificadores-e-literais-numericos-02_identifiers_numbersc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Identificadores e Literais Numéricos (02_identifiers_numbers.c)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-comentarios-e-espacos-em-branco-05_comments_whitespacec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Comentários e Espaços em Branco (05_comments_whitespace.c)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-trecho-misto-programa-completo-07_mixed_snippetc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Trecho Misto — Programa Completo (07_mixed_snippet.c)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-tokens-ignorados-pelo-parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Tokens Ignorados pelo Parser
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../especificacao_gramatica/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Especificação da Gramática da Linguagem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testes_sintatico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testes Sintáticos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AST e Tabela de Símbolos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AST e Tabela de Símbolos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ast_symtab/ast/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AST
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ast_symtab/symtab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tabela de Símbolos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Geração de Código
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Geração de Código
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../geracao_codigo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C para Go
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manuais
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Manuais
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manuais/instalacao_flex_bison/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instalação Flex e Bison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manuais/instrucao_build_flex_bison/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instrução Build Flex/Bison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manuais/makefile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Makefile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manuais/padrao_commit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Padrões de Commit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manuais/padrao_branch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Padrões de Branch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#11-introducao" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Introdução
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-tabela-completa-de-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. Tabela Completa de Tokens
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Tabela Completa de Tokens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-palavras-chave-kw_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Palavras-Chave (KW_*)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-identificadores-e-literais" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Identificadores e Literais
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-operadores-de-dois-caracteres-tk_op_" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Operadores de Dois Caracteres (TK_OP_*)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#24-operadores-de-um-caractere-e-delimitadores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.4 Operadores de Um Caractere e Delimitadores
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-a-interface-yylex-como-o-parser-consome-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. A Interface yylex() — Como o Parser Consome Tokens
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-estrutura-de-valores-yylval" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. Estrutura de Valores — yylval
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Estrutura de Valores — yylval">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-declaracao-da-union" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.1 Declaração da Union
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-associacao-token-campo-da-union" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.2 Associação Token → Campo da Union
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#43-implementacao-atual-do-scanner" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4.3 Implementação Atual do Scanner
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-exemplos-de-entrada-e-fluxo-de-tokens" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. Exemplos de Entrada e Fluxo de Tokens
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Exemplos de Entrada e Fluxo de Tokens">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-identificadores-e-literais-numericos-02_identifiers_numbersc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.1 Identificadores e Literais Numéricos (02_identifiers_numbers.c)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-comentarios-e-espacos-em-branco-05_comments_whitespacec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.2 Comentários e Espaços em Branco (05_comments_whitespace.c)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#53-trecho-misto-programa-completo-07_mixed_snippetc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5.3 Trecho Misto — Programa Completo (07_mixed_snippet.c)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-tokens-ignorados-pelo-parser" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. Tokens Ignorados pelo Parser
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="1-integracao-lexico-sintatico">1. Integração Léxico-Sintático</h1>
+<h2 id="11-introducao">1.1 Introdução</h2>
+<p>O <strong>documento de integração</strong> descreve como os <em>tokens</em> produzidos pelo analisador
+léxico serão consumidos pelo analisador sintático (<em>parser</em>). Essa integração é o
+ponto de contato entre as duas primeiras fases do compilador e define o contrato
+formal pelo qual o léxico entrega informações estruturadas ao <em>parser</em>.</p>
+<p>No modelo adotado por este projeto, o léxico é implementado com <strong>Flex</strong> e o
+<em>parser</em> será implementado com <strong>Bison</strong> — ferramentas que se comunicam por meio
+de uma interface padronizada: a função <code>yylex()</code>, a variável global <code>yylval</code> e o
+arquivo de cabeçalho gerado pelo Bison (<code>parser.tab.h</code>).</p>
+<hr />
+<h2 id="2-tabela-completa-de-tokens">2. Tabela Completa de Tokens</h2>
+<p>A tabela a seguir lista todos os tokens reconhecidos pelo analisador léxico
+(<code>scanner.l</code>), seus códigos numéricos (iniciando em <code>258</code>, padrão Flex/Bison),
+os padrões que os originam e o papel semântico que cada um cumpre no <em>parser</em>.</p>
+<h3 id="21-palavras-chave-kw_">2.1 Palavras-Chave (<code>KW_*</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Código</th>
+<th>Lexema</th>
+<th>Papel no Parser</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>KW_AUTO</code></td>
+<td>258</td>
+<td><code>auto</code></td>
+<td>Especificador de classe de armazenamento</td>
+</tr>
+<tr>
+<td><code>KW_BREAK</code></td>
+<td>259</td>
+<td><code>break</code></td>
+<td>Instrução de desvio</td>
+</tr>
+<tr>
+<td><code>KW_CASE</code></td>
+<td>260</td>
+<td><code>case</code></td>
+<td>Rótulo de <code>switch</code></td>
+</tr>
+<tr>
+<td><code>KW_CHAR</code></td>
+<td>261</td>
+<td><code>char</code></td>
+<td>Especificador de tipo</td>
+</tr>
+<tr>
+<td><code>KW_CONST</code></td>
+<td>262</td>
+<td><code>const</code></td>
+<td>Qualificador de tipo</td>
+</tr>
+<tr>
+<td><code>KW_CONTINUE</code></td>
+<td>263</td>
+<td><code>continue</code></td>
+<td>Instrução de desvio</td>
+</tr>
+<tr>
+<td><code>KW_DEFAULT</code></td>
+<td>264</td>
+<td><code>default</code></td>
+<td>Rótulo padrão de <code>switch</code></td>
+</tr>
+<tr>
+<td><code>KW_DO</code></td>
+<td>265</td>
+<td><code>do</code></td>
+<td>Estrutura de repetição</td>
+</tr>
+<tr>
+<td><code>KW_DOUBLE</code></td>
+<td>266</td>
+<td><code>double</code></td>
+<td>Especificador de tipo</td>
+</tr>
+<tr>
+<td><code>KW_ELSE</code></td>
+<td>267</td>
+<td><code>else</code></td>
+<td>Ramificação condicional</td>
+</tr>
+<tr>
+<td><code>KW_ENUM</code></td>
+<td>268</td>
+<td><code>enum</code></td>
+<td>Declaração de enumeração</td>
+</tr>
+<tr>
+<td><code>KW_EXTERN</code></td>
+<td>269</td>
+<td><code>extern</code></td>
+<td>Especificador de armazenamento</td>
+</tr>
+<tr>
+<td><code>KW_FLOAT</code></td>
+<td>270</td>
+<td><code>float</code></td>
+<td>Especificador de tipo</td>
+</tr>
+<tr>
+<td><code>KW_FOR</code></td>
+<td>271</td>
+<td><code>for</code></td>
+<td>Estrutura de repetição</td>
+</tr>
+<tr>
+<td><code>KW_GOTO</code></td>
+<td>272</td>
+<td><code>goto</code></td>
+<td>Instrução de desvio incondicional</td>
+</tr>
+<tr>
+<td><code>KW_IF</code></td>
+<td>273</td>
+<td><code>if</code></td>
+<td>Estrutura condicional</td>
+</tr>
+<tr>
+<td><code>KW_INT</code></td>
+<td>274</td>
+<td><code>int</code></td>
+<td>Especificador de tipo</td>
+</tr>
+<tr>
+<td><code>KW_LONG</code></td>
+<td>275</td>
+<td><code>long</code></td>
+<td>Modificador de tipo</td>
+</tr>
+<tr>
+<td><code>KW_REGISTER</code></td>
+<td>276</td>
+<td><code>register</code></td>
+<td>Especificador de armazenamento</td>
+</tr>
+<tr>
+<td><code>KW_RETURN</code></td>
+<td>277</td>
+<td><code>return</code></td>
+<td>Instrução de retorno</td>
+</tr>
+<tr>
+<td><code>KW_SHORT</code></td>
+<td>278</td>
+<td><code>short</code></td>
+<td>Modificador de tipo</td>
+</tr>
+<tr>
+<td><code>KW_SIGNED</code></td>
+<td>279</td>
+<td><code>signed</code></td>
+<td>Modificador de tipo</td>
+</tr>
+<tr>
+<td><code>KW_SIZEOF</code></td>
+<td>280</td>
+<td><code>sizeof</code></td>
+<td>Operador de tamanho</td>
+</tr>
+<tr>
+<td><code>KW_STATIC</code></td>
+<td>281</td>
+<td><code>static</code></td>
+<td>Especificador de armazenamento</td>
+</tr>
+<tr>
+<td><code>KW_STRUCT</code></td>
+<td>282</td>
+<td><code>struct</code></td>
+<td>Declaração de estrutura</td>
+</tr>
+<tr>
+<td><code>KW_SWITCH</code></td>
+<td>283</td>
+<td><code>switch</code></td>
+<td>Estrutura de seleção</td>
+</tr>
+<tr>
+<td><code>KW_TYPEDEF</code></td>
+<td>284</td>
+<td><code>typedef</code></td>
+<td>Criação de alias de tipo</td>
+</tr>
+<tr>
+<td><code>KW_UNION</code></td>
+<td>285</td>
+<td><code>union</code></td>
+<td>Declaração de união</td>
+</tr>
+<tr>
+<td><code>KW_UNSIGNED</code></td>
+<td>286</td>
+<td><code>unsigned</code></td>
+<td>Modificador de tipo</td>
+</tr>
+<tr>
+<td><code>KW_VOID</code></td>
+<td>287</td>
+<td><code>void</code></td>
+<td>Especificador de tipo/retorno</td>
+</tr>
+<tr>
+<td><code>KW_VOLATILE</code></td>
+<td>288</td>
+<td><code>volatile</code></td>
+<td>Qualificador de tipo</td>
+</tr>
+<tr>
+<td><code>KW_WHILE</code></td>
+<td>289</td>
+<td><code>while</code></td>
+<td>Estrutura de repetição</td>
+</tr>
+</tbody>
+</table>
+<h3 id="22-identificadores-e-literais">2.2 Identificadores e Literais</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Código</th>
+<th>Padrão</th>
+<th>Carrega em <code>yylval</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IDENT</code></td>
+<td>290</td>
+<td><code>[a-zA-Z_][a-zA-Z0-9_]*</code></td>
+<td><code>str</code> — cópia de <code>yytext</code></td>
+</tr>
+<tr>
+<td><code>NUMBER</code></td>
+<td>291</td>
+<td><code>[0-9]+(\.[0-9]+)?</code></td>
+<td><code>str</code> — número preservado como texto</td>
+</tr>
+</tbody>
+</table>
+<h3 id="23-operadores-de-dois-caracteres-tk_op_">2.3 Operadores de Dois Caracteres (<code>TK_OP_*</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Código</th>
+<th>Lexema</th>
+<th>Papel no Parser</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TK_OP_IGUAL_COMPARACAO</code></td>
+<td>292</td>
+<td><code>==</code></td>
+<td>Operador relacional de igualdade</td>
+</tr>
+<tr>
+<td><code>TK_OP_DIFERENTE</code></td>
+<td>293</td>
+<td><code>!=</code></td>
+<td>Operador relacional de diferença</td>
+</tr>
+<tr>
+<td><code>TK_OP_MENOR_IGUAL</code></td>
+<td>294</td>
+<td><code>&lt;=</code></td>
+<td>Operador relacional</td>
+</tr>
+<tr>
+<td><code>TK_OP_MAIOR_IGUAL</code></td>
+<td>295</td>
+<td><code>&gt;=</code></td>
+<td>Operador relacional</td>
+</tr>
+<tr>
+<td><code>TK_OP_AND</code></td>
+<td>296</td>
+<td><code>&amp;&amp;</code></td>
+<td>Operador lógico E</td>
+</tr>
+<tr>
+<td><code>TK_OP_OR</code></td>
+<td>297</td>
+<td><code>\|\|</code></td>
+<td>Operador lógico OU</td>
+</tr>
+<tr>
+<td><code>TK_OP_INCREMENTO</code></td>
+<td>298</td>
+<td><code>++</code></td>
+<td>Operador unário de incremento</td>
+</tr>
+<tr>
+<td><code>TK_OP_DECREMENTO</code></td>
+<td>299</td>
+<td><code>--</code></td>
+<td>Operador unário de decremento</td>
+</tr>
+<tr>
+<td><code>TK_OP_MAIS_IGUAL</code></td>
+<td>300</td>
+<td><code>+=</code></td>
+<td>Atribuição composta</td>
+</tr>
+<tr>
+<td><code>TK_OP_MENOS_IGUAL</code></td>
+<td>301</td>
+<td><code>-=</code></td>
+<td>Atribuição composta</td>
+</tr>
+<tr>
+<td><code>TK_OP_MULTIPLICACAO_IGUAL</code></td>
+<td>302</td>
+<td><code>*=</code></td>
+<td>Atribuição composta</td>
+</tr>
+<tr>
+<td><code>TK_OP_DIVISAO_IGUAL</code></td>
+<td>303</td>
+<td><code>/=</code></td>
+<td>Atribuição composta</td>
+</tr>
+<tr>
+<td><code>TK_OP_MODULO_IGUAL</code></td>
+<td>304</td>
+<td><code>%=</code></td>
+<td>Atribuição composta</td>
+</tr>
+<tr>
+<td><code>TK_OP_DESLOCAMENTO_ESQUERDA</code></td>
+<td>305</td>
+<td><code>&lt;&lt;</code></td>
+<td>Deslocamento de bits à esquerda</td>
+</tr>
+<tr>
+<td><code>TK_OP_DESLOCAMENTO_DIREITA</code></td>
+<td>306</td>
+<td><code>&gt;&gt;</code></td>
+<td>Deslocamento de bits à direita</td>
+</tr>
+<tr>
+<td><code>TK_OP_PONTEIRO_ACESSO</code></td>
+<td>307</td>
+<td><code>-&gt;</code></td>
+<td>Acesso a membro via ponteiro</td>
+</tr>
+</tbody>
+</table>
+<h3 id="24-operadores-de-um-caractere-e-delimitadores">2.4 Operadores de Um Caractere e Delimitadores</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Código</th>
+<th>Lexema</th>
+<th>Papel no Parser</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TK_OP_SOMA</code></td>
+<td>308</td>
+<td><code>+</code></td>
+<td>Operador aritmético / unário</td>
+</tr>
+<tr>
+<td><code>TK_OP_SUBTRACAO</code></td>
+<td>309</td>
+<td><code>-</code></td>
+<td>Operador aritmético / unário</td>
+</tr>
+<tr>
+<td><code>TK_OP_MULTIPLICACAO</code></td>
+<td>310</td>
+<td><code>*</code></td>
+<td>Operador aritmético / ponteiro</td>
+</tr>
+<tr>
+<td><code>TK_OP_DIVISAO</code></td>
+<td>311</td>
+<td><code>/</code></td>
+<td>Operador aritmético</td>
+</tr>
+<tr>
+<td><code>TK_OP_MODULO</code></td>
+<td>312</td>
+<td><code>%</code></td>
+<td>Operador aritmético</td>
+</tr>
+<tr>
+<td><code>TK_OP_IGUAL</code></td>
+<td>313</td>
+<td><code>=</code></td>
+<td>Operador de atribuição</td>
+</tr>
+<tr>
+<td><code>TK_OP_MENOR</code></td>
+<td>314</td>
+<td><code>&lt;</code></td>
+<td>Operador relacional</td>
+</tr>
+<tr>
+<td><code>TK_OP_MAIOR</code></td>
+<td>315</td>
+<td><code>&gt;</code></td>
+<td>Operador relacional</td>
+</tr>
+<tr>
+<td><code>TK_OP_NAO</code></td>
+<td>316</td>
+<td><code>!</code></td>
+<td>Operador lógico de negação</td>
+</tr>
+<tr>
+<td><code>TK_OP_E_BIT</code></td>
+<td>317</td>
+<td><code>&amp;</code></td>
+<td>Bit a bit E / endereço</td>
+</tr>
+<tr>
+<td><code>TK_OP_OU_BIT</code></td>
+<td>318</td>
+<td><code>\|</code></td>
+<td>Bit a bit OU</td>
+</tr>
+<tr>
+<td><code>TK_OP_XOR_BIT</code></td>
+<td>319</td>
+<td><code>^</code></td>
+<td>Bit a bit XOR</td>
+</tr>
+<tr>
+<td><code>TK_OP_NOT_BIT</code></td>
+<td>320</td>
+<td><code>~</code></td>
+<td>Bit a bit complemento</td>
+</tr>
+<tr>
+<td><code>TK_OP_TERNARIO</code></td>
+<td>321</td>
+<td><code>?</code></td>
+<td>Operador ternário (parte 1)</td>
+</tr>
+<tr>
+<td><code>TK_OP_DOIS_PONTOS</code></td>
+<td>322</td>
+<td><code>:</code></td>
+<td>Operador ternário / rótulo</td>
+</tr>
+<tr>
+<td><code>TK_OP_PONTO</code></td>
+<td>323</td>
+<td><code>.</code></td>
+<td>Acesso a membro de struct</td>
+</tr>
+<tr>
+<td><code>TK_OP_VIRGULA</code></td>
+<td>324</td>
+<td><code>,</code></td>
+<td>Separador de argumentos</td>
+</tr>
+<tr>
+<td><code>TK_OP_PONTO_VIRGULA</code></td>
+<td>325</td>
+<td><code>;</code></td>
+<td>Terminador de instrução</td>
+</tr>
+<tr>
+<td><code>TK_ABRE_PARENTESE</code></td>
+<td>326</td>
+<td><code>(</code></td>
+<td>Agrupamento / chamada</td>
+</tr>
+<tr>
+<td><code>TK_FECHA_PARENTESE</code></td>
+<td>327</td>
+<td><code>)</code></td>
+<td>Agrupamento / chamada</td>
+</tr>
+<tr>
+<td><code>TK_ABRE_CHAVE</code></td>
+<td>328</td>
+<td><code>{</code></td>
+<td>Início de bloco</td>
+</tr>
+<tr>
+<td><code>TK_FECHA_CHAVE</code></td>
+<td>329</td>
+<td><code>}</code></td>
+<td>Fim de bloco</td>
+</tr>
+<tr>
+<td><code>TK_ABRE_COLCHETE</code></td>
+<td>330</td>
+<td><code>[</code></td>
+<td>Acesso a array</td>
+</tr>
+<tr>
+<td><code>TK_FECHA_COLCHETE</code></td>
+<td>331</td>
+<td><code>]</code></td>
+<td>Acesso a array</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="3-a-interface-yylex-como-o-parser-consome-tokens">3. A Interface <code>yylex()</code> — Como o Parser Consome Tokens</h2>
+<p>No modelo Flex/Bison, o <em>parser</em> não lê o código-fonte diretamente. Em vez disso,
+ele invoca repetidamente a função <code>yylex()</code>, gerada pelo Flex, que:</p>
+<ol>
+<li>Avança o cursor de leitura sobre o arquivo-fonte;</li>
+<li>Reconhece o próximo <em>lexema</em> com base nas regras do <code>scanner.l</code>;</li>
+<li>Preenche a variável global <code>yylval</code> com o valor semântico do token;</li>
+<li>Retorna o <strong>código numérico</strong> do token reconhecido.</li>
+</ol>
+<p>O fluxo pode ser representado da seguinte forma:</p>
+<table>
+<thead>
+<tr>
+<th>Fase / Componente</th>
+<th>Ação Principal</th>
+<th>O que é transmitido?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Arquivo <code>.c</code></strong></td>
+<td>Fornece o código-fonte bruto.</td>
+<td>Fluxo de caracteres (texto).</td>
+</tr>
+<tr>
+<td><strong>2. <code>yylex()</code></strong> <em>(Léxico)</em></td>
+<td>Lê o texto, identifica padrões e gera tokens.</td>
+<td><strong>Código do Token:</strong> ex: <code>IDENT = 290</code><br><strong>Valor Semântico:</strong> ex: <code>yylval.str = "total"</code></td>
+</tr>
+<tr>
+<td><strong>3. Parser</strong> <em>(Sintático)</em></td>
+<td>Consome a saída do léxico para validar a gramática.</td>
+<td><strong>Decisão:</strong> Usa o código numérico.<br><strong>Árvore (AST):</strong> Usa o conteúdo de <code>yylval</code>.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="4-estrutura-de-valores-yylval">4. Estrutura de Valores — <code>yylval</code></h2>
+<p>A variável <code>yylval</code> é o mecanismo pelo qual o léxico transmite o <strong>valor semântico</strong>
+de cada token ao <em>parser</em>. Ela é declarada como uma <code>union</code> no arquivo Bison, de
+modo que cada campo corresponde a um tipo de dado que um token pode carregar.</p>
+<h3 id="41-declaracao-da-union">4.1 Declaração da Union</h3>
+<pre><code class="language-c">%union {
+    char *str;
+    NoAST *no;
+}
+</code></pre>
+<h3 id="42-associacao-token-campo-da-union">4.2 Associação Token → Campo da Union</h3>
+<table>
+<thead>
+<tr>
+<th>Token</th>
+<th>Campo usado</th>
+<th>Como é preenchido no scanner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>IDENT</code></td>
+<td><code>str</code></td>
+<td><code>yylval.str = copiar_yytext(yytext);</code></td>
+</tr>
+<tr>
+<td><code>NUMBER</code></td>
+<td><code>str</code></td>
+<td><code>yylval.str = copiar_yytext(yytext);</code></td>
+</tr>
+<tr>
+<td>Palavras-chave e operadores</td>
+<td>—</td>
+<td>Não carregam valor; o código do token já é suficiente</td>
+</tr>
+</tbody>
+</table>
+<h3 id="43-implementacao-atual-do-scanner">4.3 Implementação Atual do Scanner</h3>
+<p>As regras de <code>IDENT</code> e <code>NUMBER</code> já estão integradas ao Bison. O léxico preserva o
+lexema como texto para que a AST e a análise semântica decidam depois como
+interpretar o valor.</p>
+<pre><code class="language-c">[a-zA-Z_][a-zA-Z0-9_]* {
+    yylval.str = copiar_yytext(yytext);
+    return IDENT;
+}
+
+[0-9]+(\\.[0-9]+)? {
+    yylval.str = copiar_yytext(yytext);
+    return NUMBER;
+}
+</code></pre>
+<blockquote>
+<p><strong>Observação:</strong> <code>copiar_yytext</code> aloca uma cópia do lexema na heap. O parser
+libera essa memória após criar o nó da AST correspondente.
+</p>
+</blockquote>
+<hr />
+<h2 id="5-exemplos-de-entrada-e-fluxo-de-tokens">5. Exemplos de Entrada e Fluxo de Tokens</h2>
+<p>Os exemplos a seguir são extraídos diretamente dos testes automatizados do
+projeto (<code>scanner/inputs/</code>), garantindo correspondência exata com o comportamento
+real do <code>scanner.l</code>.</p>
+<hr />
+<h3 id="51-identificadores-e-literais-numericos-02_identifiers_numbersc">5.1 Identificadores e Literais Numéricos (<code>02_identifiers_numbers.c</code>)</h3>
+<p><strong>Entrada:</strong></p>
+<pre><code class="language-c">_tmp var1 intx 0 42 3.14 10.
+</code></pre>
+<p><strong>Sequência de tokens produzida:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Lexema</th>
+<th>Token</th>
+<th><code>yylval</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>_tmp</code></td>
+<td><code>IDENT</code> (290)</td>
+<td><code>str = "_tmp"</code></td>
+</tr>
+<tr>
+<td><code>var1</code></td>
+<td><code>IDENT</code> (290)</td>
+<td><code>str = "var1"</code></td>
+</tr>
+<tr>
+<td><code>intx</code></td>
+<td><code>IDENT</code> (290)</td>
+<td><code>str = "intx"</code></td>
+</tr>
+<tr>
+<td><code>0</code></td>
+<td><code>NUMBER</code> (291)</td>
+<td><code>str = "0"</code></td>
+</tr>
+<tr>
+<td><code>42</code></td>
+<td><code>NUMBER</code> (291)</td>
+<td><code>str = "42"</code></td>
+</tr>
+<tr>
+<td><code>3.14</code></td>
+<td><code>NUMBER</code> (291)</td>
+<td><code>str = "3.14"</code></td>
+</tr>
+<tr>
+<td><code>10.</code></td>
+<td><code>NUMBER</code> (291)</td>
+<td><code>str = "10"</code> + <code>TK_OP_PONTO</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Nota:</strong> O lexema <code>intx</code> é reconhecido como <code>IDENT</code> e <strong>não</strong> como a
+palavra-chave <code>int</code>, pois o padrão de keywords exige correspondência exata
+do lexema completo. O caso <code>10.</code> demonstra que o ponto flutuante exige ao
+menos um dígito após o <code>.</code>; o scanner tokeniza como <code>NUMBER(10)</code> seguido de
+<code>TK_OP_PONTO</code>.
+</p>
+</blockquote>
+<hr />
+<h3 id="52-comentarios-e-espacos-em-branco-05_comments_whitespacec">5.2 Comentários e Espaços em Branco (<code>05_comments_whitespace.c</code>)</h3>
+<p><strong>Entrada:</strong></p>
+<pre><code class="language-c">// this line is a comment
+int value /* ignored block comment */ = 12;
+</code></pre>
+<p><strong>Sequência de tokens produzida:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Lexema</th>
+<th>Token</th>
+<th><code>yylval</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>// this line is a comment</code></td>
+<td><em>(descartado)</em></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>int</code></td>
+<td><code>KW_INT</code> (274)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>value</code></td>
+<td><code>IDENT</code> (290)</td>
+<td><code>str = "value"</code></td>
+</tr>
+<tr>
+<td><code>/* ignored block comment */</code></td>
+<td><em>(descartado)</em></td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>=</code></td>
+<td><code>TK_OP_IGUAL</code> (313)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>12</code></td>
+<td><code>NUMBER</code> (291)</td>
+<td><code>str = "12"</code></td>
+</tr>
+<tr>
+<td><code>;</code></td>
+<td><code>TK_OP_PONTO_VIRGULA</code> (325)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Nota:</strong> Comentários de linha (<code>//</code>) e de bloco (<code>/* */</code>) são consumidos
+pelo léxico mas não geram nenhum token para o <em>parser</em>. O espaço em branco
+entre tokens também é descartado silenciosamente.
+</p>
+</blockquote>
+<hr />
+<h3 id="53-trecho-misto-programa-completo-07_mixed_snippetc">5.3 Trecho Misto — Programa Completo (<code>07_mixed_snippet.c</code>)</h3>
+<p>Este caso de teste é o mais abrangente da suíte, combinando declaração de
+função, declaração de variável com inicialização, atribuição composta,
+estrutura condicional e operadores de dois caracteres.</p>
+<p><strong>Entrada:</strong></p>
+<pre><code class="language-c">int main() {
+    int a = 10;
+    a += 2;
+    if (a &gt;= 12 &amp;&amp; a != 0) {
+        a--;
+    }
+}
+</code></pre>
+<p><strong>Sequência de tokens produzida:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Lexema</th>
+<th>Token</th>
+<th><code>yylval</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>int</code></td>
+<td><code>KW_INT</code> (274)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>main</code></td>
+<td><code>IDENT</code> (290)</td>
+<td><code>str = "main"</code></td>
+</tr>
+<tr>
+<td><code>(</code></td>
+<td><code>TK_ABRE_PARENTESE</code> (326)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>)</code></td>
+<td><code>TK_FECHA_PARENTESE</code> (327)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>{</code></td>
+<td><code>TK_ABRE_CHAVE</code> (328)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>int</code></td>
+<td><code>KW_INT</code> (274)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td><code>IDENT</code> (290)</td>
+<td><code>str = "a"</code></td>
+</tr>
+<tr>
+<td><code>=</code></td>
+<td><code>TK_OP_IGUAL</code> (313)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>10</code></td>
+<td><code>NUMBER</code> (291)</td>
+<td><code>str = "10"</code></td>
+</tr>
+<tr>
+<td><code>;</code></td>
+<td><code>TK_OP_PONTO_VIRGULA</code> (325)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td><code>IDENT</code> (290)</td>
+<td><code>str = "a"</code></td>
+</tr>
+<tr>
+<td><code>+=</code></td>
+<td><code>TK_OP_MAIS_IGUAL</code> (300)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>2</code></td>
+<td><code>NUMBER</code> (291)</td>
+<td><code>str = "2"</code></td>
+</tr>
+<tr>
+<td><code>;</code></td>
+<td><code>TK_OP_PONTO_VIRGULA</code> (325)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>if</code></td>
+<td><code>KW_IF</code> (273)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>(</code></td>
+<td><code>TK_ABRE_PARENTESE</code> (326)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td><code>IDENT</code> (290)</td>
+<td><code>str = "a"</code></td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td><code>TK_OP_MAIOR_IGUAL</code> (295)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>12</code></td>
+<td><code>NUMBER</code> (291)</td>
+<td><code>str = "12"</code></td>
+</tr>
+<tr>
+<td><code>&amp;&amp;</code></td>
+<td><code>TK_OP_AND</code> (296)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td><code>IDENT</code> (290)</td>
+<td><code>str = "a"</code></td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td><code>TK_OP_DIFERENTE</code> (293)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>0</code></td>
+<td><code>NUMBER</code> (291)</td>
+<td><code>str = "0"</code></td>
+</tr>
+<tr>
+<td><code>)</code></td>
+<td><code>TK_FECHA_PARENTESE</code> (327)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>{</code></td>
+<td><code>TK_ABRE_CHAVE</code> (328)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>a</code></td>
+<td><code>IDENT</code> (290)</td>
+<td><code>str = "a"</code></td>
+</tr>
+<tr>
+<td><code>--</code></td>
+<td><code>TK_OP_DECREMENTO</code> (299)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>;</code></td>
+<td><code>TK_OP_PONTO_VIRGULA</code> (325)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>}</code></td>
+<td><code>TK_FECHA_CHAVE</code> (329)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>}</code></td>
+<td><code>TK_FECHA_CHAVE</code> (329)</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-tokens-ignorados-pelo-parser">6. Tokens Ignorados pelo Parser</h2>
+<p>Os padrões a seguir são consumidos pelo léxico mas <strong>não geram tokens</strong> para o
+<em>parser</em>, pois não possuem relevância gramatical:</p>
+<table>
+<thead>
+<tr>
+<th>Padrão</th>
+<th>Tratamento</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>[ \\t\\n]+</code></td>
+<td>Espaços, tabulações e quebras de linha — descartados silenciosamente</td>
+</tr>
+<tr>
+<td><code>// ...</code></td>
+<td>Comentário de linha — descartado</td>
+</tr>
+<tr>
+<td><code>/* ... */</code></td>
+<td>Comentário de bloco — descartado</td>
+</tr>
+<tr>
+<td><code>.</code> (caractere desconhecido)</td>
+<td>Emite <code>UNKNOWN</code> no terminal; não retorna token válido ao <em>parser</em></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

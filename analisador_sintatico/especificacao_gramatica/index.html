@@ -1,0 +1,1622 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentação do projeto">
+      
+      
+      
+      
+        <link rel="prev" href="../integracao_lexico_sintatico/">
+      
+      
+        <link rel="next" href="../testes_sintatico/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Especificação da Gramática da Linguagem - Compiladores 1 Grupo 09</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    <body dir="ltr">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#1-especificacao-da-gramatica-da-linguagem" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Compiladores 1 Grupo 09" class="md-header__button md-logo" aria-label="Compiladores 1 Grupo 09" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Compiladores 1 Grupo 09
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Especificação da Gramática da Linguagem
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Compiladores 1 Grupo 09" class="md-nav__button md-logo" aria-label="Compiladores 1 Grupo 09" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Compiladores 1 Grupo 09
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analisador Léxico
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Analisador Léxico
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analisador_l%C3%A9xico/introdu%C3%A7%C3%A3o/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Introdução
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analisador_l%C3%A9xico/fundamenta%C3%A7%C3%A3o/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fundamentação
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analisador_l%C3%A9xico/palavrasreservadas/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Palavras Reservadas
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../analisador_léxico/testes_lexico.md" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testes Léxicos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Analisador Sintático
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Analisador Sintático
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../integracao_lexico_sintatico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Integração Léxico-Sintático
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Especificação da Gramática da Linguagem
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Especificação da Gramática da Linguagem
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#11-convencoes-da-notacao-ebnf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Convenções da Notação EBNF
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testes_sintatico/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Testes Sintáticos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AST e Tabela de Símbolos
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    AST e Tabela de Símbolos
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ast_symtab/ast/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AST
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../ast_symtab/symtab/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tabela de Símbolos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Geração de Código
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Geração de Código
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../geracao_codigo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    C para Go
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Manuais
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Manuais
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manuais/instalacao_flex_bison/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instalação Flex e Bison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manuais/instrucao_build_flex_bison/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Instrução Build Flex/Bison
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manuais/makefile/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Makefile
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manuais/padrao_commit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Padrões de Commit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../manuais/padrao_branch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Padrões de Branch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#11-convencoes-da-notacao-ebnf" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1.1 Convenções da Notação EBNF
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="1-especificacao-da-gramatica-da-linguagem">1. Especificação da Gramática da Linguagem</h1>
+<p>A gramática formal define as <strong>regras sintáticas</strong> que determinam como os tokens
+produzidos pelo analisador léxico podem ser combinados para formar construções
+válidas da linguagem C. Esta especificação serve como base para a implementação
+do analisador sintático e como referência para a resolução de ambiguidades.</p>
+<p>A notação adotada é a <strong>EBNF (Extended Backus-Naur Form)</strong>, escolhida por sua
+legibilidade e capacidade de expressar repetição e opcionalidade de forma compacta.</p>
+<p>A especificação está organizada em duas partes. A <strong>Seção 2</strong> documenta a gramática
+atualmente implementada no <code>parser.y</code>, refletindo o estado validado do analisador
+sintático. A <strong>Seção 3</strong> documenta a especificação completa da linguagem alvo —
+todos os tokens reconhecidos pelo léxico e as construções que o compilador suportará
+ao final do desenvolvimento.</p>
+<hr />
+<h2 id="11-convencoes-da-notacao-ebnf">1.1 Convenções da Notação EBNF</h2>
+<table>
+<thead>
+<tr>
+<th>Notação</th>
+<th>Significado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>A ::= B</code></td>
+<td>A é definido como B</td>
+</tr>
+<tr>
+<td><code>A B</code></td>
+<td>A seguido de B (concatenação)</td>
+</tr>
+<tr>
+<td><code>A \| B</code></td>
+<td>A ou B (alternativa)</td>
+</tr>
+<tr>
+<td><code>[ A ]</code></td>
+<td>A é opcional (zero ou uma vez)</td>
+</tr>
+<tr>
+<td><code>{ A }</code></td>
+<td>A se repete zero ou mais vezes</td>
+</tr>
+<tr>
+<td><code>( A )</code></td>
+<td>Agrupamento</td>
+</tr>
+<tr>
+<td><code>'token'</code></td>
+<td>Terminal literal</td>
+</tr>
+<tr>
+<td><code>TOKEN</code></td>
+<td>Terminal nomeado (retornado pelo léxico)</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h1 id="2-estado-atual-da-implementacao">2. Estado Atual da Implementação</h1>
+<p>Esta seção descreve as regras gramaticais atualmente implementadas no analisador
+sintático. Toda construção aqui documentada possui regra ativa no <code>parser.y</code> e
+pode ser validada pelo compilador.</p>
+<hr />
+<h2 id="21-estrutura-do-programa">2.1 Estrutura do Programa</h2>
+<p>O ponto de entrada da gramática é <code>programa</code>. Um arquivo-fonte válido é composto
+por uma sequência de elementos. Atualmente, um elemento pode ser uma função ou
+uma declaração global simples.</p>
+<pre><code class="language-ebnf">programa ::= lista_elementos
+
+lista_elementos ::= lista_elementos elemento
+                  | elemento
+
+elemento ::= funcao
+           | declaracao
+</code></pre>
+<hr />
+<h2 id="22-tipos">2.2 Tipos</h2>
+<p>O parser reconhece os seguintes tipos primitivos:</p>
+<pre><code class="language-ebnf">tipo ::= 'int'
+       | 'float'
+       | 'void'
+</code></pre>
+<hr />
+<h2 id="23-funcoes">2.3 Funções</h2>
+<p>Uma função é formada por um tipo de retorno, um nome, uma lista de parâmetros
+entre parênteses e um bloco de comandos.</p>
+<pre><code class="language-ebnf">funcao ::= tipo IDENT '(' parametros ')' bloco
+
+parametros ::= lista_parametros
+             | /* vazio */
+
+lista_parametros ::= lista_parametros ',' parametro
+                   | parametro
+
+parametro ::= tipo IDENT
+</code></pre>
+<p>Exemplos válidos:</p>
+<pre><code class="language-c">int soma(int a, int b) { ... }
+void imprime() { ... }
+</code></pre>
+<hr />
+<h2 id="24-bloco-e-lista-de-comandos">2.4 Bloco e Lista de Comandos</h2>
+<p>Um bloco agrupa zero ou mais comandos entre chaves. É a unidade estrutural
+utilizada nos corpos de funções e nas estruturas de controle.</p>
+<pre><code class="language-ebnf">bloco ::= '{' lista_comandos '}'
+
+lista_comandos ::= lista_comandos comando
+                 | /* vazio */
+</code></pre>
+<hr />
+<h2 id="25-comandos">2.5 Comandos</h2>
+<p>Um comando é a unidade de execução do programa. O parser reconhece os seguintes
+tipos de comando:</p>
+<pre><code class="language-ebnf">comando ::= declaracao
+          | atribuicao
+          | retorno
+          | comando_if
+          | comando_while
+          | comando_for
+          | incremento
+          | chamada_funcao ';'
+          | bloco
+</code></pre>
+<h3 id="251-declaracao-de-variavel">2.5.1 Declaração de Variável</h3>
+<pre><code class="language-ebnf">declaracao ::= tipo IDENT ';'
+             | tipo IDENT '=' expressao ';'
+             | tipo IDENT '[' NUMBER ']' ';'
+</code></pre>
+<p>Exemplos válidos:</p>
+<pre><code class="language-c">int x;
+float y = 3.14;
+int v[10];
+</code></pre>
+<h3 id="252-atribuicao">2.5.2 Atribuição</h3>
+<p>Em comandos gerais, apenas a atribuição simples está implementada:</p>
+<pre><code class="language-ebnf">atribuicao ::= IDENT '=' expressao ';'
+</code></pre>
+<h3 id="253-incremento-e-decremento">2.5.3 Incremento e Decremento</h3>
+<p>Aceita as formas pré-fixada e pós-fixada como comandos isolados:</p>
+<pre><code class="language-ebnf">incremento ::= IDENT '++' ';'
+             | IDENT '--' ';'
+             | '++' IDENT ';'
+             | '--' IDENT ';'
+</code></pre>
+<h3 id="254-retorno">2.5.4 Retorno</h3>
+<pre><code class="language-ebnf">retorno ::= 'return' expressao ';'
+          | 'return' ';'
+</code></pre>
+<h3 id="255-condicional-if-else">2.5.5 Condicional — <code>if / else</code></h3>
+<p>O corpo do <code>if</code> e do <code>else</code> exige obrigatoriamente um bloco com chaves.
+A ambiguidade do <em>dangling else</em> é resolvida via <code>%prec LOWER_THAN_ELSE</code>,
+associando o <code>else</code> sempre ao <code>if</code> mais interno.</p>
+<pre><code class="language-ebnf">comando_if ::= 'if' '(' expressao_booleana ')' bloco
+             | 'if' '(' expressao_booleana ')' bloco 'else' bloco
+</code></pre>
+<h3 id="256-repeticao-while">2.5.6 Repetição — <code>while</code></h3>
+<pre><code class="language-ebnf">comando_while ::= 'while' '(' expressao_booleana ')' bloco
+</code></pre>
+<h3 id="257-repeticao-for">2.5.7 Repetição — <code>for</code></h3>
+<p>As três partes do <code>for</code> são independentes e opcionais:</p>
+<pre><code class="language-ebnf">comando_for ::= 'for' '(' for_init ';' for_condicao ';' for_atualizacao ')' bloco
+
+for_init ::= declaracao_for
+           | atribuicao_for
+           | /* vazio */
+
+for_condicao ::= expressao_booleana
+               | /* vazio */
+
+for_atualizacao ::= atribuicao_for
+                  | incremento_for
+                  | /* vazio */
+
+declaracao_for ::= tipo IDENT
+                 | tipo IDENT '=' expressao
+
+atribuicao_for ::= IDENT '=' expressao
+                 | IDENT '+=' expressao
+                 | IDENT '-=' expressao
+
+incremento_for ::= IDENT '++'
+                 | IDENT '--'
+                 | '++' IDENT
+                 | '--' IDENT
+</code></pre>
+<p>Exemplos válidos:</p>
+<pre><code class="language-c">for (int i = 0; i &lt; 10; i++) { ... }
+for (i = 0; i != n; i += 2) { ... }
+for ( ; ; ) { ... }
+</code></pre>
+<h3 id="258-chamada-de-funcao-como-comando">2.5.8 Chamada de Função como Comando</h3>
+<p>Chamadas simples de função podem aparecer como comando isolado:</p>
+<pre><code class="language-ebnf">chamada_funcao ::= IDENT '(' argumentos ')'
+
+argumentos ::= lista_argumentos
+             | /* vazio */
+
+lista_argumentos ::= lista_argumentos ',' expressao
+                   | expressao
+</code></pre>
+<p>Exemplos válidos:</p>
+<pre><code class="language-c">foo();
+soma(1, 2);
+</code></pre>
+<hr />
+<h2 id="26-expressoes">2.6 Expressões</h2>
+<h3 id="261-expressao-booleana">2.6.1 Expressão Booleana</h3>
+<p>Utilizada nas condições de <code>if</code>, <code>while</code> e <code>for</code>. Aceita comparações simples,
+combinadas com <code>&amp;&amp;</code> e <code>||</code>, e agrupadas com parênteses:</p>
+<pre><code class="language-ebnf">expressao_booleana ::= expressao operador_relacional expressao
+                     | expressao_booleana '&amp;&amp;' expressao_booleana
+                     | expressao_booleana '||' expressao_booleana
+                     | '(' expressao_booleana ')'
+
+operador_relacional ::= '&lt;' | '&gt;' | '&lt;=' | '&gt;=' | '==' | '!='
+</code></pre>
+<h3 id="262-expressao-aritmetica">2.6.2 Expressão Aritmética</h3>
+<p>A hierarquia em três níveis garante a precedência correta entre os operadores.
+Operadores de maior precedência estão em níveis mais profundos da gramática,
+garantindo que <code>2 + 3 * 4</code> seja interpretado como <code>2 + (3 * 4)</code>:</p>
+<pre><code class="language-ebnf">expressao ::= expressao '+' termo
+            | expressao '-' termo
+            | termo
+
+termo ::= termo '*' fator
+        | termo '/' fator
+        | termo '%' fator
+        | fator
+
+fator ::= NUMBER
+        | IDENT
+        | acesso_vetor
+        | chamada_funcao
+        | '(' expressao ')'
+</code></pre>
+<h3 id="263-acesso-a-vetor">2.6.3 Acesso a Vetor</h3>
+<pre><code class="language-ebnf">acesso_vetor ::= IDENT '[' expressao ']'
+</code></pre>
+<h3 id="264-chamada-de-funcao-em-expressao">2.6.4 Chamada de Função em Expressão</h3>
+<p>Chamadas simples de função também são aceitas como fator de expressão, permitindo
+atribuições como:</p>
+<pre><code class="language-c">int r = soma(2, 3);
+</code></pre>
+<hr />
+<h2 id="27-tabela-de-precedencia">2.7 Tabela de Precedência</h2>
+<p>A tabela reflete exatamente as declarações <code>%left</code>, <code>%right</code> e <code>%nonassoc</code>
+presentes no <code>parser.y</code>, do menor para o maior nível:</p>
+<table>
+<thead>
+<tr>
+<th>Nível</th>
+<th>Operadores</th>
+<th>Associatividade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>\|\|</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>&amp;&amp;</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>==</code> <code>!=</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>+</code> <code>-</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>*</code> <code>/</code> <code>%</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>!</code> (unário)</td>
+<td>Direita</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>=</code> (atribuição)</td>
+<td>Direita</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>else</code> (via <code>LOWER_THAN_ELSE</code> / <code>KW_ELSE</code>)</td>
+<td>Não-associativo</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="28-ambiguidades-conhecidas-e-resolucoes">2.8 Ambiguidades Conhecidas e Resoluções</h2>
+<h3 id="281-dangling-else">2.8.1 Dangling Else</h3>
+<p>Dado um <code>if</code> aninhado sem <code>else</code>, o parser precisa decidir a qual <code>if</code> o
+<code>else</code> pertence:</p>
+<pre><code class="language-c">if (a)
+    if (b)
+        x = 1;
+    else      /* pertence ao if (b), não ao if (a) */
+        x = 2;
+</code></pre>
+<p><strong>Solução adotada:</strong> o <code>else</code> é sempre associado ao <code>if</code> mais interno.
+Implementada no Bison declarando <code>KW_ELSE</code> com maior precedência que
+<code>LOWER_THAN_ELSE</code>:</p>
+<pre><code>%nonassoc LOWER_THAN_ELSE
+%nonassoc KW_ELSE
+</code></pre>
+<h3 id="282-typedef-name-vs-ident">2.8.2 <code>typedef-name</code> vs <code>IDENT</code></h3>
+<p>Nomes criados com <code>typedef</code> podem aparecer em posições de tipo, criando
+ambiguidade com identificadores comuns:</p>
+<pre><code class="language-c">typedef int Inteiro;
+Inteiro x;   /* &quot;Inteiro&quot; é um tipo ou um identificador? */
+</code></pre>
+<p>O parser não consegue distinguir os dois casos apenas com a gramática — a
+decisão depende de saber se <code>Inteiro</code> foi previamente declarado como <code>typedef</code>.</p>
+<p><strong>Solução adotada:</strong> <code>typedef</code> está fora do subconjunto atual. A resolução
+completa exigiria uma tabela de símbolos específica para nomes de tipos, mas o
+parser hoje aceita apenas <code>int</code>, <code>float</code> e <code>void</code> na regra <code>tipo</code>.</p>
+<hr />
+<h2 id="29-validacoes-semanticas-atuais">2.9 Validações Semânticas Atuais</h2>
+<p>Além de validar a gramática, o compilador executa uma passada semântica sobre a
+AST. Essa etapa cobre:</p>
+<ul>
+<li>função declarada mais de uma vez;</li>
+<li>chamada para função não declarada;</li>
+<li>quantidade incorreta de argumentos;</li>
+<li>conversão básica entre <code>int</code> e <code>float</code> em argumentos, atribuições e retornos;</li>
+<li><code>return</code> com valor em função <code>void</code>;</li>
+<li><code>return</code> sem valor em função não-<code>void</code>;</li>
+<li>função não-<code>void</code> sem retorno com valor;</li>
+<li>divisão literal por zero.</li>
+</ul>
+<p>Essas validações ainda são intencionalmente simples e seguem o escopo acadêmico
+do subconjunto suportado.</p>
+<hr />
+<h1 id="3-especificacao-da-linguagem-alvo">3. Especificação da Linguagem Alvo</h1>
+<p>Esta seção define o escopo completo da linguagem que o compilador suportará.
+As construções aqui descritas têm seus tokens já reconhecidos pelo léxico e
+declarados no parser, e serão integradas ao <code>parser.y</code> nas próximas iterações
+do desenvolvimento.</p>
+<hr />
+<h2 id="31-tipos">3.1 Tipos</h2>
+<h3 id="311-tipos-primitivos-completos">3.1.1 Tipos Primitivos Completos</h3>
+<p>A regra <code>tipo</code> será expandida para cobrir todos os primitivos do padrão ANSI C:</p>
+<pre><code class="language-ebnf">tipo ::= 'int'    | 'float'  | 'void'
+       | 'char'   | 'double' | 'long'
+       | 'short'  | 'signed' | 'unsigned'
+</code></pre>
+<h3 id="312-especificadores-de-armazenamento">3.1.2 Especificadores de Armazenamento</h3>
+<pre><code class="language-ebnf">especificador_armazenamento ::= 'auto'
+                              | 'extern'
+                              | 'register'
+                              | 'static'
+</code></pre>
+<h3 id="313-qualificadores-de-tipo">3.1.3 Qualificadores de Tipo</h3>
+<pre><code class="language-ebnf">qualificador_tipo ::= 'const'
+                    | 'volatile'
+</code></pre>
+<hr />
+<h2 id="32-comandos">3.2 Comandos</h2>
+<h3 id="321-atribuicoes-compostas">3.2.1 Atribuições Compostas</h3>
+<p>A regra <code>atribuicao</code> será expandida para cobrir todos os operadores compostos
+fora do contexto do <code>for</code>:</p>
+<pre><code class="language-ebnf">atribuicao ::= IDENT '=' expressao ';'
+             | IDENT '+=' expressao ';'
+             | IDENT '-=' expressao ';'
+             | IDENT '*=' expressao ';'
+             | IDENT '/=' expressao ';'
+             | IDENT '%=' expressao ';'
+</code></pre>
+<h3 id="322-dowhile">3.2.2 <code>do...while</code></h3>
+<pre><code class="language-ebnf">comando_do_while ::= 'do' bloco 'while' '(' expressao_booleana ')' ';'
+</code></pre>
+<h3 id="323-switch">3.2.3 <code>switch</code></h3>
+<pre><code class="language-ebnf">comando_switch ::= 'switch' '(' expressao ')' '{' { clausula_case } '}'
+
+clausula_case ::= 'case' expressao_constante ':' { comando }
+               | 'default' ':' { comando }
+
+expressao_constante ::= NUMBER | IDENT
+</code></pre>
+<h3 id="324-desvios">3.2.4 Desvios</h3>
+<pre><code class="language-ebnf">comando_break    ::= 'break' ';'
+comando_continue ::= 'continue' ';'
+comando_goto     ::= 'goto' IDENT ';'
+comando_rotulo   ::= IDENT ':' comando
+</code></pre>
+<hr />
+<h2 id="33-tipos-compostos">3.3 Tipos Compostos</h2>
+<h3 id="331-struct">3.3.1 Struct</h3>
+<pre><code class="language-ebnf">especificador_struct ::= 'struct' IDENT '{' { membro_struct } '}'
+                       | 'struct' IDENT
+
+membro_struct ::= tipo lista_membros ';'
+
+lista_membros ::= IDENT { ',' IDENT }
+</code></pre>
+<h3 id="332-union">3.3.2 Union</h3>
+<pre><code class="language-ebnf">especificador_union ::= 'union' IDENT '{' { membro_struct } '}'
+                      | 'union' IDENT
+</code></pre>
+<h3 id="333-enum">3.3.3 Enum</h3>
+<pre><code class="language-ebnf">especificador_enum ::= 'enum' IDENT '{' lista_enumeradores '}'
+                     | 'enum' IDENT
+
+lista_enumeradores ::= enumerador { ',' enumerador }
+
+enumerador ::= IDENT
+             | IDENT '=' expressao_constante
+</code></pre>
+<h3 id="334-typedef">3.3.4 Typedef</h3>
+<pre><code class="language-ebnf">declaracao_typedef ::= 'typedef' tipo IDENT ';'
+                     | 'typedef' especificador_struct IDENT ';'
+                     | 'typedef' especificador_union IDENT ';'
+                     | 'typedef' especificador_enum IDENT ';'
+</code></pre>
+<hr />
+<h2 id="34-expressoes">3.4 Expressões</h2>
+<h3 id="341-operadores-unarios">3.4.1 Operadores Unários</h3>
+<pre><code class="language-ebnf">expressao_unaria ::= '!' expressao_unaria
+                   | '~' expressao_unaria
+                   | '-' expressao_unaria
+                   | '+' expressao_unaria
+                   | '++' IDENT
+                   | '--' IDENT
+                   | 'sizeof' '(' tipo ')'
+                   | 'sizeof' '(' IDENT ')'
+</code></pre>
+<h3 id="342-operadores-bit-a-bit-e-deslocamento">3.4.2 Operadores Bit a Bit e Deslocamento</h3>
+<pre><code class="language-ebnf">expressao_bit ::= expressao '&amp;' expressao
+                | expressao '|' expressao
+                | expressao '^' expressao
+                | '~' expressao
+
+expressao_deslocamento ::= expressao '&lt;&lt;' expressao
+                         | expressao '&gt;&gt;' expressao
+</code></pre>
+<h3 id="343-operador-ternario">3.4.3 Operador Ternário</h3>
+<pre><code class="language-ebnf">expressao_ternaria ::= expressao_booleana '?' expressao ':' expressao
+</code></pre>
+<h3 id="344-acesso-a-membros">3.4.4 Acesso a Membros</h3>
+<pre><code class="language-ebnf">acesso_membro ::= IDENT '.' IDENT
+               | IDENT '-&gt;' IDENT
+</code></pre>
+<hr />
+<h2 id="35-tabela-de-precedencia-completa">3.5 Tabela de Precedência Completa</h2>
+<p>Expansão da tabela atual incorporando todos os operadores da linguagem alvo,
+do menor para o maior nível:</p>
+<table>
+<thead>
+<tr>
+<th>Nível</th>
+<th>Operadores</th>
+<th>Associatividade</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>\|\|</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>&amp;&amp;</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>\|</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>^</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>&amp;</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>==</code> <code>!=</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>&lt;</code> <code>&gt;</code> <code>&lt;=</code> <code>&gt;=</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>&lt;&lt;</code> <code>&gt;&gt;</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>9</td>
+<td><code>+</code> <code>-</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>10</td>
+<td><code>*</code> <code>/</code> <code>%</code></td>
+<td>Esquerda</td>
+</tr>
+<tr>
+<td>11</td>
+<td><code>!</code> <code>~</code> <code>-</code> <code>+</code> (unários)</td>
+<td>Direita</td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>=</code> <code>+=</code> <code>-=</code> <code>*=</code> <code>/=</code> <code>%=</code></td>
+<td>Direita</td>
+</tr>
+<tr>
+<td>13</td>
+<td><code>?</code> <code>:</code> (ternário)</td>
+<td>Direita</td>
+</tr>
+<tr>
+<td>14</td>
+<td><code>else</code> (via <code>LOWER_THAN_ELSE</code> / <code>KW_ELSE</code>)</td>
+<td>Não-associativo</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": [], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
