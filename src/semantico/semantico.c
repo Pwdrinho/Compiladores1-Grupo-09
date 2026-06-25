@@ -6,9 +6,6 @@
 #define MAX_FUNCOES 128
 #define MAX_PARAMETROS 32
 
-/* Assinatura resumida de uma função C do subconjunto.
- * A análise usa esta tabela para permitir chamada antes da definição e validar argumentos.
- */
 typedef struct {
     const char *nome;
     TipoDado retorno;
@@ -20,7 +17,7 @@ typedef struct {
 static AssinaturaFuncao funcoes[MAX_FUNCOES];
 static int total_funcoes = 0;
 
-/* Converte o enum interno para mensagens de erro mais claras. */
+
 static const char *nome_tipo_dado(TipoDado tipo) {
     switch (tipo) {
         case TIPO_DADO_INT:
@@ -33,7 +30,7 @@ static const char *nome_tipo_dado(TipoDado tipo) {
     }
 }
 
-/* A gramática guarda o tipo de retorno como primeiro item da lista da função. */
+
 static TipoDado tipo_retorno_funcao(NoAST *funcao) {
     if (funcao == NULL || funcao->esq == NULL || funcao->esq->esq == NULL) {
         return TIPO_DADO_VOID;
@@ -42,7 +39,7 @@ static TipoDado tipo_retorno_funcao(NoAST *funcao) {
     return funcao->esq->esq->tipo_dado;
 }
 
-/* Os parâmetros ficam no segundo item da lista da função. */
+
 static NoAST *parametros_funcao(NoAST *funcao) {
     if (funcao == NULL || funcao->esq == NULL) {
         return NULL;
@@ -71,7 +68,7 @@ static void adicionar_parametro_assinatura(AssinaturaFuncao *assinatura, TipoDad
     assinatura->parametros[assinatura->quantidade_parametros++] = tipo;
 }
 
-/* Percorre a lista binária de parâmetros e registra os tipos na assinatura da função. */
+
 static void coletar_parametros_assinatura(NoAST *no, AssinaturaFuncao *assinatura) {
     if (no == NULL) {
         return;
@@ -88,9 +85,7 @@ static void coletar_parametros_assinatura(NoAST *no, AssinaturaFuncao *assinatur
     }
 }
 
-/* Registra uma função antes da análise do corpo.
- * Isso permite validar chamadas para funções declaradas mais adiante no arquivo.
- */
+
 static void registrar_funcao(NoAST *funcao) {
     if (funcao == NULL || funcao->valor == NULL) {
         return;
@@ -115,7 +110,7 @@ static void registrar_funcao(NoAST *funcao) {
     coletar_parametros_assinatura(parametros_funcao(funcao), assinatura);
 }
 
-/* Primeira passada semântica: coleta todas as assinaturas de funções do programa. */
+
 static void coletar_funcoes(NoAST *no) {
     if (no == NULL) {
         return;
@@ -130,7 +125,7 @@ static void coletar_funcoes(NoAST *no) {
     coletar_funcoes(no->dir);
 }
 
-/* Argumentos de chamada também são lista binária na AST. */
+
 static int contar_argumentos(NoAST *no) {
     if (no == NULL) {
         return 0;
@@ -143,7 +138,7 @@ static int contar_argumentos(NoAST *no) {
     return 1;
 }
 
-/* Busca posicional usada para comparar cada argumento recebido com o parâmetro esperado. */
+
 static NoAST *argumento_por_indice(NoAST *no, int *indice_atual, int indice_procurado) {
     if (no == NULL) {
         return NULL;
@@ -171,7 +166,7 @@ static NoAST *obter_argumento(NoAST *argumentos, int indice) {
     return argumento_por_indice(argumentos, &indice_atual, indice);
 }
 
-/* Mantém as conversões simples aceitas no subconjunto e bloqueia usos inválidos de void. */
+
 static void validar_conversao_argumento(const char *nome_funcao,
                                         int posicao,
                                         TipoDado esperado,
@@ -206,7 +201,7 @@ static void validar_conversao_argumento(const char *nome_funcao,
 
 static void analisar_no(NoAST *no, AssinaturaFuncao *funcao_atual);
 
-/* Analisa expressões passadas como argumento antes de conferir a assinatura da chamada. */
+
 static void analisar_lista_argumentos(NoAST *no, AssinaturaFuncao *funcao_atual) {
     if (no == NULL) {
         return;
@@ -221,7 +216,7 @@ static void analisar_lista_argumentos(NoAST *no, AssinaturaFuncao *funcao_atual)
     analisar_no(no, funcao_atual);
 }
 
-/* Valida existência da função, quantidade de argumentos e compatibilidade de tipos. */
+
 static void analisar_chamada_funcao(NoAST *no, AssinaturaFuncao *funcao_atual) {
     analisar_lista_argumentos(no->esq, funcao_atual);
 
@@ -251,7 +246,7 @@ static void analisar_chamada_funcao(NoAST *no, AssinaturaFuncao *funcao_atual) {
     no->tipo_dado = assinatura->retorno;
 }
 
-/* Garante que o return combina com o tipo declarado da função atual. */
+
 static void validar_retorno(NoAST *no, AssinaturaFuncao *funcao_atual) {
     if (funcao_atual == NULL) {
         return;
@@ -283,7 +278,7 @@ static void validar_retorno(NoAST *no, AssinaturaFuncao *funcao_atual) {
         printf("Semântico: Retorno da função '%s' converterá float para int.\n",
                funcao_atual->nome);
     } else if (funcao_atual->retorno == TIPO_DADO_FLOAT && no->esq->tipo_dado == TIPO_DADO_INT) {
-        /* Conversão de int para float é segura no subconjunto atual. */
+        
     } else if (funcao_atual->retorno != no->esq->tipo_dado) {
         printf("Erro Semântico: Função '%s' deve retornar %s, mas retornou %s.\n",
                funcao_atual->nome,
@@ -296,7 +291,7 @@ static void validar_retorno(NoAST *no, AssinaturaFuncao *funcao_atual) {
     no->tipo_dado = funcao_atual->retorno;
 }
 
-/* Segunda passada semântica: percorre a AST atribuindo tipos e validando usos. */
+
 static void analisar_no(NoAST *no, AssinaturaFuncao *funcao_atual) {
     if (no == NULL) {
         return;
@@ -437,7 +432,7 @@ static void analisar_no(NoAST *no, AssinaturaFuncao *funcao_atual) {
     }
 }
 
-/* Ponto de entrada da semântica: coleta assinaturas e depois valida o programa. */
+
 void analisar_semantica(NoAST *no) {
     total_funcoes = 0;
     coletar_funcoes(no);

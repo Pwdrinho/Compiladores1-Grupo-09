@@ -27,8 +27,6 @@ static void imprimir_indentacao_ir(FILE *arquivo, int nivel) {
 static int intermediario_main_usa_fmt(Intermediario *codigo) {
     int dentro_main = 0;
 
-    // Só importamos fmt quando a main tem return com valor,
-    // pois esse valor precisa virar impressão em Go.
     for (Intermediario *atual = codigo; atual != NULL; atual = atual->proximo) {
         if (atual->tipo == INTER_FUNCAO_INICIO) {
             dentro_main = (atual->resultado != NULL && strcmp(atual->resultado, "main") == 0);
@@ -44,7 +42,6 @@ static int intermediario_main_usa_fmt(Intermediario *codigo) {
 
 static void gerar_assinatura_funcao_ir(FILE *arquivo, Intermediario *funcao, int eh_main) {
     if (eh_main) {
-        // Go exige func main() sem parâmetros e sem retorno.
         fprintf(arquivo, "func main() {\n");
         return;
     }
@@ -52,7 +49,6 @@ static void gerar_assinatura_funcao_ir(FILE *arquivo, Intermediario *funcao, int
     fprintf(arquivo, "func %s(", funcao->resultado);
 
     int primeiro = 1;
-    // Os parâmetros aparecem imediatamente após INTER_FUNCAO_INICIO no IR.
     for (Intermediario *param = funcao->proximo;
          param != NULL && param->tipo == INTER_PARAMETRO;
          param = param->proximo) {
@@ -72,9 +68,6 @@ static void gerar_assinatura_funcao_ir(FILE *arquivo, Intermediario *funcao, int
     fprintf(arquivo, " {\n");
 }
 
-/* Geração final baseada no código intermediário estruturado.
- * Este é o caminho principal da entrega: AST -> IR -> Go.
- */
 void gerar_codigo_go(Intermediario *primeiro, const char *nome_arquivo) {
     FILE *arquivo = fopen(nome_arquivo, "w");
     if (arquivo == NULL) {
@@ -90,8 +83,6 @@ void gerar_codigo_go(Intermediario *primeiro, const char *nome_arquivo) {
     int indentacao = 0;
     int dentro_main = 0;
 
-    // O IR já está em ordem de execução/declaração; o gerador só traduz cada
-    // instrução para a forma sintática equivalente em Go.
     for (Intermediario *atual = primeiro; atual != NULL; atual = atual->proximo) {
         switch (atual->tipo) {
             case INTER_FUNCAO_INICIO: {
@@ -99,7 +90,6 @@ void gerar_codigo_go(Intermediario *primeiro, const char *nome_arquivo) {
                 gerar_assinatura_funcao_ir(arquivo, atual, dentro_main);
                 indentacao = 1;
 
-                // Os parâmetros já foram consumidos ao montar a assinatura.
                 while (atual->proximo != NULL && atual->proximo->tipo == INTER_PARAMETRO) {
                     atual = atual->proximo;
                 }
@@ -145,8 +135,6 @@ void gerar_codigo_go(Intermediario *primeiro, const char *nome_arquivo) {
                 if (texto_vazio(atual->operador1)) {
                     fprintf(arquivo, "return\n");
                 } else if (dentro_main) {
-                    // C permite "return valor" na main; em Go demonstramos o
-                    // resultado imprimindo o valor e encerrando a função.
                     fprintf(arquivo, "fmt.Println(%s)\n", atual->operador1);
                     imprimir_indentacao_ir(arquivo, indentacao);
                     fprintf(arquivo, "return\n");
@@ -162,7 +150,6 @@ void gerar_codigo_go(Intermediario *primeiro, const char *nome_arquivo) {
                 break;
 
             case INTER_ELSE_INICIO:
-                // O else fecha o bloco anterior e abre outro no mesmo nível.
                 indentacao--;
                 imprimir_indentacao_ir(arquivo, indentacao);
                 fprintf(arquivo, "} else {\n");
@@ -189,8 +176,6 @@ void gerar_codigo_go(Intermediario *primeiro, const char *nome_arquivo) {
 
             case INTER_FOR_INICIO:
                 imprimir_indentacao_ir(arquivo, indentacao);
-                // Um while sem inicialização/atualização também é representado
-                // como for em Go, igual à sintaxe idiomática da linguagem.
                 if (texto_vazio(atual->resultado) && texto_vazio(atual->operador2)) {
                     if (texto_vazio(atual->operador1)) {
                         fprintf(arquivo, "for {\n");
