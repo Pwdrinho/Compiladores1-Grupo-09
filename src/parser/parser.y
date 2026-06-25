@@ -161,11 +161,11 @@ programa:
 
         // Geração do Código Intermediário
         Intermediario *codigo_intermediario = gerar_codigo_intermediario(raiz_ast);
-        
-        imprimir_codigo_intermediario(codigo_intermediario);
 
         // Geração do Código Final
-        gerar_codigo_go(codigo_intermediario, "QUEREMOS_AO_MENOS_MS_POR_FAVOR.go");
+        gerar_codigo_go(codigo_intermediario, "saida.go");
+
+        imprimir_codigo_intermediario(codigo_intermediario);
 
         liberar_ast(raiz_ast);
         printf("Liberamos a memoria da arvore sintatica \n");
@@ -617,7 +617,8 @@ fator:
 acesso_vetor:
       IDENT TK_ABRE_COLCHETE expressao TK_FECHA_COLCHETE
       {
-        $$ = criar_no(NO_ACESSO_VETOR, $3, NULL, $1, NULL);
+        Simbolo *simb_v = buscar_simbolo($1);
+        $$ = criar_no(NO_ACESSO_VETOR, $3, NULL, $1, simb_v);
         free($1);
       }
 ;
